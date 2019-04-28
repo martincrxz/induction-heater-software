@@ -1,4 +1,3 @@
 build/*
 .idea/
-*.pro*
 cmake-build-debug/*
