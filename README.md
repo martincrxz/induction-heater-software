@@ -5,7 +5,7 @@
 * Federico Manuel Gomez Peter
 * Mariana Szischik
 
-### Requisitos
+### Requisitos Linux
 Para el desarrollo se recomienda usar un de los siguientes 
 entornos de desarrollo:
 
@@ -34,6 +34,14 @@ Para setear como default el meld:
 git config --global merge.tool meld
 git config --global diff.tool meld
 ```
+### Requisitos Windows
+Recomiendo instalar primero `git`. Con ese programa clonen el proyecto
+de este repositorio. Luego instalen `QTcreator`, que les instala tanto 
+compilador como otras herramientas útiles para codear y compilar. 
+Cuando lo abran, abran el proyecto de esta carpeta (eligiendo el
+archivo `horno.pro`), y antes de compilar, vayan a la sección `project`,
+y cambien el path de la carpeta en donde se va a buildear el programa.
+Seteen la carpeta de build como `build`.
 
 ### Compilación
 Se debe crear una carpeta `build` (obligatorio para que no
