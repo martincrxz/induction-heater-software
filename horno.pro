@@ -29,7 +29,8 @@ SOURCES += \
         src/view/mainwindow.cpp
 
 HEADERS += \
-        src/view/mainwindow.h
+        src/view/mainwindow.h \
+        src/model/errorTableColums.h
 
 FORMS += \
         src/view/mainwindow.ui
