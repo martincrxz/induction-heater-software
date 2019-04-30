@@ -22,7 +22,7 @@ sudo apt-get install cmake
 Se requiere de forma obligatoria, además, tener instalado las
 bibliotecas de `QT`:
 ```commandline
-sudo apt-get install qt5-default qt-declarative5-dev
+sudo apt-get install qt5-default qtdeclarative5-dev
 ```
 
 Para realizar merges se recomienda la herramienta `meld`:
