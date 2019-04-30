@@ -7,8 +7,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -std=c++11 -ggdb -Wall -Werror -peda
 
 message("[INFO] Adding '${CMAKE_SOURCE_DIR}/libs' as include directory")
 include_directories(${CMAKE_SOURCE_DIR}/libs)
-include_directories(${CMAKE_SOURCE_DIR}/src/view)
-include_directories(${CMAKE_SOURCE_DIR}/src/model)
 
 message("[INFO] Loading sources")
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/*.cpp" "src/*.h" "libs/*.h" "libs/*.cpp")
