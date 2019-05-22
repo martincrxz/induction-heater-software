@@ -5,6 +5,7 @@
 #include "equipment_status_view.h"
 #include "automatic_control_tab_view.h"
 #include "manual_power_control_view.h"
+#include "auto_tunning_tab_view.h"
 
 namespace Ui {
 class MainWindow;
@@ -23,6 +24,7 @@ private:
     EquipmentStatusView equipmentView;
     AutomaticControlTabView automaticView;
     ManualPowerControlView manualPowerView;
+    AutoTunningTabView autotunningView;
 };
 
 #endif // MAINWINDOW_H

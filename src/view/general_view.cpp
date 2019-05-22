@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tabWidget->addTab(&equipmentView, "Estado del equipo");
     ui->tabWidget->addTab(&automaticView, "Control automático");
     ui->tabWidget->addTab(&manualPowerView, "Potencia manual");
+    ui->tabWidget->addTab(&autotunningView, "Auto-sintonía");
 }
 
 MainWindow::~MainWindow()
