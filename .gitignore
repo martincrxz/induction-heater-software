@@ -3,3 +3,5 @@ build/*
 cmake-build-debug/*
 horno.pro.user
 ./build*
+old/*.pyc
+old/*.log
