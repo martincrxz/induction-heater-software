@@ -4,4 +4,4 @@ cmake-build-debug/*
 horno.pro.user
 ./build*
 old/*.pyc
-old/*.log
+old/app.log

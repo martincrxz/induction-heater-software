@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tabWidget->addTab(&automaticView, "Control automático");
     ui->tabWidget->addTab(&manualPowerView, "Potencia manual");
     ui->tabWidget->addTab(&autotunningView, "Auto-sintonía");
+    ui->tabWidget->addTab(&chartView, "Gráfico");
 }
 
 MainWindow::~MainWindow()

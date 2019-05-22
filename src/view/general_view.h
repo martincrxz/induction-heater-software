@@ -6,6 +6,7 @@
 #include "automatic_control_tab_view.h"
 #include "manual_power_control_view.h"
 #include "auto_tunning_tab_view.h"
+#include "chart_tab_view.h"
 
 namespace Ui {
 class MainWindow;
@@ -25,6 +26,7 @@ private:
     AutomaticControlTabView automaticView;
     ManualPowerControlView manualPowerView;
     AutoTunningTabView autotunningView;
+    ChartTabView chartView;
 };
 
 #endif // MAINWINDOW_H

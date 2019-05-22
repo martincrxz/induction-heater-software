@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>potenciaEstacionaria.png</file>
+        <file>tempCorte.png</file>
+        <file>potenciaEstacionariaChica.png</file>
+        <file>tempCorteChica.png</file>
+    </qresource>
+</RCC>

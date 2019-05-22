@@ -29,18 +29,24 @@ SOURCES += \
         src/view/general_view.cpp \
         src/view/automatic_control_tab_view.cpp \
         src/view/manual_power_control_view.cpp \
-    src/view/auto_tunning_tab_view.cpp
+    src/view/auto_tunning_tab_view.cpp \
+    src/view/chart_tab_view.cpp
 
 HEADERS += \
     src/view/equipment_status_view.h \
     src/view/general_view.h \
     src/view/automatic_control_tab_view.h \
     src/view/manual_power_control_view.h \
-    src/view/auto_tunning_tab_view.h
+    src/view/auto_tunning_tab_view.h \
+    src/view/chart_tab_view.h
 
 FORMS += \
     src/view/equipment_status_view.ui \
     src/view/general_view.ui \
     src/view/automatic_control_tab_view.ui \
     src/view/manual_power_control_view.ui \
-    src/view/auto_tunning_tab_view.ui
+    src/view/auto_tunning_tab_view.ui \
+    src/view/chart_tab_view.ui
+
+RESOURCES += \
+    assets/resources.qrc
