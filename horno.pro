@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2019-04-27T22:06:33
+# Project created by QtCreator 2019-05-22T16:36:19
 #
 #-------------------------------------------------
 
@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = horno
+TARGET = hornoV3
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -22,20 +22,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-CONFIG += c++11
 
 SOURCES += \
         src/main.cpp \
-        src/view/mainwindow.cpp
+        src/view/equipment_status_view.cpp \
+        src/view/general_view.cpp \
+        src/view/automatic_control_tab_view.cpp \
+        src/view/manual_power_control_view.cpp
 
 HEADERS += \
-        src/view/mainwindow.h \
-        src/model/errorTableColums.h
+    src/view/equipment_status_view.h \
+    src/view/general_view.h \
+    src/view/automatic_control_tab_view.h \
+    src/view/manual_power_control_view.h
 
 FORMS += \
-        src/view/mainwindow.ui
-
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
+    src/view/equipment_status_view.ui \
+    src/view/general_view.ui \
+    src/view/automatic_control_tab_view.ui \
+    src/view/manual_power_control_view.ui

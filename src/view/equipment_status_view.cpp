@@ -1,10 +1,10 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "../model/errorTableColums.h"
+#include "equipment_status_view.h"
+#include "ui_equipment_status_view.h"
+typedef enum { ERROR_CODE, TIMESTAMP, INFO} error_table_t;
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+EquipmentStatusView::EquipmentStatusView(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::EquipmentStatusView)
 {
     ui->setupUi(this);
     // TODO: Borrar esto inmediatamente
@@ -15,8 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->errorLogTable->setItem(row, INFO, new QTableWidgetItem("Un error cualquiera"));
 }
 
-MainWindow::~MainWindow()
+EquipmentStatusView::~EquipmentStatusView()
 {
     delete ui;
 }
-

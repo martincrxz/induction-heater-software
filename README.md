@@ -13,18 +13,19 @@ entornos de desarrollo:
 * Sublime Text
 * QTCreator
 
+#### Cmake
 Para compilar se requiere tener instalado la herramienta 
 `cmake`:
 ```commandline
 sudo apt-get install cmake
 ```
-
+#### QT
 Se requiere de forma obligatoria, además, tener instalado las
 bibliotecas de `QT`:
 ```commandline
-sudo apt-get install qt5-default qtdeclarative5-dev
+sudo apt-get install qtcreator qt5-default qtdeclarative5-dev
 ```
-
+#### meld
 Para realizar merges se recomienda la herramienta `meld`:
 ```commandline
 sudo apt-get install git meld

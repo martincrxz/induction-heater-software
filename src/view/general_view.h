@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "equipment_status_view.h"
+#include "automatic_control_tab_view.h"
+#include "manual_power_control_view.h"
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +20,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    EquipmentStatusView equipmentView;
+    AutomaticControlTabView automaticView;
+    ManualPowerControlView manualPowerView;
 };
 
 #endif // MAINWINDOW_H

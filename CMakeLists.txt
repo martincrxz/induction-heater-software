@@ -18,7 +18,10 @@ find_package(Qt5Widgets CONFIG REQUIRED)
 find_package(Qt5Core)
 
 qt5_wrap_ui(UIS_HEADERS
-        src/view/mainwindow.ui)
+        src/view/automatic_control_tab_view.ui
+        src/view/equipment_status_view.ui
+        src/view/general_view.ui
+        src/view/manual_power_control_view.ui)
 # Instruct CMake to run moc automatically when neededcd
 set(CMAKE_AUTOMOC ON)
 # Create code from a list of Qt designer ui files
