@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += charts core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -24,11 +24,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-        src/main.cpp \
-        src/view/equipment_status_view.cpp \
-        src/view/general_view.cpp \
-        src/view/automatic_control_tab_view.cpp \
-        src/view/manual_power_control_view.cpp \
+    src/main.cpp \
+    src/view/equipment_status_view.cpp \
+    src/view/general_view.cpp \
+    src/view/automatic_control_tab_view.cpp \
+    src/view/manual_power_control_view.cpp \
     src/view/auto_tunning_tab_view.cpp \
     src/view/chart_tab_view.cpp
 

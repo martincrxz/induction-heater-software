@@ -24,6 +24,11 @@ Se requiere de forma obligatoria, además, tener instalado las
 bibliotecas de `QT`:
 ```commandline
 sudo apt-get install qtcreator qt5-default qtdeclarative5-dev
+
+```
+### QT charts
+```commandline
+sudo apt-get install libqt5charts5-dev
 ```
 #### meld
 Para realizar merges se recomienda la herramienta `meld`:
