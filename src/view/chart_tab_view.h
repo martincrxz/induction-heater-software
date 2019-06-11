@@ -3,6 +3,9 @@
 
 #include <QPushButton>
 #include <QtCharts/QChartView>
+#include <QtCharts/QLineSeries>
+#include <QtCharts/QDateTimeAxis>
+#include <QtCharts/QValueAxis>
 #include <QWidget>
 
 QT_CHARTS_USE_NAMESPACE
@@ -25,6 +28,10 @@ private slots:
 private:
     Ui::ChartTabView *ui;
     QChartView chartView;
+    QChart chart;
+    QLineSeries series;
+    QDateTimeAxis xAxis;
+    QValueAxis yAxis;
     QPushButton initChartButton{"Iniciar captura"};
 };
 

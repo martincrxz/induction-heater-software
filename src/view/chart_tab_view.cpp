@@ -1,3 +1,4 @@
+#include <QtCharts/QChartView>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QDateTimeAxis>
 #include <QtCharts/QValueAxis>
@@ -18,6 +19,25 @@ ChartTabView::ChartTabView(QWidget *parent) :
       */
     this->initChartButton.connect(&this->initChartButton, &QPushButton::clicked,
                                   this, &ChartTabView::onInitChartClicked);
+    // inicializo el gráfico
+    this->chart.addSeries(&this->series);
+    this->chart.legend()->hide();
+    this->chart.setTitle("Mediciones del horno");
+
+    this->xAxis.setTickCount(10);
+    this->xAxis.setFormat("HH mm ss");
+    this->xAxis.setTitleText("Tiempo");
+
+    this->yAxis.setLabelFormat("%i");
+    this->yAxis.setTitleText("Temperatura (°C)");
+
+    this->chart.addAxis(&this->xAxis, Qt::AlignBottom);
+    this->series.attachAxis(&this->xAxis);
+    this->chart.addAxis(&this->yAxis, Qt::AlignLeft);
+    this->series.attachAxis(&this->yAxis);
+
+    this->chartView.setChart(&this->chart);
+    this->chartView.setRenderHint(QPainter::Antialiasing);
 }
 
 ChartTabView::~ChartTabView()
@@ -27,37 +47,4 @@ ChartTabView::~ChartTabView()
 
 void ChartTabView::onInitChartClicked()
 {
-    // TODO refactor this
-    //![1]
-    QLineSeries *series = new QLineSeries();
-    //![1]
-
-    //![3]
-    QChart *chart = new QChart();
-    chart->addSeries(series);
-    chart->legend()->hide();
-    chart->setTitle("Sunspots count (by Space Weather Prediction Center)");
-    //![3]
-
-    //![4]
-    QDateTimeAxis *axisX = new QDateTimeAxis;
-    axisX->setTickCount(10);
-    axisX->setFormat("MMM yyyy");
-    axisX->setTitleText("Date");
-    chart->addAxis(axisX, Qt::AlignBottom);
-    series->attachAxis(axisX);
-
-    QValueAxis *axisY = new QValueAxis;
-    axisY->setLabelFormat("%i");
-    axisY->setTitleText("Sunspots count");
-    chart->addAxis(axisY, Qt::AlignLeft);
-    series->attachAxis(axisY);
-    //![4]
-
-    //![5]
-    this->chartView.setChart(chart);
-//    QChartView *chartView = new QChartView(chart);
-    chartView.setRenderHint(QPainter::Antialiasing);
-    //![5]
-
 }
