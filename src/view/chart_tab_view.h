@@ -1,8 +1,9 @@
 #ifndef CHART_TAB_VIEW_H
 #define CHART_TAB_VIEW_H
 
-#include <QWidget>
+#include <QPushButton>
 #include <QtCharts/QChartView>
+#include <QWidget>
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -19,11 +20,12 @@ public:
     ~ChartTabView();
 
 private slots:
-    void on_startChartButton_clicked();
+    void onInitChartClicked();
 
 private:
     Ui::ChartTabView *ui;
-    QChart *chart;
+    QChartView chartView;
+    QPushButton initChartButton{"Iniciar captura"};
 };
 
 #endif // CHART_TAB_VIEW_H

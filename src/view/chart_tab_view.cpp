@@ -10,6 +10,14 @@ ChartTabView::ChartTabView(QWidget *parent) :
     ui(new Ui::ChartTabView)
 {
     ui->setupUi(this);
+    ui->chartLayout->addWidget(&this->chartView);
+    ui->chartLayout->addWidget(&this->initChartButton);
+    /**
+      * Conecto la señal onClick del botón para que ejecute
+      * el método correspondiente
+      */
+    this->initChartButton.connect(&this->initChartButton, &QPushButton::clicked,
+                                  this, &ChartTabView::onInitChartClicked);
 }
 
 ChartTabView::~ChartTabView()
@@ -17,7 +25,7 @@ ChartTabView::~ChartTabView()
     delete ui;
 }
 
-void ChartTabView::on_startChartButton_clicked()
+void ChartTabView::onInitChartClicked()
 {
     // TODO refactor this
     //![1]
@@ -47,8 +55,9 @@ void ChartTabView::on_startChartButton_clicked()
     //![4]
 
     //![5]
-    QChartView *chartView = new QChartView(chart);
-    chartView->setRenderHint(QPainter::Antialiasing);
+    this->chartView.setChart(chart);
+//    QChartView *chartView = new QChartView(chart);
+    chartView.setRenderHint(QPainter::Antialiasing);
     //![5]
-    ui->chartLayout->addWidget(chartView);
+
 }
