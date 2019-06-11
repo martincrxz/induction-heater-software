@@ -5,6 +5,13 @@ project(TrabajoProfesional)
 # Para debug
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -std=c++11 -ggdb -Wall -Werror -pedantic -pthread")
 
+if(DEFINED IOS) 
+	message("[INFO] COMPILING FOR IOS")
+	set(CMAKE_PREFIX_PATH "/usr/local/Cellar/qt/5.12.2/")
+else()
+	message("[INFO] COMPILING FOR LINUX")
+endif()
+
 message("[INFO] Adding '${CMAKE_SOURCE_DIR}/libs' as include directory")
 include_directories(${CMAKE_SOURCE_DIR}/libs)
 
