@@ -1,12 +1,28 @@
-#include "view/general_view.h"
+#include <exception>
+#include <iostream>
 #include <QApplication>
 
-int main(int argc, char *argv[])
-{
-    qputenv("QT_STYLE_OVERRIDE","");
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+#include "exception.h"
+#include "view/application.h"
+#include "view/general_view.h"
 
-    return a.exec();
+
+int main(int argc, char *argv[])
+{	
+	int ret = 0;
+	try {
+    	qputenv("QT_STYLE_OVERRIDE","");
+    	Application a(argc, argv);
+    	MainWindow w;
+    	w.show();
+		ret = a.exec();
+	} catch (std::exception &e) {
+		std::cerr << e.what() << std::endl;
+		return 1;
+	} catch (...) {
+		Exception e("Unknown error un thread main.");
+		std::cerr << e.what() << std::endl;
+		return 1;
+	}
+    return ret;
 }

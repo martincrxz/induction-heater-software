@@ -5,6 +5,7 @@
 
 #include "chart_tab_view.h"
 #include "ui_chart_tab_view.h"
+#include "exception.h"
 
 ChartTabView::ChartTabView(QWidget *parent) :
     QWidget(parent),
@@ -47,4 +48,5 @@ ChartTabView::~ChartTabView()
 
 void ChartTabView::onInitChartClicked()
 {
+    throw Exception("prueba");
 }
