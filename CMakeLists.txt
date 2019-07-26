@@ -5,8 +5,8 @@ project(TrabajoProfesional)
 # Para debug
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -std=c++11 -ggdb -Wall -Werror -pedantic -pthread")
 
-if(DEFINED IOS) 
-	message("[INFO] COMPILING FOR IOS")
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+	message("[INFO] COMPILING FOR MACOS")
 	set(CMAKE_PREFIX_PATH "/usr/local/Cellar/qt/5.12.2/")
 else()
 	message("[INFO] COMPILING FOR LINUX")

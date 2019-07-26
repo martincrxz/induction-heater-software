@@ -31,7 +31,7 @@ class Chrono {
      */
     double now();
  private:
-    std::chrono::high_resolution_clock::time_point start;
+    std::chrono::time_point<std::chrono::system_clock> start;
 };
 
 /**

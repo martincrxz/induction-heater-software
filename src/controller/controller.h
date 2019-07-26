@@ -1,9 +1,11 @@
+#include <thread>
+
 class Controller {
 public:
 	Controller();
 	~Controller();
-	startChart();
+	void startChart();
 
 private:
 	std::thread chartUpdater;
-}
+};
