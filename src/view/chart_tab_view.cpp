@@ -20,10 +20,11 @@ ChartTabView::ChartTabView(QWidget *parent) :
       */
     this->initChartButton.connect(&this->initChartButton, &QPushButton::clicked,
                                   this, &ChartTabView::onInitChartClicked);
+
     // inicializo el gráfico
     this->chart.addSeries(&this->series);
     this->chart.legend()->hide();
-    this->chart.setTitle("Mediciones del horno");
+    this->chart.setTitle("Mediciones del temperatura");
 
     this->xAxis.setTickCount(10);
     this->xAxis.setFormat("HH mm ss");
@@ -39,6 +40,7 @@ ChartTabView::ChartTabView(QWidget *parent) :
 
     this->chartView.setChart(&this->chart);
     this->chartView.setRenderHint(QPainter::Antialiasing);
+
 }
 
 ChartTabView::~ChartTabView()
@@ -48,5 +50,6 @@ ChartTabView::~ChartTabView()
 
 void ChartTabView::onInitChartClicked()
 {
-    throw Exception("prueba");
+
 }
+

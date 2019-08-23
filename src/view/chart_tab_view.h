@@ -22,6 +22,9 @@ public:
     explicit ChartTabView(QWidget *parent = 0);
     ~ChartTabView();
 
+protected:
+    void timerEvent(QTimerEvent *) override;
+
 private slots:
     void onInitChartClicked();
 
