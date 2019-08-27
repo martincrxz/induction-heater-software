@@ -5,3 +5,4 @@ horno.pro.user
 ./build*
 old/*.pyc
 old/app.log
+CMakeLists.txt.*
