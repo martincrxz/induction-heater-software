@@ -50,7 +50,8 @@ file(GLOB RESOURCES ${CMAKE_SOURCE_DIR}
 # Tell CMake to create the helloworld executable
 add_executable(application ${SOURCES} ${UIS_HEADERS} ${RESOURCES})
 # Use the Widgets module from Qt 5
-target_link_libraries(application Qt5::Core Qt5::Widgets Qt5::Charts)
+find_package(Qt5 CONFIG REQUIRED Core Widgets SerialPort)
+target_link_libraries(application Qt5::Core Qt5::Widgets Qt5::Charts Qt5::SerialPort)
 
 # Install phase (commented until necessary)
 #file(COPY assets DESTINATION ./)
