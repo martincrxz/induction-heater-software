@@ -3,10 +3,9 @@
 
 #include <QPushButton>
 #include <QtCharts/QChartView>
-#include <QtCharts/QLineSeries>
-#include <QtCharts/QDateTimeAxis>
-#include <QtCharts/QValueAxis>
 #include <QWidget>
+
+#include "chart.h"
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -20,18 +19,15 @@ class ChartTabView : public QWidget
 
 public:
     explicit ChartTabView(QWidget *parent = 0);
-    ~ChartTabView();
+    virtual ~ChartTabView();
 
 private slots:
     void onInitChartClicked();
 
 private:
     Ui::ChartTabView *ui;
+    Chart *chart;
     QChartView chartView;
-    QChart chart;
-    QLineSeries series;
-    QDateTimeAxis xAxis;
-    QValueAxis yAxis;
     QPushButton initChartButton{"Iniciar captura"};
 };
 
