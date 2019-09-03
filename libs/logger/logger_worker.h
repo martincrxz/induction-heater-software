@@ -14,8 +14,7 @@
 #include <stream.h>
 
 /**
- * Clase singleton que se encargará de procesar
- * todos los eventos de loggeo.
+ * Se encargará de procesar todos los eventos de loggeo.
  *
  * Se ejecuta en un hilo aparte para darle alta
  * disponibilidad a los demás hilos, y que estos
@@ -29,13 +28,28 @@
 class LoggerWorker: public  QThread{
     Q_OBJECT
 public:
+    /**
+     * @brief Recibe el nombre del archivo donde se loggeará
+     */
     LoggerWorker() = default;
     virtual ~LoggerWorker() override;
+    /**
+     * @brief Se encarga de terminar la ejecución ordenada
+     * del worker
+     */
     void stop();
+    /**
+     * @brief Escribe un mensaje de información
+     * @param msg
+     */
     void info(const std::string &msg);
 private:
     IO::Stream<std::string> queue;
     bool keep_processing{true};
+    /**
+     * @brief Lanza el hilo de ejecución que toma elementos de a uno y
+     * los imprime en la salida.
+     */
     void run() override;
 };
 
