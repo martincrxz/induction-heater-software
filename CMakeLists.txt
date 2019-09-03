@@ -5,6 +5,7 @@ project(TrabajoProfesional)
 # Para debug
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -std=c++11 -ggdb -Wall -Werror -pedantic -pthread")
 
+# Definición de macros de compilación para usuarios MAC
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
 	message("[INFO] COMPILING FOR MACOS")
 	set(CMAKE_PREFIX_PATH "/usr/local/Cellar/qt/5.12.2/")
@@ -21,9 +22,7 @@ file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/*.cpp" "src/*.h" "li
 message("[INFO] Loading sources of QT")
 
 # Find the QtWidgets library
-find_package(Qt5 REQUIRED COMPONENTS Core Widgets Charts)
-#find_package(Qt5Widgets CONFIG REQUIRED)
-#find_package(Qt5Core)
+find_package(Qt5 REQUIRED COMPONENTS Core Widgets Charts SerialPort)
 
 qt5_wrap_ui(UIS_HEADERS
         src/view/auto_tunning_tab_view.ui
@@ -49,8 +48,6 @@ file(GLOB RESOURCES ${CMAKE_SOURCE_DIR}
 
 # Tell CMake to create the helloworld executable
 add_executable(application ${SOURCES} ${UIS_HEADERS} ${RESOURCES})
-# Use the Widgets module from Qt 5
-find_package(Qt5 CONFIG REQUIRED Core Widgets SerialPort)
 target_link_libraries(application Qt5::Core Qt5::Widgets Qt5::Charts Qt5::SerialPort)
 
 # Install phase (commented until necessary)

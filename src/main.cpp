@@ -1,6 +1,8 @@
 #include <exception>
 #include <iostream>
 #include <QApplication>
+#include <logger/logger_worker.h>
+#include <logger/logger.h>
 
 #include "exception.h"
 #include "view/application.h"
@@ -11,9 +13,10 @@ int main(int argc, char *argv[])
 {	
 	int ret = 0;
 	try {
-    	qputenv("QT_STYLE_OVERRIDE","");
+//    	qputenv("QT_STYLE_OVERRIDE","");
     	Application a(argc, argv);
     	MainWindow w;
+        Logger::init("filename");
     	w.show();
 		ret = a.exec();
 	} catch (std::exception &e) {

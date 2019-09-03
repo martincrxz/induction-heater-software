@@ -2,6 +2,8 @@
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QDateTimeAxis>
 #include <QtCharts/QValueAxis>
+#include <QDebug>
+#include <logger/logger.h>
 
 #include "chart_tab_view.h"
 #include "ui_chart_tab_view.h"
@@ -25,13 +27,12 @@ ChartTabView::ChartTabView(QWidget *parent) :
     this->chartView.setRenderHint(QPainter::Antialiasing);
 }
 
-ChartTabView::~ChartTabView()
-{
+ChartTabView::~ChartTabView() {
     delete this->ui;
     delete this->chart;
 }
 
-void ChartTabView::onInitChartClicked()
-{
+void ChartTabView::onInitChartClicked() {
+    Logger::info("hola");
     this->chart->init();
 }
