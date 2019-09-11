@@ -1,11 +1,12 @@
 #include <exception>
 #include <iostream>
-#include <QApplication>
 
 #include "exception.h"
 #include "view/application.h"
 #include "view/general_view.h"
+#include "connection/communicator.h"
 
+#define PRINT(X) std::cout<<X<<std::endl
 
 int main(int argc, char *argv[])
 {	
@@ -14,6 +15,7 @@ int main(int argc, char *argv[])
     	qputenv("QT_STYLE_OVERRIDE","");
     	Application a(argc, argv);
     	MainWindow w;
+    	Communicator c;
     	w.show();
 		ret = a.exec();
 	} catch (std::exception &e) {

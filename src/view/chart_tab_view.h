@@ -23,7 +23,7 @@ public:
     ~ChartTabView();
 
 protected:
-    void timerEvent(QTimerEvent *) override;
+    //void timerEvent(QTimerEvent *) override;
 
 private slots:
     void onInitChartClicked();
