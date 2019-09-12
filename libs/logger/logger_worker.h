@@ -7,11 +7,13 @@
 #ifndef __LOGGER_WORKER_H__
 #define __LOGGER_WORKER_H__
 
-#include <string>
 #include <QtCore/QThread>
 #include <memory>
 #include <mutex>
+#include <string>
+
 #include <stream.h>
+#include <logger/message/message.h>
 
 /**
  * Se encargará de procesar todos los eventos de loggeo.
@@ -39,12 +41,12 @@ public:
      */
     void stop();
     /**
-     * @brief Escribe un mensaje de información
+     * @brief Mete un mensaje nuevo para ser impreso a posteriori.
      * @param msg
      */
-    void info(const std::string &msg);
+    void pushMessage(std::shared_ptr<Message> msg);
 private:
-    IO::Stream<std::string> queue;
+    IO::Stream<std::shared_ptr<Message>> queue;
     bool keep_processing{true};
     /**
      * @brief Lanza el hilo de ejecución que toma elementos de a uno y

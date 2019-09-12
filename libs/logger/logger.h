@@ -30,11 +30,20 @@ public:
      */
     static void init(const std::string &filename);
     /**
-     * @brief WIP: creará un objeto LoggerInfo donde se le
-     * sobrecargará el operador << para que se envie al worker
+     * @brief crea un objeto LoggerInfo y se pushea en la queue.
      * @param msg
      */
-    static void info(const std::string &msg);
+    static void info(std::string msg);
+    /**
+     * @brief crea un objeto LoggerDebug y se pushea en la queue.
+     * @param msg
+     */
+    static void debug(std::string msg);
+    /**
+     * @brief crea un objeto LoggerWarning y se pushea en la queue.
+     * @param msg
+     */
+    static void warning(std::string msg);
     /**
      * @brief Liberará los recursos del worker de forma ordenada
      */

@@ -34,5 +34,7 @@ ChartTabView::~ChartTabView() {
 
 void ChartTabView::onInitChartClicked() {
     Logger::info("hola");
+    Logger::debug("debug");
+    Logger::warning("warning");
     this->chart->init();
 }
