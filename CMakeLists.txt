@@ -53,7 +53,7 @@ file(GLOB RESOURCES ${CMAKE_SOURCE_DIR}
 add_subdirectory(tests)
 
 # Tell CMake to create the helloworld executable
-add_executable(application ${SOURCES} ${UIS_HEADERS} ${RESOURCES} src/connection/communicator_worker.cpp src/connection/communicator_worker.h src/connection/sender.cpp src/connection/sender.h src/connection/receiver.cpp src/connection/receiver.h)
+add_executable(application ${SOURCES} ${UIS_HEADERS} ${RESOURCES} src/connection/sender.cpp src/connection/sender.h src/connection/receiver.cpp src/connection/receiver.h src/connection/serialport.cpp src/connection/serialport.h)
 # Use the Widgets module from Qt 5
 target_link_libraries(application Qt5::Core Qt5::Widgets Qt5::Charts Qt5::SerialPort)
 

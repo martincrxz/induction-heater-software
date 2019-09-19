@@ -7,12 +7,12 @@
 
 #include <iostream>
 
-#include <QSerialPort>
-#include <QSerialPortInfo>
-
+#include "serialport.h"
 #include "receiver.h"
 #include "sender.h"
 
+#define SENDING_PING_TYPE 0xaa
+#define RECEIVING_PING_TYPE 0x0a
 #define BAUDRATE 9600
 
 class Communicator {
@@ -20,12 +20,12 @@ class Communicator {
     private:
         Sender *sender;
         Receiver *receiver;
-        QSerialPort *port;
+        SerialPort *port;
 
     public:
         Communicator();
         ~Communicator();
-        void findDevice();
+        bool findDevice();
 };
 
 
