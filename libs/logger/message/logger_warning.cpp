@@ -8,7 +8,7 @@
 
 #include "logger_warning.h"
 
-LoggerWarning::LoggerWarning(std::string &msg) : Message(msg) {}
+LoggerWarning::LoggerWarning(std::string &msg) : LoggerMessage(msg) {}
 
 void LoggerWarning::print() {
     qWarning() << this->msg.data();

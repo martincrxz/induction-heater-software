@@ -9,9 +9,9 @@
 
 #include <string>
 
-#include "message.h"
+#include "logger_message.h"
 
-class LoggerInfo: public Message {
+class LoggerInfo: public LoggerMessage {
 public:
     explicit LoggerInfo(std::string &msg);
     virtual ~LoggerInfo() = default;

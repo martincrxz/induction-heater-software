@@ -35,7 +35,7 @@ void Logger::init(const std::string &filename) {
 }
 
 void Logger::info(std::string msg) {
-    std::shared_ptr<Message> ptr(new LoggerInfo(msg));
+    std::shared_ptr<LoggerMessage> ptr(new LoggerInfo(msg));
     Logger::instance().worker.pushMessage(ptr);
 }
 
@@ -45,12 +45,12 @@ Logger::~Logger() {
 }
 
 void Logger::debug(std::string msg) {
-    std::shared_ptr<Message> ptr(new LoggerDebug(msg));
+    std::shared_ptr<LoggerMessage> ptr(new LoggerDebug(msg));
     Logger::instance().worker.pushMessage(ptr);
 }
 
 void Logger::warning(std::string msg) {
-    std::shared_ptr<Message> ptr(new LoggerWarning(msg));
+    std::shared_ptr<LoggerMessage> ptr(new LoggerWarning(msg));
     Logger::instance().worker.pushMessage(ptr);
 }
 

@@ -13,7 +13,7 @@
 #include <string>
 
 #include <stream.h>
-#include <logger/message/message.h>
+#include <logger/message/logger_message.h>
 
 /**
  * Se encargará de procesar todos los eventos de loggeo.
@@ -44,9 +44,9 @@ public:
      * @brief Mete un mensaje nuevo para ser impreso a posteriori.
      * @param msg
      */
-    void pushMessage(std::shared_ptr<Message> msg);
+    void pushMessage(std::shared_ptr<LoggerMessage> msg);
 private:
-    IO::Stream<std::shared_ptr<Message>> queue;
+    IO::Stream<std::shared_ptr<LoggerMessage>> queue;
     bool keep_processing{true};
     /**
      * @brief Lanza el hilo de ejecución que toma elementos de a uno y

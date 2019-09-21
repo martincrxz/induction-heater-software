@@ -7,9 +7,9 @@
 #ifndef __QUIT_H__
 #define __QUIT_H__
 
-#include "message.h"
+#include "logger_message.h"
 
-class LoggerQuit: public Message {
+class LoggerQuit: public LoggerMessage {
 public:
     LoggerQuit();
     virtual ~LoggerQuit() = default;

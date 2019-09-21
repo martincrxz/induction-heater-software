@@ -7,7 +7,7 @@
 
 #include "logger_info.h"
 
-LoggerInfo::LoggerInfo(std::string &msg): Message(msg) {
+LoggerInfo::LoggerInfo(std::string &msg): LoggerMessage(msg) {
 
 }
 

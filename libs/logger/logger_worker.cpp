@@ -15,7 +15,7 @@ LoggerWorker::~LoggerWorker() {
 
 void LoggerWorker::run() {
     while (keep_processing) {
-        std::shared_ptr<Message> msg;
+        std::shared_ptr<LoggerMessage> msg;
         queue.pop(msg, true);
         if (msg->quit()) {
             keep_processing = false;
@@ -27,10 +27,10 @@ void LoggerWorker::run() {
 }
 
 void LoggerWorker::stop() {
-    std::shared_ptr<Message> ptr(new LoggerQuit());
+    std::shared_ptr<LoggerMessage> ptr(new LoggerQuit());
     this->queue.push(ptr);
 }
 
-void LoggerWorker::pushMessage(std::shared_ptr<Message> msg) {
+void LoggerWorker::pushMessage(std::shared_ptr<LoggerMessage> msg) {
     this->queue.push(msg);
 }

@@ -7,9 +7,9 @@
 #ifndef __LOGGER_DEBUG_H__
 #define __LOGGER_DEBUG_H__
 
-#include "message.h"
+#include "logger_message.h"
 
-class LoggerDebug: public Message {
+class LoggerDebug: public LoggerMessage {
 public:
     LoggerDebug(std::string &msg);
     virtual ~LoggerDebug() = default;

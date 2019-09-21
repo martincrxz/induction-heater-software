@@ -7,9 +7,9 @@
 #ifndef __LOGGER_WARNING_H__
 #define __LOGGER_WARNING_H__
 
-#include "message.h"
+#include "logger_message.h"
 
-class LoggerWarning: public Message {
+class LoggerWarning: public LoggerMessage {
 public:
     LoggerWarning(std::string &msg);
     virtual ~LoggerWarning() = default;

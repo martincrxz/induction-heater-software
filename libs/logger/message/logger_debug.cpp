@@ -8,7 +8,7 @@
 
 #include "logger_debug.h"
 
-LoggerDebug::LoggerDebug(std::string &msg) : Message(msg) {}
+LoggerDebug::LoggerDebug(std::string &msg) : LoggerMessage(msg) {}
 
 void LoggerDebug::print() {
     qDebug() << this->msg.data();

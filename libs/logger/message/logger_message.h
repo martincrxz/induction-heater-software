@@ -9,14 +9,14 @@
 
 #include <string>
 
-class Message {
+class LoggerMessage {
 protected:
     std::string msg;
 
 public:
-    Message() = default;
-    virtual ~Message() = default;
-    explicit Message(std::string &message);
+    LoggerMessage() = default;
+    virtual ~LoggerMessage() = default;
+    explicit LoggerMessage(std::string &message);
     /**
      * @brief Imprime el mensaje. Se aplica un polimorfismo para determinar
      * si se imprime como debug, info, warning o si es un mensaje de salida.
