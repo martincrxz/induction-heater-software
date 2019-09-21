@@ -4,20 +4,14 @@
 
 #include "communicator.h"
 
-Communicator::Communicator() {
-    port = new SerialPort();
+Communicator::Communicator(): port(), receiver(&port), sender(&port) {
     findDevice();
-    receiver = new Receiver(*port);
-    sender = new Sender(*port);
-    receiver->start();
-    sender->start();
+    receiver.start();
+    sender.start();
 }
 
-Communicator::~Communicator(){
-    delete sender;
-    delete receiver;
-    port->close();
-    delete port;
+Communicator::~Communicator() {
+    port.close();
 }
 
 bool Communicator::findDevice() {
@@ -37,7 +31,7 @@ bool Communicator::findDevice() {
         if(temp.open(QIODevice::ReadWrite)) {
             if(temp.ping(message_to_send, message_to_receive)) {
                 temp.close();
-                port->setPort(info);
+                port.setPort(info);
                 std::cout << "Device found." << std::endl;
                 return true;
             }

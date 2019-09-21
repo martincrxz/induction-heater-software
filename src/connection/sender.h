@@ -14,11 +14,11 @@ class Sender : public QThread{
     Q_OBJECT
 
 private:
-    QSerialPort &port;
+    QSerialPort *port;
     bool keep_processing = true;
 
 public:
-    explicit Sender(QSerialPort &port) : port(port) {};
+    explicit Sender(QSerialPort *port) : port(port) {};
     ~Sender() override;
     void run() override;
 };

@@ -17,15 +17,15 @@
 
 class Communicator {
 
-    private:
-        Sender *sender;
-        Receiver *receiver;
-        SerialPort *port;
+private:
+    SerialPort port;
+    Receiver receiver;
+    Sender sender;
 
-    public:
-        Communicator();
-        ~Communicator();
-        bool findDevice();
+public:
+    Communicator();
+    ~Communicator();
+    bool findDevice();
 };
 
 

@@ -11,8 +11,8 @@ Receiver::~Receiver() {
 
 void Receiver::run(){
     while(keep_processing){
-        if(port.waitForReadyRead(50)){
-            QByteArray data = port.read(8);
+        if(port->waitForReadyRead(50)){
+            QByteArray data = port->read(8);
             std::cout << data.toStdString();
         }
     }

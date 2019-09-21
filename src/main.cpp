@@ -15,11 +15,10 @@ int main(int argc, char *argv[])
 {	
 	int ret = 0;
 	try {
-//    	qputenv("QT_STYLE_OVERRIDE","");
     	Application a(argc, argv);
     	MainWindow w;
         Logger::init("filename");
-	Communicator c;
+	    Communicator c;
     	w.show();
 		ret = a.exec();
 	} catch (std::exception &e) {
