@@ -10,7 +10,7 @@
 #include "message/logger_debug.h"
 #include "message/logger_warning.h"
 
-std::unique_ptr<Logger> Logger::instance = nullptr;
+//std::unique_ptr<Logger> Logger::instance = nullptr;
 /**
  * handler para formatear los mensajes de salida del log.
  * @param type
@@ -22,32 +22,36 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
 Logger::Logger() {
     this->worker.start();
 }
-
+Logger& Logger::instance() {
+    static Logger s;
+    return s;
+}
 void Logger::init(const std::string &filename) {
-    if ( instance == nullptr) {
-        instance = std::unique_ptr<Logger>(new Logger());
-    }
+  //  if ( instance == nullptr) {
+  //      instance = std::unique_ptr<Logger>(new Logger());
+  //  }
+    Logger::instance();
     qInstallMessageHandler(messageHandler);
 }
 
 void Logger::info(std::string msg) {
     std::shared_ptr<Message> ptr(new LoggerInfo(msg));
-    instance->worker.pushMessage(ptr);
+    Logger::instance().worker.pushMessage(ptr);
 }
 
 Logger::~Logger() {
-    instance->worker.stop();
-    instance->worker.wait();
+    Logger::instance().worker.stop();
+    Logger::instance().worker.wait();
 }
 
 void Logger::debug(std::string msg) {
     std::shared_ptr<Message> ptr(new LoggerDebug(msg));
-    instance->worker.pushMessage(ptr);
+    Logger::instance().worker.pushMessage(ptr);
 }
 
 void Logger::warning(std::string msg) {
     std::shared_ptr<Message> ptr(new LoggerWarning(msg));
-    instance->worker.pushMessage(ptr);
+    Logger::instance().worker.pushMessage(ptr);
 }
 
 void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)

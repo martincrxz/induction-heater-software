@@ -18,11 +18,9 @@ private:
      * thread-safe
      */
     LoggerWorker worker;
-    /**
-     * Se requiere instancia única del logger
-     */
-    static std::unique_ptr<Logger> instance;
+
     Logger();
+    static Logger& instance();
 public:
     /**
      * @brief Crea un archivo de log appendeando al filename la fecha de hoy
