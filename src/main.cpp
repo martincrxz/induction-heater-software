@@ -7,7 +7,9 @@
 #include "exception.h"
 #include "view/application.h"
 #include "view/general_view.h"
+#include "connection/communicator.h"
 
+#define PRINT(X) std::cout<<X<<std::endl
 
 int main(int argc, char *argv[])
 {	
@@ -17,6 +19,7 @@ int main(int argc, char *argv[])
     	Application a(argc, argv);
     	MainWindow w;
         Logger::init("filename");
+	Communicator c;
     	w.show();
 		ret = a.exec();
 	} catch (std::exception &e) {
