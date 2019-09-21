@@ -5,7 +5,7 @@
 #include "serialport.h"
 #include <iostream>
 
-SerialPort::SerialPort() : QSerialPort() {};
+SerialPort::SerialPort() : QSerialPort() {}
 
 SerialPort::SerialPort(QString name) : QSerialPort(name) {}
 

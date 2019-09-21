@@ -22,14 +22,6 @@ ChartTabView::ChartTabView(QWidget *parent) :
       */
     this->initChartButton.connect(&this->initChartButton, &QPushButton::clicked,
                                   this, &ChartTabView::onInitChartClicked);
-<<<<<<< HEAD
-=======
-
-    // inicializo el gráfico
-    this->chart.addSeries(&this->series);
-    this->chart.legend()->hide();
-    this->chart.setTitle("Mediciones del temperatura");
->>>>>>> receiver
 
     this->chartView.setChart(this->chart);
     this->chartView.setRenderHint(QPainter::Antialiasing);
@@ -41,16 +33,10 @@ ChartTabView::~ChartTabView() {
     delete this->chart;
 }
 
-<<<<<<< HEAD
 void ChartTabView::onInitChartClicked() {
     Logger::info("hola");
     Logger::debug("debug");
     Logger::warning("warning");
     this->chart->init();
-=======
-void ChartTabView::onInitChartClicked()
-{
-
->>>>>>> receiver
 }
 

@@ -23,11 +23,6 @@ message("[INFO] Loading sources of QT")
 
 # Find the QtWidgets library
 find_package(Qt5 REQUIRED COMPONENTS Core Widgets Charts SerialPort)
-<<<<<<< HEAD
-=======
-#find_package(Qt5Widgets CONFIG REQUIRED)
-#find_package(Qt5Core)
->>>>>>> receiver
 
 get_target_property(QtCore_location Qt5::Core LOCATION)
 message('${QtCore_location}')
@@ -57,12 +52,7 @@ file(GLOB RESOURCES ${CMAKE_SOURCE_DIR}
 add_subdirectory(tests)
 
 # Tell CMake to create the helloworld executable
-<<<<<<< HEAD
 add_executable(application ${SOURCES} ${UIS_HEADERS} ${RESOURCES})
-=======
-add_executable(application ${SOURCES} ${UIS_HEADERS} ${RESOURCES} src/connection/sender.cpp src/connection/sender.h src/connection/receiver.cpp src/connection/receiver.h src/connection/serialport.cpp src/connection/serialport.h)
-# Use the Widgets module from Qt 5
->>>>>>> receiver
 target_link_libraries(application Qt5::Core Qt5::Widgets Qt5::Charts Qt5::SerialPort)
 
 # Install phase (commented until necessary)
