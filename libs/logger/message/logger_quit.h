@@ -12,6 +12,7 @@
 class LoggerQuit: public Message {
 public:
     LoggerQuit();
+    virtual ~LoggerQuit() = default;
     void print() override;
     bool quit() override;
 };

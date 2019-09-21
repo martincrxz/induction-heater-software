@@ -14,6 +14,7 @@
 class LoggerInfo: public Message {
 public:
     explicit LoggerInfo(std::string &msg);
+    virtual ~LoggerInfo() = default;
     void print() override;
     bool quit() override;
 };

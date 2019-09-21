@@ -12,6 +12,7 @@
 class LoggerWarning: public Message {
 public:
     LoggerWarning(std::string &msg);
+    virtual ~LoggerWarning() = default;
     void print() override;
     bool quit() override;
 };

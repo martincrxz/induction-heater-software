@@ -15,6 +15,7 @@ protected:
 
 public:
     Message() = default;
+    virtual ~Message() = default;
     explicit Message(std::string &message);
     /**
      * @brief Imprime el mensaje. Se aplica un polimorfismo para determinar

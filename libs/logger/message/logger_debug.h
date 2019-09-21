@@ -12,6 +12,7 @@
 class LoggerDebug: public Message {
 public:
     LoggerDebug(std::string &msg);
+    virtual ~LoggerDebug() = default;
     void print() override;
     bool quit() override;
 };
