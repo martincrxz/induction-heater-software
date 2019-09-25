@@ -22,7 +22,7 @@ void Sender::run(){
              */
             delete receiver;
             if (findDevice()) {
-                receiver = new Receiver(&this->port);
+                receiver = new Receiver(this->port);
                 receiver->start();
             } else {
                 Logger::debug("No se encontró dispositivo para conectarse.");
