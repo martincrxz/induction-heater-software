@@ -20,7 +20,7 @@ public:
     explicit MicroMessage(message_id id);
     virtual ~MicroMessage() = default;
     message_id getId();
-    virtual QByteArray serialize() = 0;
+    virtual QByteArray&& serialize() = 0;
 };
 
 
