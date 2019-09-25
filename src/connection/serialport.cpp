@@ -5,20 +5,21 @@
 #include "serialport.h"
 #include <iostream>
 
-SerialPort::SerialPort() : QSerialPort() {}
+SerialPort::SerialPort() : QSerialPort() {
+    this->setBaudRate(BAUDRATE);
+    this->setDataBits(QSerialPort::Data8);
+    this->setParity(QSerialPort::NoParity);
+}
 
-SerialPort::SerialPort(QString name) : QSerialPort(name) {}
-
-bool SerialPort::ping(QByteArray message_to_send, QByteArray message_to_receive) {
-    this->flush();
-    this->write(message_to_send);
+void SerialPort::send(QByteArray &buff) {
+    this->write(buff);
     this->waitForBytesWritten(USB_WRITE_TIMEOUT);
+}
+
+bool SerialPort::receive(QByteArray &buff) {
     if(this->waitForReadyRead(USB_READ_TIMEOUT)){
-        QByteArray message_received = this->readAll();
-        std::cout << (int)message_received[1] << std::endl;
-        std::cout << (int)message_to_receive[1] << std::endl;
-        if(message_received[1] == message_to_receive[1])
-            return true;
+        buff = this->readLine(8);
+        return true;
     }
     return false;
 }

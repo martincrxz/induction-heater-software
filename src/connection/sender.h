@@ -6,19 +6,25 @@
 #define __SENDER_H__
 
 #include <iostream>
-
 #include <QThread>
 #include <QSerialPort>
+
+#include "serialport.h"
+#include "protocol/protocol.h"
+#include "receiver.h"
 
 class Sender : public QThread{
     Q_OBJECT
 
 private:
-    QSerialPort *port;
+    SerialPort &port;
+    Protocol &protocol;
+    Receiver *receiver = nullptr;
     bool keep_processing = true;
-
+    bool connected = false;
+    bool findDevice();
 public:
-    explicit Sender(QSerialPort *port) : port(port) {};
+    Sender(SerialPort &port, Protocol &protocol);
     ~Sender() override;
     void run() override;
 };

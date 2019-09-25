@@ -14,11 +14,11 @@ class Receiver : public QThread{
     Q_OBJECT
 
 private:
-    QSerialPort *port;
+    QSerialPort &port;
     bool keep_processing = true;
 
 public:
-    explicit Receiver(QSerialPort *port) : port(port) {};
+    explicit Receiver(QSerialPort &port);
     ~Receiver() override;
     void run() override;
 };

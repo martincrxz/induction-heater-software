@@ -9,11 +9,13 @@ Receiver::~Receiver() {
     this->wait();
 }
 
-void Receiver::run(){
+void Receiver::run() {
     while(keep_processing){
-        if(port->waitForReadyRead(50)){
-            QByteArray data = port->read(8);
+        if(port.waitForReadyRead(50)){
+            QByteArray data = port.read(8);
             std::cout << data.toStdString();
         }
     }
 }
+
+Receiver::Receiver(QSerialPort &port): port(port) {}
