@@ -10,11 +10,14 @@
 #include <QThread>
 #include <QSerialPort>
 
+#include "protocol/protocol.h"
+
 class Receiver : public QThread{
     Q_OBJECT
 
 private:
     QSerialPort &port;
+    Protocol protocol;
     bool keep_processing = true;
 
 public:

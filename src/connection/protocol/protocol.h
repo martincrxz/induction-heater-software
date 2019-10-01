@@ -17,8 +17,18 @@
 class Protocol {
 public:
     Protocol();
-    Protocol & operator<<(std::string& msg);
-    QByteArray&& translate(MicroMessage *msg);
+    /**
+     * @brief Convierte el DTO en un arreglo de bytes listo para ser enviado
+     * por el puerto serie.
+     * @param objeto DTO
+     * @return
+     */
+    QByteArray translate(MicroMessage *msg);
+    /**
+     * @brief Convierte la tira de bytes en un objeto DTO
+     * @param buff
+     * @return
+     */
     std::shared_ptr<MicroMessage> translate(QByteArray &buff);
 };
 

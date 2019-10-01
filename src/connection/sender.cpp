@@ -62,5 +62,4 @@ bool Sender::findDevice() {
     return false;
 }
 
-Sender::Sender(SerialPort &port, Protocol &protocol):   port(port),
-                                                        protocol(protocol) {}
+Sender::Sender(SerialPort &port): port(port) {}

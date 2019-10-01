@@ -4,8 +4,8 @@
 
 #include "communicator.h"
 
-Communicator::Communicator():   port(), protocol(), receiver(port),
-                                sender(port, protocol) {
+Communicator::Communicator():   port(), receiver(port),
+                                sender(port) {
 //    receiver.start();
     sender.start();
 }

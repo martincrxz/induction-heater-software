@@ -11,12 +11,7 @@
 
 Protocol::Protocol() {}
 
-Protocol &Protocol::operator<<(std::string &msg) {
-    std::cout << msg << std::endl;
-    return *this;
-}
-
-QByteArray&& Protocol::translate(MicroMessage *msg) {
+QByteArray Protocol::translate(MicroMessage *msg) {
     return std::move(msg->serialize());
 }
 

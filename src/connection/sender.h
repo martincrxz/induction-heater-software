@@ -18,13 +18,13 @@ class Sender : public QThread{
 
 private:
     SerialPort &port;
-    Protocol &protocol;
+    Protocol protocol;
     Receiver *receiver = nullptr;
     bool keep_processing = true;
     bool connected = false;
     bool findDevice();
 public:
-    Sender(SerialPort &port, Protocol &protocol);
+    Sender(SerialPort &port);
     ~Sender() override;
     void run() override;
 };
