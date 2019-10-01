@@ -27,9 +27,6 @@ Logger& Logger::instance() {
     return s;
 }
 void Logger::init(const std::string &filename) {
-  //  if ( instance == nullptr) {
-  //      instance = std::unique_ptr<Logger>(new Logger());
-  //  }
     Logger::instance();
     qInstallMessageHandler(messageHandler);
 }
@@ -58,23 +55,23 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
 {
     QByteArray localMsg = msg.toLocal8Bit();
     std::string currentDatetime = QDateTime::currentDateTime().toString("dd/MM/yyyy HH:mm:ss").toStdString();
-    const char *file = context.file ? context.file : "";
-    const char *function = context.function ? context.function : "";
+    //const char *file = context.file ? context.file : "";
+    //const char *function = context.function ? context.function : "";
     switch (type) {
         case QtDebugMsg:
-            fprintf(stderr, "%s [DEBUG]: %s (%s:%u, %s)\n", currentDatetime.data(), localMsg.constData(), file, context.line, function);
+            fprintf(stderr, "%s [DEBUG] %s\n", currentDatetime.data(), localMsg.constData());
             break;
         case QtInfoMsg:
-            fprintf(stderr, "%s [INFO]: %s (%s:%u, %s)\n", currentDatetime.data(), localMsg.constData(), file, context.line, function);
+            fprintf(stderr, "%s [INFO] %s\n", currentDatetime.data(), localMsg.constData());
             break;
         case QtWarningMsg:
-            fprintf(stderr, "%s [WARNING]: %s (%s:%u, %s)\n", currentDatetime.data(), localMsg.constData(), file, context.line, function);
+            fprintf(stderr, "%s [WARNING] %s\n", currentDatetime.data(), localMsg.constData());
             break;
         case QtCriticalMsg:
-            fprintf(stderr, "%s [CRITICAL]: %s (%s:%u, %s)\n", currentDatetime.data(), localMsg.constData(), file, context.line, function);
+            fprintf(stderr, "%s [CRITICAL] %s\n", currentDatetime.data(), localMsg.constData());
             break;
         case QtFatalMsg:
-            fprintf(stderr, "%s [FATAL]: %s (%s:%u, %s)\n", currentDatetime.data(), localMsg.constData(), file, context.line, function);
+            fprintf(stderr, "%s [FATAL] %s\n", currentDatetime.data(), localMsg.constData());
             break;
     }
 }
