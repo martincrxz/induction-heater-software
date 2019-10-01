@@ -21,6 +21,6 @@ QByteArray PongMessage::serialize() {
     ret[0] = MESSAGE_SEPARATOR;
     ret[1] = PONG_ID;
     ret[CHALLENGE_POSITION] = this->challenge;
-    return std::move(ret);
+    return ret;
 }
 

@@ -3,7 +3,7 @@ project(TrabajoProfesional)
 # Para producción
 #set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++11 -Wall -Werror -pedantic -pthread")
 # Para debug
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -std=c++11 -ggdb -Wall -Werror -pedantic -pthread")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -std=c++11 -ggdb -Wall -pedantic -pthread")
 
 # Definición de macros de compilación para usuarios MAC
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")

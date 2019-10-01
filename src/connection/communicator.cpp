@@ -4,12 +4,20 @@
 
 #include "communicator.h"
 
-Communicator::Communicator():   port(), receiver(port),
-                                sender(port) {
-//    receiver.start();
-    sender.start();
+Communicator::Communicator() {
+    this->start();
 }
 
 Communicator::~Communicator() {
-    port.close();
+    this->keep_processing = false;
+    this->wait();
+}
+
+void Communicator::run() {
+    port = new SerialPort();
+    while(keep_processing){
+        if(!port->isConnected()) {
+            port->findDevice();
+        }
+    }
 }

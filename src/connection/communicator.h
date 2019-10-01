@@ -6,26 +6,24 @@
 #define __COMMUNICATOR_H__
 
 #include <iostream>
+#include <QThread>
 
 #include "protocol/protocol.h"
 #include "serialport.h"
-#include "receiver.h"
-#include "sender.h"
 
 #define SENDING_PING_TYPE 0xaa
 #define RECEIVING_PING_TYPE 0x0a
 
-class Communicator {
-
+class Communicator : QThread{
+    Q_OBJECT
 private:
-    SerialPort port;
-    Protocol protocol;
-    Receiver receiver;
-    Sender sender;
+    SerialPort *port = nullptr;
+    bool keep_processing = true;
 
 public:
-    Communicator();
-    ~Communicator();
+    explicit Communicator();
+    void run() override;
+    ~Communicator() override;
 };
 
 

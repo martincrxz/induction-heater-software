@@ -13,5 +13,5 @@ QByteArray PingMessage::serialize() {
     ret[0] = MESSAGE_SEPARATOR;
     ret[1] = PING_ID;
     ret[2] = this->challenge;
-    return std::move(ret);
+    return ret;
 }

@@ -10,7 +10,6 @@
 
 #include <memory>
 #include "micro_message.h"
-#include "../serialport.h"
 
 #define ID_POSITION 1
 
