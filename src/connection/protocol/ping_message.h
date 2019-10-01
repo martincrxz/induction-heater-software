@@ -16,7 +16,7 @@ private:
 public:
     PingMessage();
     virtual ~PingMessage() = default;
-    QByteArray&& serialize() override;
+    QByteArray serialize() override;
 };
 
 

@@ -16,7 +16,7 @@ bool PongMessage::isConnected() {
     return this->challenge == CHALLENGE_SUCCESS;
 }
 
-QByteArray&& PongMessage::serialize() {
+QByteArray PongMessage::serialize() {
     QByteArray ret(8, 0x00);
     ret[0] = MESSAGE_SEPARATOR;
     ret[1] = PONG_ID;

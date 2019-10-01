@@ -19,8 +19,18 @@ private:
 public:
     explicit MicroMessage(message_id id);
     virtual ~MicroMessage() = default;
+    /**
+     * @brief devuelve el id de la clase (cada clase hija
+     * tendrá un id distinto.
+     * @return
+     */
     message_id getId();
-    virtual QByteArray&& serialize() = 0;
+    /**
+     * @brief función polimorfica que transforma el DTO en una tira de
+     * bytes para ser enviado al puerto serie.
+     * @return
+     */
+    virtual QByteArray serialize() = 0;
 };
 
 

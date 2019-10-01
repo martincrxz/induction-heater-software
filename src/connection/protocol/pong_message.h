@@ -16,7 +16,7 @@ private:
 public:
     explicit PongMessage(QByteArray &buff);
     bool isConnected();
-    QByteArray&& serialize() override;
+    QByteArray serialize() override;
 };
 
 
