@@ -7,9 +7,7 @@
 
 Communicator::Communicator(QObject *parent): QObject(parent) {
     port = new SerialPort(this);
-    while (!this->port->isConnected()) {
-        port->findDevice();
-    }
+    //port->findDevice();
 }
 
 Communicator::~Communicator() {

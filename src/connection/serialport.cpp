@@ -12,6 +12,9 @@ SerialPort::SerialPort(QObject *parent) : QSerialPort(parent) {
     this->setBaudRate(BAUDRATE);
     this->setDataBits(QSerialPort::Data8);
     this->setParity(QSerialPort::NoParity);
+
+    this->connect(this, &SerialPort::deviceNotConnected, this, &SerialPort::findDevice);
+    this->findDevice();
 }
 
 SerialPort::SerialPort() : QSerialPort() {
@@ -50,14 +53,16 @@ void SerialPort::findDevice() {
                     Logger::info("Dispositivo conectado");
                     connected = true;
                 } else {
+                    Logger::info("la respuesta no fue exitosa");
                     this->close();
                 }
             } else {
+                Logger::info("se recibió basura");
                 this->close();
             }
         } else {
-            std::cout << this->error() << std::endl;
             Logger::info("serial port no se pudo abrir");
+            emit this->deviceNotConnected();
         }
     }
 }
@@ -66,4 +71,8 @@ void SerialPort::send(std::shared_ptr<MicroMessage> msg) {
     QByteArray buff = protocol.translate(msg);
     this->write(buff);
     this->waitForBytesWritten(USB_WRITE_TIMEOUT);
+}
+
+SerialPort::~SerialPort() {
+    this->close();
 }

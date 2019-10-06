@@ -15,17 +15,25 @@
 #define USB_WRITE_TIMEOUT 1 // ms
 
 class SerialPort : public QSerialPort{
+    Q_OBJECT
 private:
     bool connected = false;
     Protocol protocol;
 
 public:
     SerialPort();
+    ~SerialPort();
     explicit SerialPort(QObject *parent);
     void send(std::shared_ptr<MicroMessage> msg);
     bool receive(QByteArray &buff);
     bool isConnected();
+
+public slots:
     void findDevice();
+
+signals:
+    void deviceNotConnected();
+
 };
 
 
