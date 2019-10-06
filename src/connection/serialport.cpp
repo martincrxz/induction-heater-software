@@ -20,11 +20,6 @@ SerialPort::SerialPort() : QSerialPort() {
     this->setParity(QSerialPort::NoParity);
 }
 
-void SerialPort::send(QByteArray &buff) {
-    this->write(buff);
-    this->waitForBytesWritten(USB_WRITE_TIMEOUT);
-}
-
 bool SerialPort::receive(QByteArray &buff) {
     if(this->waitForReadyRead(USB_READ_TIMEOUT)){
         buff = this->readLine(8);
@@ -40,12 +35,12 @@ bool SerialPort::isConnected() {
 void SerialPort::findDevice() {
     auto portsInfo = QSerialPortInfo::availablePorts();
     for(auto &info : portsInfo){
+        Logger::info("Tratando de conectar a: " + info.portName().toStdString() + ".");
         this->setPort(info);
-        if(this->open(QIODevice::ReadWrite)){
-            Logger::info("Tratando de conectar a: " + info.portName().toStdString() + ".");
-            PingMessage ping;
-            QByteArray msg_to_send = protocol.translate(&ping);
-            send(msg_to_send);
+        this->open(QIODevice::ReadWrite);
+        if( this->isOpen() ){
+            std::shared_ptr<MicroMessage> ping(new PingMessage());
+            this->send(ping);
             QByteArray response;
             if (this->receive(response)) {
                 std::shared_ptr<MicroMessage> res(this->protocol.translate(
@@ -60,6 +55,15 @@ void SerialPort::findDevice() {
             } else {
                 this->close();
             }
+        } else {
+            std::cout << this->error() << std::endl;
+            Logger::info("serial port no se pudo abrir");
         }
     }
+}
+
+void SerialPort::send(std::shared_ptr<MicroMessage> msg) {
+    QByteArray buff = protocol.translate(msg);
+    this->write(buff);
+    this->waitForBytesWritten(USB_WRITE_TIMEOUT);
 }

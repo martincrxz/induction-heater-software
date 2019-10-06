@@ -14,16 +14,17 @@
 #define SENDING_PING_TYPE 0xaa
 #define RECEIVING_PING_TYPE 0x0a
 
-class Communicator : QThread{
+class Communicator : public QObject{
     Q_OBJECT
 private:
     SerialPort *port = nullptr;
-    bool keep_processing = true;
 
 public:
-    explicit Communicator();
-    void run() override;
+    explicit Communicator(QObject *parent);
     ~Communicator() override;
+
+public slots:
+    void write(std::shared_ptr<MicroMessage> msg);
 };
 
 

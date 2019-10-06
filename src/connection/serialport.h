@@ -22,7 +22,7 @@ private:
 public:
     SerialPort();
     explicit SerialPort(QObject *parent);
-    void send(QByteArray &buff);
+    void send(std::shared_ptr<MicroMessage> msg);
     bool receive(QByteArray &buff);
     bool isConnected();
     void findDevice();

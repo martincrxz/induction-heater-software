@@ -11,7 +11,7 @@
 
 Protocol::Protocol() {}
 
-QByteArray Protocol::translate(MicroMessage *msg) {
+QByteArray Protocol::translate(std::shared_ptr<MicroMessage>msg) {
     return std::move(msg->serialize());
 }
 

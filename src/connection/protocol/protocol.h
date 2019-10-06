@@ -22,7 +22,7 @@ public:
      * @param objeto DTO
      * @return
      */
-    QByteArray translate(MicroMessage *msg);
+    QByteArray translate(std::shared_ptr<MicroMessage>msg);
     /**
      * @brief Convierte la tira de bytes en un objeto DTO
      * @param buff

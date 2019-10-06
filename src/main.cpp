@@ -18,9 +18,8 @@ int main(int argc, char *argv[])
     	Application a(argc, argv);
     	MainWindow w;
         Logger::init("filename");
-	    Communicator c;
-    	w.show();
-		ret = a.exec();
+        w.show();
+        ret = a.exec();
 	} catch (std::exception &e) {
 		std::cerr << e.what() << std::endl;
 		return 1;
