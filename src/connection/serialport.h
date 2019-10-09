@@ -13,6 +13,7 @@
 #define BAUDRATE 9600
 #define USB_READ_TIMEOUT 500 // ms
 #define USB_WRITE_TIMEOUT 1 // ms
+#define PORT_SERIAL_NUMBER "12345679"
 
 class SerialPort : public QSerialPort{
     Q_OBJECT
@@ -21,9 +22,8 @@ private:
     Protocol protocol;
 
 public:
-    SerialPort();
-    ~SerialPort();
     explicit SerialPort(QObject *parent);
+    ~SerialPort();
     void send(std::shared_ptr<MicroMessage> msg);
     bool receive(QByteArray &buff);
     bool isConnected();

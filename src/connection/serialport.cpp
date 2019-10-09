@@ -17,12 +17,6 @@ SerialPort::SerialPort(QObject *parent) : QSerialPort(parent) {
     this->findDevice();
 }
 
-SerialPort::SerialPort() : QSerialPort() {
-    this->setBaudRate(BAUDRATE);
-    this->setDataBits(QSerialPort::Data8);
-    this->setParity(QSerialPort::NoParity);
-}
-
 bool SerialPort::receive(QByteArray &buff) {
     if(this->waitForReadyRead(USB_READ_TIMEOUT)){
         buff = this->readLine(8);
@@ -38,31 +32,15 @@ bool SerialPort::isConnected() {
 void SerialPort::findDevice() {
     auto portsInfo = QSerialPortInfo::availablePorts();
     for(auto &info : portsInfo){
-        Logger::info("Tratando de conectar a: " + info.portName().toStdString() + ".");
-        this->setPort(info);
-        this->open(QIODevice::ReadWrite);
-        if( this->isOpen() ){
-            std::shared_ptr<MicroMessage> ping(new PingMessage());
-            this->send(ping);
-            QByteArray response;
-            if (this->receive(response)) {
-                std::shared_ptr<MicroMessage> res(this->protocol.translate(
-                        response));
-                if (res->getId() == PONG_ID &&
-                    ((PongMessage *) &(*res))->isConnected() ) {
-                    Logger::info("Dispositivo conectado");
-                    connected = true;
-                } else {
-                    Logger::info("la respuesta no fue exitosa");
-                    this->close();
-                }
+        if(info.serialNumber() == PORT_SERIAL_NUMBER){
+            this->setPort(info);
+            if(this->open(QIODevice::ReadWrite)){
+                Logger::info("Serial port connected.");
+                connected = true;
+                return;
             } else {
-                Logger::info("se recibió basura");
-                this->close();
+                Logger::info("Cannot open serial port.");
             }
-        } else {
-            Logger::info("serial port no se pudo abrir");
-            emit this->deviceNotConnected();
         }
     }
 }

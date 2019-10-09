@@ -23,8 +23,7 @@ int main(int argc, char *argv[])
 		std::cerr << e.what() << std::endl;
 		return 1;
 	} catch (...) {
-		Exception e("Unknown error un thread main.");
-		std::cerr << e.what() << std::endl;
+		std::cerr << "Unknown error on main thread." << std::endl;
 		return 1;
 	}
     return ret;
