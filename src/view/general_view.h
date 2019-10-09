@@ -9,7 +9,7 @@
 #include "auto_tunning_tab_view.h"
 #include "chart_tab_view.h"
 #include "../connection/protocol/micro_message.h"
-#include "../connection/communicator.h"
+#include "../connection/serialport.h"
 
 namespace Ui {
 class MainWindow;
@@ -28,7 +28,7 @@ public slots:
     void on_shutdownButton_clicked();
 private:
     Ui::MainWindow *ui;
-    Communicator *communicator;
+    SerialPort *port;
     EquipmentStatusView *equipmentView;
     AutomaticControlTabView *automaticView;
     ManualPowerControlView *manualPowerView;

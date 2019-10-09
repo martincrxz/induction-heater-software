@@ -13,7 +13,7 @@ SerialPort::SerialPort(QObject *parent) : QSerialPort(parent) {
     this->setDataBits(QSerialPort::Data8);
     this->setParity(QSerialPort::NoParity);
 
-    this->connect(this, &SerialPort::deviceNotConnected, this, &SerialPort::findDevice);
+    connect(this, &SerialPort::deviceNotConnected, this, &SerialPort::findDevice);
     this->findDevice();
 }
 
@@ -68,6 +68,7 @@ void SerialPort::findDevice() {
 }
 
 void SerialPort::send(std::shared_ptr<MicroMessage> msg) {
+    Logger::info("Writing to device.");
     QByteArray buff = protocol.translate(msg);
     this->write(buff);
     this->waitForBytesWritten(USB_WRITE_TIMEOUT);

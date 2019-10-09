@@ -1,13 +1,13 @@
 #include "general_view.h"
 #include "ui_general_view.h"
-#include "../connection/communicator.h"
+#include "../connection/serialport.h"
 #include "../connection/protocol/shutdown_message.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    communicator = new Communicator(this);
+    port = new SerialPort(this);
     equipmentView = new EquipmentStatusView(this);
     automaticView = new AutomaticControlTabView(this);
     manualPowerView = new ManualPowerControlView(this);
@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     /**
      * Conecto las distintas señales con los slots
      */
-    this->connect(this, &MainWindow::shutdownMessage, communicator, &Communicator::write);
+    connect(this, &MainWindow::shutdownMessage, port, &SerialPort::send);
 }
 
 MainWindow::~MainWindow()

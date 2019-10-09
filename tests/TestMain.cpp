@@ -6,8 +6,6 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include <cppunit/ui/text/TestRunner.h>
 
-#include "TestCommunicator.h"
-
 CPPUNIT_TEST_SUITE_REGISTRATION(TestCommunicator);
 
 using CppUnit::TestFactoryRegistry;

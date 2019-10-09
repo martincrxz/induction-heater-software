@@ -7,7 +7,6 @@
 #include "exception.h"
 #include "view/application.h"
 #include "view/general_view.h"
-#include "connection/communicator.h"
 
 #define PRINT(X) std::cout<<X<<std::endl
 
