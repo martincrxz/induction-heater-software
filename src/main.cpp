@@ -8,8 +8,6 @@
 #include "view/application.h"
 #include "view/general_view.h"
 
-#define PRINT(X) std::cout<<X<<std::endl
-
 int main(int argc, char *argv[])
 {	
 	int ret = 0;

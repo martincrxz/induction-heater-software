@@ -7,29 +7,33 @@
 
 #include <QSerialPort>
 #include <QSerialPortInfo>
+#include <QTimer>
 #include "protocol/protocol.h"
 
 
-#define BAUDRATE 9600
+#define BAUDRATE 115200
 #define USB_READ_TIMEOUT 500 // ms
 #define USB_WRITE_TIMEOUT 1 // ms
-#define PORT_SERIAL_NUMBER "12345679"
+#define RECONNECTION_TIMEOUT 2000 // ms
+#define PORT_SERIAL_NUMBER "12345679" // this is set up in firmware
 
 class SerialPort : public QSerialPort{
     Q_OBJECT
 private:
     bool connected = false;
     Protocol protocol;
+    QTimer timer; // move to heap ?
 
 public:
     explicit SerialPort(QObject *parent);
-    ~SerialPort();
+    ~SerialPort() override;
     void send(std::shared_ptr<MicroMessage> msg);
     bool receive(QByteArray &buff);
     bool isConnected();
 
 public slots:
     void findDevice();
+    void handleError(QSerialPort::SerialPortError);
 
 signals:
     void deviceNotConnected();
