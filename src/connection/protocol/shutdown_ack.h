@@ -14,6 +14,7 @@ class ShutdownAcknowledge: public MicroMessage {
 
 public:
     explicit ShutdownAcknowledge();
+    virtual ~ShutdownAcknowledge() = default;
     QByteArray serialize() override;
 };
 

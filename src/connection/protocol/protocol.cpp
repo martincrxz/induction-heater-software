@@ -6,8 +6,6 @@
 #include <iostream>
 #include <logger/logger.h>
 #include "protocol.h"
-#include "ping_message.h"
-#include "pong_message.h"
 #include "shutdown_ack.h"
 
 Protocol::Protocol() {}
@@ -18,14 +16,11 @@ QByteArray Protocol::translate(std::shared_ptr<MicroMessage>msg) {
 
 std::shared_ptr<MicroMessage> Protocol::translate(QByteArray &buff) {
     switch (buff[ID_POSITION]) {
-        case PING_ID:
-            return std::shared_ptr<MicroMessage>(new PingMessage());
-        case PONG_ID:
-            return std::shared_ptr<MicroMessage>(new PongMessage(buff));
         case SHUTDOWN_ACK_ID:
             return std::shared_ptr<MicroMessage>(new ShutdownAcknowledge());
         default:
-            Logger::warning("Mensaje inválido");
+            Logger::warning("Invalid message");
+            break;
     }
     return std::shared_ptr<MicroMessage>();
 }

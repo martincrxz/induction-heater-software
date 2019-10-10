@@ -5,8 +5,6 @@
 #include "serialport.h"
 #include <iostream>
 #include <logger/logger.h>
-#include "protocol/ping_message.h"
-#include "protocol/pong_message.h"
 
 #define SEPARATOR ':'
 
