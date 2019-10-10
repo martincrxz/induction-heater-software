@@ -17,7 +17,8 @@
  * @param context
  * @param msg
  */
-void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg);
+void messageHandler(QtMsgType type, const QMessageLogContext &context,
+        const QString &msg);
 
 Logger::Logger() {
     this->worker.start();
@@ -51,27 +52,33 @@ void Logger::warning(std::string msg) {
     Logger::instance().worker.pushMessage(ptr);
 }
 
-void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
-{
+void messageHandler(QtMsgType type, const QMessageLogContext &context,
+                    const QString &msg) {
     QByteArray localMsg = msg.toLocal8Bit();
-    std::string currentDatetime = QDateTime::currentDateTime().toString("dd/MM/yyyy HH:mm:ss").toStdString();
+    std::string currentDatetime = QDateTime::currentDateTime().
+            toString("dd/MM/yyyy HH:mm:ss").toStdString();
     //const char *file = context.file ? context.file : "";
     //const char *function = context.function ? context.function : "";
     switch (type) {
         case QtDebugMsg:
-            fprintf(stderr, "%s [DEBUG] %s\n", currentDatetime.data(), localMsg.constData());
+            fprintf(stderr, "%s [DEBUG] %s\n", currentDatetime.data(),
+                    localMsg.constData());
             break;
         case QtInfoMsg:
-            fprintf(stderr, "%s [INFO] %s\n", currentDatetime.data(), localMsg.constData());
+            fprintf(stderr, "%s [INFO] %s\n", currentDatetime.data(),
+                    localMsg.constData());
             break;
         case QtWarningMsg:
-            fprintf(stderr, "%s [WARNING] %s\n", currentDatetime.data(), localMsg.constData());
+            fprintf(stderr, "%s [WARNING] %s\n", currentDatetime.data(),
+                    localMsg.constData());
             break;
         case QtCriticalMsg:
-            fprintf(stderr, "%s [CRITICAL] %s\n", currentDatetime.data(), localMsg.constData());
+            fprintf(stderr, "%s [CRITICAL] %s\n", currentDatetime.data(),
+                    localMsg.constData());
             break;
         case QtFatalMsg:
-            fprintf(stderr, "%s [FATAL] %s\n", currentDatetime.data(), localMsg.constData());
+            fprintf(stderr, "%s [FATAL] %s\n", currentDatetime.data(),
+                    localMsg.constData());
             break;
     }
 }

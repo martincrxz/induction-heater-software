@@ -7,6 +7,7 @@
 #include "logger_worker.h"
 #include <QtCore>
 #include <logger/message/logger_quit.h>
+#include <iostream>
 
 LoggerWorker::~LoggerWorker() {
     this->stop();
@@ -14,15 +15,20 @@ LoggerWorker::~LoggerWorker() {
 }
 
 void LoggerWorker::run() {
-    while (keep_processing) {
-        std::shared_ptr<LoggerMessage> msg;
-        queue.pop(msg, true);
-        if (msg->quit()) {
-            keep_processing = false;
-        } else {
-            msg->print();
+    try {
+        while (keep_processing) {
+            std::shared_ptr<LoggerMessage> msg;
+            queue.pop(msg, true);
+            if (msg->quit()) {
+                keep_processing = false;
+            } else {
+                msg->print();
+            }
         }
-
+    } catch(std::exception &e) {
+        std::cerr << e.what() << std::endl;
+    }  catch(...) {
+        std::cerr << "Unknown error in LoggerWorker::run" << std::endl;
     }
 }
 
