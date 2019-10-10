@@ -9,7 +9,7 @@
 
 #include <QtCore/QByteArray>
 
-typedef enum {PING_ID = 0x01, PONG_ID, SHUTDOWN_ID = 0x55} message_id;
+typedef enum {PING_ID = 0x01, PONG_ID, SHUTDOWN_CMD_ID = 0x55, SHUTDOWN_ACK_ID = 0x56} message_id;
 
 #define MESSAGE_SEPARATOR 0x7E
 

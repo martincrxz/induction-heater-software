@@ -34,9 +34,7 @@ public:
 public slots:
     void findDevice();
     void handleError(QSerialPort::SerialPortError);
-
-signals:
-    void deviceNotConnected();
+    void handleMessage();
 
 };
 

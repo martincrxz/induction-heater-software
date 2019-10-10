@@ -13,9 +13,9 @@ SerialPort::SerialPort(QObject *parent) : QSerialPort(parent), timer(this) {
     this->setDataBits(QSerialPort::Data8);
     this->setParity(QSerialPort::NoParity);
 
-    connect(this, &SerialPort::deviceNotConnected, this, &SerialPort::findDevice);
     connect(&timer, &QTimer::timeout, this, &SerialPort::findDevice);
     connect(this, &SerialPort::errorOccurred, this, &SerialPort::handleError);
+    connect(this, &SerialPort::readyRead, this, &SerialPort::handleMessage);
     this->findDevice();
 }
 
@@ -24,7 +24,6 @@ SerialPort::~SerialPort() {
 }
 
 void SerialPort::send(std::shared_ptr<MicroMessage> msg) {
-    Logger::info("Writing to device.");
     QByteArray buff = protocol.translate(msg);
     this->write(buff);
     this->waitForBytesWritten(USB_WRITE_TIMEOUT);
@@ -70,6 +69,16 @@ void SerialPort::handleError(QSerialPort::SerialPortError error){
             timer.start(RECONNECTION_TIMEOUT);
             break;
         default:
+            break;
+    }
+}
+
+void SerialPort::handleMessage(){
+    QByteArray buff = this->read(8);
+    std::shared_ptr<MicroMessage> msg(this->protocol.translate(buff));
+    switch(msg->getId()){
+        case SHUTDOWN_ACK_ID:
+            Logger::info("Emergency stop activated.");
             break;
     }
 }
