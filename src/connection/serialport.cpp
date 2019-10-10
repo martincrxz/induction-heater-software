@@ -87,5 +87,8 @@ void SerialPort::handleMessage(){
         case SHUTDOWN_ACK_ID:
             Logger::info("Emergency stop activated.");
             break;
+        default:
+            Logger::warning("Unknown message");
+            break;
     }
 }
