@@ -8,6 +8,8 @@
 #include "protocol/ping_message.h"
 #include "protocol/pong_message.h"
 
+#define SEPARATOR ':'
+
 SerialPort::SerialPort(QObject *parent) : QSerialPort(parent), timer(this) {
     this->setBaudRate(BAUDRATE);
     this->setDataBits(QSerialPort::Data8);
@@ -25,16 +27,21 @@ SerialPort::~SerialPort() {
 
 void SerialPort::send(std::shared_ptr<MicroMessage> msg) {
     QByteArray buff = protocol.translate(msg);
+    Logger::debug("Sending message: " + buff.toHex(SEPARATOR).
+                  toStdString());
     this->write(buff);
     this->waitForBytesWritten(USB_WRITE_TIMEOUT);
 }
 
-bool SerialPort::receive(QByteArray &buff) {
+std::shared_ptr<MicroMessage> SerialPort::receive() {
     if(this->waitForReadyRead(USB_READ_TIMEOUT)){
+        QByteArray buff(8,0);
         buff = this->readLine(8);
-        return true;
+        Logger::debug("Message received: " + buff.toHex(SEPARATOR).
+                      toStdString());
+        return protocol.translate(buff);
     }
-    return false;
+    return nullptr;
 }
 
 bool SerialPort::isConnected() {
@@ -52,16 +59,16 @@ void SerialPort::findDevice() {
                 connected = true;
                 return;
             } else {
-                Logger::info("Cannot open serial port.");
+                Logger::warning("Cannot open serial port.");
             }
         }
     }
-    Logger::info("Device not found.");
+    Logger::warning("Device not found.");
     timer.start(RECONNECTION_TIMEOUT);
 }
 
 void SerialPort::handleError(QSerialPort::SerialPortError error){
-    std::cout << "Serial port error: " << error << "." << std::endl;
+    Logger::warning("Serial port error - " + this->errorString().toStdString());
     switch (error){
         case QSerialPort::ResourceError:
             this->close();

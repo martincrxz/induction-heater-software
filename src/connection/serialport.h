@@ -28,7 +28,7 @@ public:
     explicit SerialPort(QObject *parent);
     ~SerialPort() override;
     void send(std::shared_ptr<MicroMessage> msg);
-    bool receive(QByteArray &buff);
+    std::shared_ptr<MicroMessage> receive();
     bool isConnected();
 
 public slots:
