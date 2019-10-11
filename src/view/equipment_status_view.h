@@ -14,6 +14,7 @@ class EquipmentStatusView : public QWidget
 public:
     explicit EquipmentStatusView(QWidget *parent = 0);
     ~EquipmentStatusView();
+    void insert(QString, QString, QString);
 
 private:
     Ui::EquipmentStatusView *ui;

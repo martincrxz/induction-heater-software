@@ -7,15 +7,17 @@ EquipmentStatusView::EquipmentStatusView(QWidget *parent) :
     ui(new Ui::EquipmentStatusView)
 {
     ui->setupUi(this);
-    // TODO: Borrar esto inmediatamente
-    ui->errorLogTable->insertRow(ui->errorLogTable->rowCount());
-    int row = ui->errorLogTable->rowCount() - 1;
-    ui->errorLogTable->setItem(row, ERROR_CODE, new QTableWidgetItem("01"));
-    ui->errorLogTable->setItem(row, TIMESTAMP, new QTableWidgetItem("2019-29-30 10:05:26"));
-    ui->errorLogTable->setItem(row, INFO, new QTableWidgetItem("Un error cualquiera"));
 }
 
 EquipmentStatusView::~EquipmentStatusView()
 {
     delete ui;
+}
+
+void EquipmentStatusView::insert(QString code, QString ts, QString desc){
+    ui->errorLogTable->insertRow(ui->errorLogTable->rowCount());
+    int row = ui->errorLogTable->rowCount() - 1;
+    ui->errorLogTable->setItem(row, ERROR_CODE, new QTableWidgetItem(code));
+    ui->errorLogTable->setItem(row, TIMESTAMP, new QTableWidgetItem(ts));
+    ui->errorLogTable->setItem(row, INFO, new QTableWidgetItem(desc));
 }

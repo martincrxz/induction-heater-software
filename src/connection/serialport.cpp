@@ -20,7 +20,8 @@ SerialPort::SerialPort(QObject *parent) : QSerialPort(parent), timer(this) {
 }
 
 SerialPort::~SerialPort() {
-    this->close();
+    if(this->isOpen())
+        this->close();
 }
 
 void SerialPort::send(std::shared_ptr<MicroMessage> msg) {
