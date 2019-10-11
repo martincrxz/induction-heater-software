@@ -36,6 +36,9 @@ public slots:
     void handleError(QSerialPort::SerialPortError);
     void handleMessage();
 
+signals:
+    void shutdownAcknowledge(QString code, QString desc);
+
 };
 
 

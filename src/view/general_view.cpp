@@ -25,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
      * Conecto las distintas señales con los slots
      **/
     connect(this, &MainWindow::shutdownMessage, port, &SerialPort::send);
+    connect(port, &SerialPort::shutdownAcknowledge, equipmentView, &EquipmentStatusView::insert);
 }
 
 MainWindow::~MainWindow()

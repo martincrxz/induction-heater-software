@@ -84,7 +84,8 @@ void SerialPort::handleMessage(){
     std::shared_ptr<MicroMessage> msg(this->protocol.translate(buff));
     switch(msg->getId()){
         case SHUTDOWN_ACK_ID:
-            Logger::info("Emergency stop activated.");
+            emit shutdownAcknowledge(QString::number(SHUTDOWN_ACK_ID),
+                    "Se activo la parada de emergencia.");
             break;
         default:
             Logger::warning("Unknown message");
