@@ -16,7 +16,7 @@ QByteArray Protocol::translate(std::shared_ptr<MicroMessage>msg) {
 
 std::shared_ptr<MicroMessage> Protocol::translate(QByteArray &buff) {
     switch (buff[ID_POSITION]) {
-        case SHUTDOWN_ACK_ID:
+        case SHUTDOWN_MESSAGE:
             return std::shared_ptr<MicroMessage>(new ShutdownAcknowledge());
         default:
             Logger::warning("Invalid message");

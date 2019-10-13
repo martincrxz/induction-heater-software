@@ -83,8 +83,8 @@ void SerialPort::handleMessage(){
     QByteArray buff = this->read(8);
     std::shared_ptr<MicroMessage> msg(this->protocol.translate(buff));
     switch(msg->getId()){
-        case SHUTDOWN_ACK_ID:
-            emit shutdownAcknowledge(QString::number(SHUTDOWN_ACK_ID),
+        case SHUTDOWN_ACKNOWLEDGE:
+            emit shutdownAcknowledge(QString::number(SHUTDOWN_ACKNOWLEDGE),
                     "Se activo la parada de emergencia.");
             break;
         default:
