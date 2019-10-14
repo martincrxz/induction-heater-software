@@ -27,7 +27,7 @@ void LoggerWorker::run() {
         }
     } catch(std::exception &e) {
         std::cerr << e.what() << std::endl;
-    }  catch(...) {
+    } catch(...) {
         std::cerr << "Unknown error in LoggerWorker::run" << std::endl;
     }
 }
