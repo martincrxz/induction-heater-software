@@ -38,6 +38,7 @@ public slots:
 
 signals:
     void shutdownAcknowledge(QString code, QString desc);
+    void temperatureArrived(std::shared_ptr<MicroMessage> msg);
 
 };
 

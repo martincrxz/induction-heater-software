@@ -11,10 +11,13 @@
 #include "micro_message.h"
 
 class TemperatureReading: public MicroMessage {
+private:
+    float data;
 public:
-    TemperatureReading();
+    TemperatureReading(QByteArray &buff);
     virtual ~TemperatureReading() = default;
     QByteArray serialize() override;
+    float getData();
 };
 
 

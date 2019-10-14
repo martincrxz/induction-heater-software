@@ -40,3 +40,7 @@ void ChartTabView::onInitChartClicked() {
     this->chart->init();
 }
 
+void ChartTabView::dataAvailable(TemperatureReading &temp) {
+    this->chart->dataAvailable(temp);
+}
+

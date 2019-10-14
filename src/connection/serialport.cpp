@@ -68,6 +68,7 @@ void SerialPort::findDevice() {
 
 void SerialPort::handleError(QSerialPort::SerialPortError error){
     Logger::warning("Serial port error - " + this->errorString().toStdString());
+    // TODO: tal vez debería intentar reconectarse siempre.
     switch (error){
         case QSerialPort::ResourceError:
             this->close();
@@ -86,6 +87,9 @@ void SerialPort::handleMessage(){
         case SHUTDOWN_ACKNOWLEDGE:
             emit shutdownAcknowledge(QString::number(SHUTDOWN_ACKNOWLEDGE),
                     "Se activo la parada de emergencia.");
+            break;
+        case TEMPERATURE_READING:
+            emit temperatureArrived(msg);
             break;
         default:
             Logger::warning("Unknown message");

@@ -13,6 +13,7 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QMutex>
 #include <chrono.h>
+#include "../connection/protocol/temperature_reading.h"
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -23,9 +24,7 @@ public:
     explicit Chart(QGraphicsItem *parent = nullptr, Qt::WindowFlags wFlags = nullptr);
     virtual ~Chart();
     void init();
-
-private slots:
-    void dataAvailable(double y);
+    void dataAvailable(TemperatureReading &msg);
 
 private:
     void append(double x, double y);

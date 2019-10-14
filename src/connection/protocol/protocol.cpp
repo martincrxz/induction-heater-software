@@ -7,6 +7,7 @@
 #include <logger/logger.h>
 #include "protocol.h"
 #include "shutdown_ack.h"
+#include "temperature_reading.h"
 
 Protocol::Protocol() {}
 
@@ -18,6 +19,8 @@ std::shared_ptr<MicroMessage> Protocol::translate(QByteArray &buff) {
     switch (buff[ID_POSITION]) {
         case SHUTDOWN_MESSAGE:
             return std::shared_ptr<MicroMessage>(new ShutdownAcknowledge());
+        case TEMPERATURE_READING:
+            return std::shared_ptr<MicroMessage>(new TemperatureReading(buff));
         default:
             Logger::warning("Invalid message");
             break;

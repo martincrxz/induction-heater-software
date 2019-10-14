@@ -6,6 +6,7 @@
 #include <QWidget>
 
 #include "chart.h"
+#include "../connection/protocol/temperature_reading.h"
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -20,7 +21,7 @@ class ChartTabView : public QWidget
 public:
     explicit ChartTabView(QWidget *parent = 0);
     virtual ~ChartTabView();
-
+    void dataAvailable(TemperatureReading &temp);
 protected:
     //void timerEvent(QTimerEvent *) override;
 

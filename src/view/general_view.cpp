@@ -1,7 +1,9 @@
+#include <logger/logger.h>
 #include "general_view.h"
 #include "ui_general_view.h"
 #include "../connection/serialport.h"
 #include "../connection/protocol/shutdown_message.h"
+#include "../connection/protocol/temperature_reading.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -33,8 +35,18 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_shutdownButton_clicked()
+void MainWindow::onShutdownButtonClicked()
 {
     std::shared_ptr<MicroMessage> msg(new ShutdownMessage());
     emit this->shutdownMessage(msg);
+}
+
+void MainWindow::onTemperatureDataArrived(std::shared_ptr<MicroMessage> msg) {
+    auto &temp = (TemperatureReading &) *msg;
+    std::string log("Temperatura recibida: ");
+    log += temp.getData();
+    log += " °C";
+    Logger::info(log);
+    // TODO: debo actualizar el gráfico, como el hilo de control
+    this->chartView->dataAvailable(temp);
 }

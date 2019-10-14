@@ -61,10 +61,10 @@ void Chart::init() {
     this->acceptData = true;
 }
 
-void Chart::dataAvailable(double y) {
+void Chart::dataAvailable(TemperatureReading &msg) {
     QMutexLocker lock(&this->mutex);
     if (acceptData && chrono.tack() > TIME_REJECT_DATA) {
-        this->append(chrono.now(), y);
+        this->append(chrono.now(), msg.getData());
         chrono.tick();
     }
 }
