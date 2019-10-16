@@ -8,8 +8,7 @@
 #include <QtCharts/QAbstractAxis>
 #include <QtCore/QDateTime>
 #define TIME_CHART_MAX_RANGE 30
-// Tiempo en ms para aceptar un nuevo dato a graficar
-#define TIME_REJECT_DATA 500
+#define TIME_REJECT_DATA 100
 
 Chart::Chart(QGraphicsItem *parent, Qt::WindowFlags wFlags) :
         QChart(QChart::ChartTypeCartesian, parent, wFlags) {

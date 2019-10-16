@@ -81,18 +81,36 @@ void SerialPort::handleError(QSerialPort::SerialPortError error){
 }
 
 void SerialPort::handleMessage(){
-    QByteArray buff = this->read(8);
-    std::shared_ptr<MicroMessage> msg(this->protocol.translate(buff));
-    switch(msg->getId()){
-        case SHUTDOWN_ACKNOWLEDGE:
-            emit shutdownAcknowledge(QString::number(SHUTDOWN_ACKNOWLEDGE),
-                    "Se activo la parada de emergencia.");
-            break;
-        case TEMPERATURE_READING:
-            emit temperatureArrived(msg);
-            break;
-        default:
-            Logger::warning("Unknown message");
-            break;
+    QByteArray buff = this->read(PACKET_SIZE);
+    if(crc_checksum(buff, PACKET_SIZE-1)!=buff[PACKET_SIZE-1]) {
+        Logger::warning("CRC failed: " + buff.toHex(SEPARATOR).
+                toStdString());
     }
+    else {
+        Logger::debug("Message received: " + buff.toHex(SEPARATOR).
+            toStdString());
+        std::shared_ptr<MicroMessage> msg(this->protocol.translate(buff));
+        switch(msg->getId()) {
+            case SHUTDOWN_ACKNOWLEDGE:
+                emit shutdownAcknowledge(QString::number(SHUTDOWN_ACKNOWLEDGE),
+                                     "Se activo la parada de emergencia.");
+                break;
+            case TEMPERATURE_READING:
+                emit temperatureArrived(msg);
+                break;
+            default:
+                Logger::warning("Unknown message");
+                break;
+        }
+    }
+}
+
+uint8_t SerialPort::crc_checksum(QByteArray data, uint8_t size){
+    int16_t i;
+    uint8_t chk = 0xFF;
+
+    for (i=0; i < size; i++)
+        chk -= data[i];
+
+    return chk;
 }

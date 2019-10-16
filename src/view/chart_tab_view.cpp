@@ -19,7 +19,7 @@ ChartTabView::ChartTabView(QWidget *parent) :
     /**
       * Conecto la señal onClick del botón para que ejecute
       * el método correspondiente
-      */
+      **/
     this->initChartButton.connect(&this->initChartButton, &QPushButton::clicked,
                                   this, &ChartTabView::onInitChartClicked);
 
@@ -34,9 +34,6 @@ ChartTabView::~ChartTabView() {
 }
 
 void ChartTabView::onInitChartClicked() {
-    Logger::info("hola");
-    Logger::debug("debug");
-    Logger::warning("warning");
     this->chart->init();
 }
 

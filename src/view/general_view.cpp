@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
      **/
     connect(this, &MainWindow::shutdownMessage, port, &SerialPort::send);
     connect(port, &SerialPort::shutdownAcknowledge, equipmentView, &EquipmentStatusView::insert);
+    connect(port, &SerialPort::temperatureArrived, this, &MainWindow::onTemperatureDataArrived);
 }
 
 MainWindow::~MainWindow()
@@ -35,7 +36,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::onShutdownButtonClicked()
+void MainWindow::on_shutdownButton_clicked()
 {
     std::shared_ptr<MicroMessage> msg(new ShutdownMessage());
     emit this->shutdownMessage(msg);

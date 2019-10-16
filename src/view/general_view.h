@@ -25,7 +25,7 @@ public:
 signals:
     void shutdownMessage(std::shared_ptr<MicroMessage> msg);
 public slots:
-    void onShutdownButtonClicked();
+    void on_shutdownButton_clicked();
     void onTemperatureDataArrived(std::shared_ptr<MicroMessage> msg);
 private:
     Ui::MainWindow *ui;

@@ -17,7 +17,7 @@ QByteArray Protocol::translate(std::shared_ptr<MicroMessage>msg) {
 
 std::shared_ptr<MicroMessage> Protocol::translate(QByteArray &buff) {
     switch (buff[ID_POSITION]) {
-        case SHUTDOWN_MESSAGE:
+        case SHUTDOWN_ACKNOWLEDGE:
             return std::shared_ptr<MicroMessage>(new ShutdownAcknowledge());
         case TEMPERATURE_READING:
             return std::shared_ptr<MicroMessage>(new TemperatureReading(buff));
