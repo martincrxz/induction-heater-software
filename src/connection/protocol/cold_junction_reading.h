@@ -10,10 +10,13 @@
 #include "micro_message.h"
 
 class ColdJunctionReading: public MicroMessage {
+private:
+    float data;
 public:
-    ColdJunctionReading();
+    ColdJunctionReading(QByteArray &);
     virtual ~ColdJunctionReading() = default;
     QByteArray serialize() override;
+    float getData();
 };
 
 

@@ -5,6 +5,7 @@
  */
 
 #include "temperature_reading.h"
+#include "apple_endian.h"
 
 TemperatureReading::TemperatureReading(QByteArray &buff):
                 MicroMessage(TEMPERATURE_READING) {

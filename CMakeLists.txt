@@ -50,7 +50,7 @@ file(GLOB RESOURCES ${CMAKE_SOURCE_DIR}
         "assets/resources.qrc")
 
 # Tell CMake to create the helloworld executable
-add_executable(application ${SOURCES} ${UIS_HEADERS} ${RESOURCES})
+add_executable(application ${SOURCES} ${UIS_HEADERS} ${RESOURCES} libs/apple_endian.h)
 target_link_libraries(application Qt5::Core Qt5::Widgets Qt5::Charts Qt5::SerialPort)
 
 # Install phase (commented until necessary)

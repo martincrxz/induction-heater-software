@@ -8,6 +8,7 @@
 #include "protocol.h"
 #include "shutdown_ack.h"
 #include "temperature_reading.h"
+#include "cold_junction_reading.h"
 
 Protocol::Protocol() {}
 
@@ -21,6 +22,8 @@ std::shared_ptr<MicroMessage> Protocol::translate(QByteArray &buff) {
             return std::shared_ptr<MicroMessage>(new ShutdownAcknowledge());
         case TEMPERATURE_READING:
             return std::shared_ptr<MicroMessage>(new TemperatureReading(buff));
+        case COLD_JUNCTION_READING:
+            return std::shared_ptr<MicroMessage>(new ColdJunctionReading(buff));
         default:
             Logger::warning("Invalid message");
             break;
