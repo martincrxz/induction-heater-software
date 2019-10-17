@@ -8,7 +8,11 @@
 
 #define SEPARATOR ':'
 
-SerialPort::SerialPort(QObject *parent) : QSerialPort(parent), timer(this) {
+SerialPort::SerialPort(QObject *parent) :
+QSerialPort(parent),
+timer(this),
+packet(8,0)
+{
     this->setBaudRate(BAUDRATE);
     this->setDataBits(QSerialPort::Data8);
     this->setParity(QSerialPort::NoParity);
@@ -56,6 +60,7 @@ void SerialPort::findDevice() {
                 timer.stop();
                 Logger::info("Serial port connected.");
                 connected = true;
+                this->clear();
                 return;
             } else {
                 Logger::warning("Cannot open serial port.");
@@ -81,19 +86,40 @@ void SerialPort::handleError(QSerialPort::SerialPortError error){
 }
 
 void SerialPort::handleMessage(){
-    QByteArray buff = this->read(PACKET_SIZE);
-    if(crc_checksum(buff, PACKET_SIZE-1)!=buff[PACKET_SIZE-1]) {
-        Logger::warning("CRC failed: " + buff.toHex(SEPARATOR).
-                toStdString());
+    qint64 bytesAvailabe = this->bytesAvailable();
+    for(int i = 0; i < bytesAvailabe; i++){
+        QByteArray byteRead = this->read(1);
+        switch(readingStatus){
+            case WAITING:
+                if(byteRead[0].operator==(0x7E)){
+                    packet[count] = byteRead[0];
+                    count++;
+                    readingStatus = READING;
+                }
+                break;
+            case READING:
+                packet[count] = byteRead[0];
+                count++;
+                if(count == PACKET_SIZE){
+                    readingStatus = WAITING;
+                    count = 0;
+                    processMessage(packet);
+                }
+                break;
+        }
     }
-    else {
+}
+
+void SerialPort::processMessage(QByteArray buff){
+    std::cout << this->bytesAvailable() << std::endl;
+    if(crcChecksum(buff, PACKET_SIZE-1)==buff[PACKET_SIZE-1]) {
         Logger::debug("Message received: " + buff.toHex(SEPARATOR).
-            toStdString());
+                toStdString());
         std::shared_ptr<MicroMessage> msg(this->protocol.translate(buff));
         switch(msg->getId()) {
             case SHUTDOWN_ACKNOWLEDGE:
                 emit shutdownAcknowledge(QString::number(SHUTDOWN_ACKNOWLEDGE),
-                                     "Se activo la parada de emergencia.");
+                                         "Se activo la parada de emergencia.");
                 break;
             case TEMPERATURE_READING:
                 emit temperatureArrived(msg);
@@ -103,9 +129,14 @@ void SerialPort::handleMessage(){
                 break;
         }
     }
+    else {
+        Logger::warning("CRC failed: " + buff.toHex(SEPARATOR).
+                toStdString());
+        throw Exception("CRC");
+    }
 }
 
-uint8_t SerialPort::crc_checksum(QByteArray data, uint8_t size){
+uint8_t SerialPort::crcChecksum(QByteArray data, uint8_t size){
     int16_t i;
     uint8_t chk = 0xFF;
 

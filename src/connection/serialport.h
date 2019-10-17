@@ -14,9 +14,11 @@
 #define BAUDRATE 115200
 #define USB_READ_TIMEOUT 500 // ms
 #define USB_WRITE_TIMEOUT 1 // ms
-#define RECONNECTION_TIMEOUT 2000 // ms
+#define RECONNECTION_TIMEOUT 1000 // ms
 #define PORT_SERIAL_NUMBER "12345679" // this is set up in firmware
 #define PACKET_SIZE 0x08
+
+typedef enum {WAITING, READING} reading_status_t;
 
 class SerialPort : public QSerialPort{
     Q_OBJECT
@@ -24,7 +26,11 @@ private:
     bool connected = false;
     Protocol protocol;
     QTimer timer; // move to heap ?
-    static uint8_t crc_checksum(QByteArray, uint8_t);
+    int count = 0;
+    reading_status_t readingStatus = WAITING;
+    QByteArray packet;
+    void processMessage(QByteArray);
+    uint8_t crcChecksum(QByteArray, uint8_t);
 
 public:
     explicit SerialPort(QObject *parent);
