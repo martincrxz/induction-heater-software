@@ -11,10 +11,13 @@
 #include "micro_message.h"
 
 class PowerSetAcknowledge: public MicroMessage {
+private:
+    int data;
 public:
-    PowerSetAcknowledge();
+    PowerSetAcknowledge(QByteArray &);
     virtual ~PowerSetAcknowledge() = default;
     QByteArray serialize() override;
+    int getData();
 };
 
 

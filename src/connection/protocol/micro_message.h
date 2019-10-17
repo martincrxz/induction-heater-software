@@ -10,19 +10,19 @@
 #include <QtCore/QByteArray>
 
 typedef enum {
-    TEMPERATURE_READING = 0x10, // to computer
-    COLD_JUNCTION_READING = 0x11, // to computer
-    THERMOCOUPLE_FAULT = 0x12, // to computer
+    TEMPERATURE_READING = 0x10, // to computer OK
+    COLD_JUNCTION_READING = 0x11, // to computer OK
+    THERMOCOUPLE_FAULT = 0x12, // to computer OK
     THERMOCOUPLE_CONFIGURATION = 0x13, // to uC
-    THERMOCOUPLE_CONFIGURATION_ACKNOWLEDGE = 0x14, // to computer
+    THERMOCOUPLE_CONFIGURATION_ACKNOWLEDGE = 0x14, // to computer OK
     SET_POWER = 0x20, // to uC
-    POWER_SET_ACKNOWLEDGE = 0x21, // to computer
+    POWER_SET_ACKNOWLEDGE = 0x21, // to computer OK
     SET_AUTOMATIC_CONTROL = 0x30, // to uC
-    AUTOMATIC_CONTROL_ACKNOWLEDGE = 0x31, // to computer
+    AUTOMATIC_CONTROL_ACKNOWLEDGE = 0x31, // to computer OK
     SET_MANUAL_CONTROL = 0x32, // to uC
-    MANUAL_CONTROL_ACKNOWLEDGE = 0x33, // to computer
+    MANUAL_CONTROL_ACKNOWLEDGE = 0x33, // to computer OK
     SHUTDOWN_MESSAGE = 0x50, // to uC
-    SHUTDOWN_ACKNOWLEDGE = 0x51 // to computer
+    SHUTDOWN_ACKNOWLEDGE = 0x51 // to computer OK
 } message_id;
 
 #define MESSAGE_SEPARATOR 0x7E

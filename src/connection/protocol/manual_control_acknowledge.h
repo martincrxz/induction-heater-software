@@ -10,7 +10,7 @@
 
 #include "micro_message.h"
 
-class ManualControlAcknowledge: MicroMessage {
+class ManualControlAcknowledge : public MicroMessage {
 public:
     ManualControlAcknowledge();
     virtual ~ManualControlAcknowledge() = default;
