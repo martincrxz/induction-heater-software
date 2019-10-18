@@ -124,6 +124,24 @@ void SerialPort::processMessage(QByteArray buff){
             case TEMPERATURE_READING:
                 emit temperatureArrived(msg);
                 break;
+            case COLD_JUNCTION_READING:
+                Logger::info("Cold junction message.");
+                break;
+            case THERMOCOUPLE_FAULT:
+                Logger::info("Thermocouple fault message");
+                break;
+            case THERMOCOUPLE_CONFIGURATION_ACKNOWLEDGE:
+                Logger::info("Thermocouple configuration acknowledge message.");
+                break;
+            case POWER_SET_ACKNOWLEDGE:
+                Logger::info("Power set acknowledge message.");
+                break;
+            case MANUAL_CONTROL_ACKNOWLEDGE:
+                Logger::info("Manual control activated message.");
+                break;
+            case AUTOMATIC_CONTROL_ACKNOWLEDGE:
+                Logger::info("Automatic control activated message.");
+                break;
             default:
                 Logger::warning("Unknown message");
                 break;
