@@ -4,6 +4,7 @@
 
 #include "serialport.h"
 #include <iostream>
+#include <sstream>
 #include <logger/logger.h>
 
 #define SEPARATOR ':'
@@ -72,7 +73,10 @@ void SerialPort::findDevice() {
 }
 
 void SerialPort::handleError(QSerialPort::SerialPortError error){
-    Logger::warning("Serial port error - " + this->errorString().toStdString());
+    std::ostringstream oss("Serial port error - ");
+    oss << this->errorString().toStdString() << " (";
+    oss << (int) error << ")";
+    Logger::warning(oss.str());
     // TODO: tal vez debería intentar reconectarse siempre.
     switch (error){
         case QSerialPort::ResourceError:
@@ -150,7 +154,6 @@ void SerialPort::processMessage(QByteArray buff){
     else {
         Logger::warning("CRC failed: " + buff.toHex(SEPARATOR).
                 toStdString());
-        throw Exception("CRC");
     }
 }
 
