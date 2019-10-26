@@ -13,8 +13,8 @@ int main(int argc, char *argv[])
 	int ret = 0;
 	try {
     	Application a(argc, argv);
-    	MainWindow w;
         Logger::init("filename");
+    	MainWindow w;
         w.show();
         ret = a.exec();
 	} catch (std::exception &e) {
