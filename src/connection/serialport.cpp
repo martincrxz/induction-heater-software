@@ -73,20 +73,17 @@ void SerialPort::findDevice() {
 }
 
 void SerialPort::handleError(QSerialPort::SerialPortError error){
-    std::ostringstream oss("Serial port error - ");
+    std::ostringstream oss;
+    oss << "Serial port error - ";
     oss << this->errorString().toStdString() << " (";
     oss << (int) error << ")";
     Logger::warning(oss.str());
     // TODO: tal vez debería intentar reconectarse siempre.
-    switch (error){
-        case QSerialPort::ResourceError:
-            this->close();
-            this->connected = false;
-            timer.start(RECONNECTION_TIMEOUT);
-            break;
-        default:
-            break;
+    if (this->isOpen()){
+        this->close();
+        this->connected = false;
     }
+    timer.start(RECONNECTION_TIMEOUT);
 }
 
 void SerialPort::handleMessage(){
