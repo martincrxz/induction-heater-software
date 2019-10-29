@@ -17,6 +17,7 @@
 #define RECONNECTION_TIMEOUT 1000 // ms
 #define PORT_SERIAL_NUMBER "12345679" // this is set up in firmware
 #define PACKET_SIZE 0x08
+#define ONE_BYTE 1
 
 typedef enum {WAITING, READING} reading_status_t;
 
@@ -25,10 +26,10 @@ class SerialPort : public QSerialPort{
 private:
     bool connected = false;
     Protocol protocol;
-    QTimer timer; // move to heap ?
-    int count = 0;
+    QTimer reconectionTimer; // move to heap ?
+    int arrivingBytesCount = 0;
     reading_status_t readingStatus = WAITING;
-    QByteArray packet;
+    QByteArray arrivingPacket;
     void processMessage(QByteArray);
     uint8_t crcChecksum(QByteArray, uint8_t);
 
@@ -36,8 +37,6 @@ public:
     explicit SerialPort(QObject *parent);
     ~SerialPort() override;
     void send(std::shared_ptr<MicroMessage> msg);
-    std::shared_ptr<MicroMessage> receive();
-    bool isConnected();
 
 public slots:
     void findDevice();
@@ -46,6 +45,8 @@ public slots:
 
 signals:
     void shutdownAcknowledge(QString code, QString desc);
+    void configurationAcknowledge(QString code, QString desc);
+    void thermocoupleFault(QString code, QString desc);
     void temperatureArrived(std::shared_ptr<MicroMessage> msg);
 
 };

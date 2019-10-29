@@ -27,6 +27,7 @@ signals:
 public slots:
     void on_shutdownButton_clicked();
     void onTemperatureDataArrived(std::shared_ptr<MicroMessage> msg);
+    void thermocoupleChange(int);
 private:
     Ui::MainWindow *ui;
     SerialPort *port;

@@ -30,7 +30,7 @@ std::shared_ptr<MicroMessage> Protocol::translate(QByteArray &buff) {
         case COLD_JUNCTION_READING:
             return std::shared_ptr<MicroMessage>(new ColdJunctionReading(buff));
         case THERMOCOUPLE_FAULT:
-            return std::shared_ptr<MicroMessage>(new ThermocoupleFault());
+            return std::shared_ptr<ThermocoupleFault>(new ThermocoupleFault(buff));
         case THERMOCOUPLE_CONFIGURATION_ACKNOWLEDGE:
             return std::shared_ptr<MicroMessage>(new ThermocoupleConfigurationAcknowledge());
         case POWER_SET_ACKNOWLEDGE:

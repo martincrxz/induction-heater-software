@@ -4,6 +4,7 @@
 #include "../connection/serialport.h"
 #include "../connection/protocol/shutdown_message.h"
 #include "../connection/protocol/temperature_reading.h"
+#include "../connection/protocol/thermocouple_configuration.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -28,6 +29,9 @@ MainWindow::MainWindow(QWidget *parent) :
      **/
     connect(this, &MainWindow::shutdownMessage, port, &SerialPort::send);
     connect(port, &SerialPort::shutdownAcknowledge, equipmentView, &EquipmentStatusView::insert);
+    connect(ui->thermocoupleTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(thermocoupleChange(int)));
+    connect(port, SIGNAL(thermocoupleFault(QString,QString)), equipmentView, SLOT(insert(QString,QString)));
+    connect(port, &SerialPort::configurationAcknowledge, equipmentView, &EquipmentStatusView::insert);
     connect(port, &SerialPort::temperatureArrived, this, &MainWindow::onTemperatureDataArrived);
 }
 
@@ -50,4 +54,10 @@ void MainWindow::onTemperatureDataArrived(std::shared_ptr<MicroMessage> msg) {
     Logger::info(log);
     // TODO: debo actualizar el gráfico, como el hilo de control
     this->chartView->dataAvailable(temp);
+}
+
+void MainWindow::thermocoupleChange(int index){
+    std::shared_ptr<ThermocoupleConfiguration> configMsg(new ThermocoupleConfiguration());
+    configMsg->setType((thermocouple_type_t)index);
+    port->send(configMsg);
 }

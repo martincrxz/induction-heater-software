@@ -3,6 +3,7 @@
 //
 
 #include "serialport.h"
+#include "protocol/thermocouple_fault.h"
 #include <iostream>
 #include <sstream>
 #include <logger/logger.h>
@@ -11,14 +12,14 @@
 
 SerialPort::SerialPort(QObject *parent) :
 QSerialPort(parent),
-timer(this),
-packet(8,0)
+reconectionTimer(this),
+arrivingPacket(8,0)
 {
     this->setBaudRate(BAUDRATE);
     this->setDataBits(QSerialPort::Data8);
     this->setParity(QSerialPort::NoParity);
 
-    connect(&timer, &QTimer::timeout, this, &SerialPort::findDevice);
+    connect(&reconectionTimer, &QTimer::timeout, this, &SerialPort::findDevice);
     connect(this, &SerialPort::errorOccurred, this, &SerialPort::handleError);
     connect(this, &SerialPort::readyRead, this, &SerialPort::handleMessage);
     this->findDevice();
@@ -37,28 +38,13 @@ void SerialPort::send(std::shared_ptr<MicroMessage> msg) {
     this->waitForBytesWritten(USB_WRITE_TIMEOUT);
 }
 
-std::shared_ptr<MicroMessage> SerialPort::receive() {
-    if(this->waitForReadyRead(USB_READ_TIMEOUT)){
-        QByteArray buff(8,0);
-        buff = this->readLine(8);
-        Logger::debug("Message received: " + buff.toHex(SEPARATOR).
-                      toStdString());
-        return protocol.translate(buff);
-    }
-    return nullptr;
-}
-
-bool SerialPort::isConnected() {
-    return connected;
-}
-
 void SerialPort::findDevice() {
     auto portsInfo = QSerialPortInfo::availablePorts();
     for(auto &info : portsInfo){
         if(info.serialNumber() == PORT_SERIAL_NUMBER){
             this->setPort(info);
             if(this->open(QIODevice::ReadWrite)){
-                timer.stop();
+                reconectionTimer.stop();
                 Logger::info("Serial port connected.");
                 connected = true;
                 this->clear();
@@ -69,7 +55,7 @@ void SerialPort::findDevice() {
         }
     }
     Logger::warning("Device not found.");
-    timer.start(RECONNECTION_TIMEOUT);
+    reconectionTimer.start(RECONNECTION_TIMEOUT);
 }
 
 void SerialPort::handleError(QSerialPort::SerialPortError error){
@@ -83,28 +69,28 @@ void SerialPort::handleError(QSerialPort::SerialPortError error){
         this->close();
         this->connected = false;
     }
-    timer.start(RECONNECTION_TIMEOUT);
+    reconectionTimer.start(RECONNECTION_TIMEOUT);
 }
 
 void SerialPort::handleMessage(){
-    qint64 bytesAvailabe = this->bytesAvailable();
-    for(int i = 0; i < bytesAvailabe; i++){
-        QByteArray byteRead = this->read(1);
+    qint64 bytesAvailable = this->bytesAvailable();
+    for(int i = 0; i < bytesAvailable; i++){
+        QByteRef byteRead = this->read(ONE_BYTE).front();
         switch(readingStatus){
             case WAITING:
-                if(byteRead[0].operator==(0x7E)){
-                    packet[count] = byteRead[0];
-                    count++;
+                if(byteRead.operator==(0x7E)){
+                    arrivingPacket[arrivingBytesCount] = byteRead;
+                    arrivingBytesCount++;
                     readingStatus = READING;
                 }
                 break;
             case READING:
-                packet[count] = byteRead[0];
-                count++;
-                if(count == PACKET_SIZE){
+                arrivingPacket[arrivingBytesCount] = byteRead;
+                arrivingBytesCount++;
+                if(arrivingBytesCount == PACKET_SIZE){
                     readingStatus = WAITING;
-                    count = 0;
-                    processMessage(packet);
+                    arrivingBytesCount = 0;
+                    processMessage(arrivingPacket);
                 }
                 break;
         }
@@ -120,7 +106,7 @@ void SerialPort::processMessage(QByteArray buff){
         switch(msg->getId()) {
             case SHUTDOWN_ACKNOWLEDGE:
                 emit shutdownAcknowledge(QString::number(SHUTDOWN_ACKNOWLEDGE),
-                                         "Se activo la parada de emergencia.");
+                        "Se activo la parada de emergencia.");
                 break;
             case TEMPERATURE_READING:
                 emit temperatureArrived(msg);
@@ -129,9 +115,13 @@ void SerialPort::processMessage(QByteArray buff){
                 Logger::info("Cold junction message.");
                 break;
             case THERMOCOUPLE_FAULT:
+                emit thermocoupleFault(QString::number(THERMOCOUPLE_FAULT),
+                        (dynamic_cast<ThermocoupleFault&>(*msg).error()));
                 Logger::info("Thermocouple fault message");
                 break;
             case THERMOCOUPLE_CONFIGURATION_ACKNOWLEDGE:
+                emit configurationAcknowledge(QString::number(THERMOCOUPLE_CONFIGURATION_ACKNOWLEDGE),
+                        "Config. ACK: " + buff.toHex(SEPARATOR));
                 Logger::info("Thermocouple configuration acknowledge message.");
                 break;
             case POWER_SET_ACKNOWLEDGE:
