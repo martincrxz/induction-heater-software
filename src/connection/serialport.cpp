@@ -98,8 +98,8 @@ void SerialPort::handleMessage(){
 }
 
 void SerialPort::processMessage(QByteArray buff){
-    std::cout << this->bytesAvailable() << std::endl;
-    if(crcChecksum(buff, PACKET_SIZE-1)==buff[PACKET_SIZE-1]) {
+    int crc = crcChecksum(buff, PACKET_SIZE-1);
+    if(crc==(uint8_t)buff[PACKET_SIZE-1]) {
         Logger::debug("Message received: " + buff.toHex(SEPARATOR).
                 toStdString());
         std::shared_ptr<MicroMessage> msg(this->protocol.translate(buff));
@@ -116,7 +116,7 @@ void SerialPort::processMessage(QByteArray buff){
                 break;
             case THERMOCOUPLE_FAULT:
                 emit thermocoupleFault(QString::number(THERMOCOUPLE_FAULT),
-                        (dynamic_cast<ThermocoupleFault&>(*msg).error()));
+                        ((ThermocoupleFault&)(*msg)).error());
                 Logger::info("Thermocouple fault message");
                 break;
             case THERMOCOUPLE_CONFIGURATION_ACKNOWLEDGE:
@@ -140,16 +140,18 @@ void SerialPort::processMessage(QByteArray buff){
     }
     else {
         Logger::warning("CRC failed: " + buff.toHex(SEPARATOR).
-                toStdString());
+                toStdString() + " | " + std::to_string(buff[7]) + " : " + std::to_string(crc));
     }
 }
 
 uint8_t SerialPort::crcChecksum(QByteArray data, uint8_t size){
     int16_t i;
-    uint8_t chk = 0xFF;
+    uint16_t chk = 0xFF;
 
     for (i=0; i < size; i++)
         chk -= data[i];
 
-    return chk;
+    chk &= 0xff;
+
+    return (uint8_t)chk;
 }

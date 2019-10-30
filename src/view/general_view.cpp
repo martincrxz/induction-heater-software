@@ -1,3 +1,5 @@
+#include <iostream>
+#include <sstream>
 #include <logger/logger.h>
 #include "general_view.h"
 #include "ui_general_view.h"
@@ -48,10 +50,15 @@ void MainWindow::on_shutdownButton_clicked()
 
 void MainWindow::onTemperatureDataArrived(std::shared_ptr<MicroMessage> msg) {
     auto &temp = (TemperatureReading &) *msg;
-    std::string log("Temperatura recibida: ");
-    log += temp.getData();
-    log += " °C";
-    Logger::info(log);
+    std::stringstream log;
+    log << "Temperatura recibida: ";
+    log << temp.getData();
+    log << " °C";
+    QString currentDatetime = QDateTime::currentDateTime().
+            toString("dd/MM/yyyy HH:mm:ss");
+    ui->lastTimestampValue->setText(currentDatetime);
+    ui->thermocoupleTempValue->setText(QString::number(temp.getData()));
+    Logger::info(log.str());
     // TODO: debo actualizar el gráfico, como el hilo de control
     this->chartView->dataAvailable(temp);
 }
