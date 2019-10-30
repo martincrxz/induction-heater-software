@@ -9,6 +9,8 @@
 
 #include <QtCore/QByteArray>
 
+#define MESSAGE_SEPARATOR 0x7E
+
 typedef enum {
     TEMPERATURE_READING = 0x10, // to computer OK
     COLD_JUNCTION_READING = 0x11, // to computer OK
@@ -24,8 +26,6 @@ typedef enum {
     SHUTDOWN_MESSAGE = 0x50, // to uC
     SHUTDOWN_ACKNOWLEDGE = 0x51 // to computer OK
 } message_id;
-
-#define MESSAGE_SEPARATOR 0x7E
 
 class MicroMessage {
 private:

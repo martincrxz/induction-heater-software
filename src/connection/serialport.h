@@ -48,6 +48,7 @@ signals:
     void configurationAcknowledge(QString code, QString desc);
     void thermocoupleFault(QString code, QString desc);
     void temperatureArrived(std::shared_ptr<MicroMessage> msg);
+    void coldJunctionArrived(std::shared_ptr<MicroMessage> msg);
 
 };
 

@@ -112,7 +112,7 @@ void SerialPort::processMessage(QByteArray buff){
                 emit temperatureArrived(msg);
                 break;
             case COLD_JUNCTION_READING:
-                Logger::info("Cold junction message.");
+                emit coldJunctionArrived(msg);
                 break;
             case THERMOCOUPLE_FAULT:
                 emit thermocoupleFault(QString::number(THERMOCOUPLE_FAULT),

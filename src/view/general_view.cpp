@@ -6,6 +6,7 @@
 #include "../connection/serialport.h"
 #include "../connection/protocol/shutdown_message.h"
 #include "../connection/protocol/temperature_reading.h"
+#include "../connection/protocol/cold_junction_reading.h"
 #include "../connection/protocol/thermocouple_configuration.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -35,6 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(port, SIGNAL(thermocoupleFault(QString,QString)), equipmentView, SLOT(insert(QString,QString)));
     connect(port, &SerialPort::configurationAcknowledge, equipmentView, &EquipmentStatusView::insert);
     connect(port, &SerialPort::temperatureArrived, this, &MainWindow::onTemperatureDataArrived);
+    connect(port, &SerialPort::coldJunctionArrived, this, &MainWindow::onColdJunctionDataArrived);
 }
 
 MainWindow::~MainWindow()
@@ -61,6 +63,16 @@ void MainWindow::onTemperatureDataArrived(std::shared_ptr<MicroMessage> msg) {
     Logger::info(log.str());
     // TODO: debo actualizar el gráfico, como el hilo de control
     this->chartView->dataAvailable(temp);
+}
+
+void MainWindow::onColdJunctionDataArrived(std::shared_ptr<MicroMessage> msg) {
+    auto &temp = (ColdJunctionReading &) *msg;
+    std::stringstream log;
+    log << "Temperatura de juntura fría: ";
+    log << temp.getData();
+    log << " °C";
+    ui->coldJointTempValue->setText(QString::number(temp.getData()));
+    Logger::info(log.str());
 }
 
 void MainWindow::thermocoupleChange(int index){
