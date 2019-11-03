@@ -1,8 +1,15 @@
+# Standard building folder
 build/*
+# CLION's folders
 .idea/
 cmake-build-debug/*
+# QtCreator's files
 horno.pro.user
 ./build*
+CMakeLists.txt.*
+# Python's temporary files (of the old version of the code)
 old/*.pyc
 old/app.log
-CMakeLists.txt.*
+# Visual Studio's building folder
+out/*
+.vs/*
