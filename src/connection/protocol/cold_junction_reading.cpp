@@ -5,7 +5,7 @@
  */
 
 #include "cold_junction_reading.h"
-#include "apple_endian.h"
+#include "endianness_config.h"
 
 #define OFFSET 16
 #define RESERVED_BITS 2
@@ -15,7 +15,7 @@
 
 ColdJunctionReading::ColdJunctionReading(QByteArray &buff):
         MicroMessage(COLD_JUNCTION_READING) {
-    uint32_t dataBits = be32toh(*((uint32_t *) &buff.data()[2]));
+    uint32_t dataBits = betoh32(*((uint32_t *) &buff.data()[2]));
     float temp = ((dataBits >> OFFSET) >> RESERVED_BITS) & VALUE_MASK;
     int sign = 1 - 2 * ((((dataBits >> OFFSET) >> RESERVED_BITS)
             & (1 << SIGN_POSITION))>>SIGN_POSITION);

@@ -5,7 +5,10 @@
  */
 
 #include "power_set_acknowledge.h"
-#include "apple_endian.h"
+#ifndef TEMP
+#define TEMP
+#include "endianness_config.h"
+#endif
 
 QByteArray PowerSetAcknowledge::serialize() {
     QByteArray ret(8, 0x00);
@@ -18,7 +21,7 @@ QByteArray PowerSetAcknowledge::serialize() {
 
 PowerSetAcknowledge::PowerSetAcknowledge(QByteArray &buff):
         MicroMessage(POWER_SET_ACKNOWLEDGE) {
-    uint32_t aux = le32toh(*((uint32_t *) &buff.data()[2]));
+    uint32_t aux = letoh32(*((uint32_t *) &buff.data()[2]));
     this->data = aux;
 }
 
