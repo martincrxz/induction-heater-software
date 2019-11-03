@@ -9,7 +9,7 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
 	# Para producción
 	#set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++11 -Wall -Werror -pedantic -pthread")
 	# Para debug
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -std=c++11 -ggdb -Wall -pedantic -pthread")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -std=c++11 -ggdb -Wall -Werror -pedantic -pthread")
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
 	message("[INFO] COMPILING FOR Windows")
 	set(CMAKE_PREFIX_PATH "C:\\Qt\\5.12.5\\msvc2017_64")
@@ -18,7 +18,7 @@ else()
 	# Para producción
 	#set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++11 -Wall -Werror -pedantic -pthread")
 	# Para debug
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -std=c++11 -ggdb -Wall -pedantic -pthread")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -std=c++11 -ggdb -Wall -Werror -pedantic -pthread")
 endif()
 
 message("[INFO] Including portable-endian project")
