@@ -75,7 +75,7 @@ void SerialPort::handleError(QSerialPort::SerialPortError error){
 void SerialPort::handleMessage(){
     qint64 bytesAvailable = this->bytesAvailable();
     for(int i = 0; i < bytesAvailable; i++){
-        QByteRef byteRead = this->read(ONE_BYTE).front();
+        QByteRef byteRead = this->read(ONE_BYTE)[0];
         switch(readingStatus){
             case WAITING:
                 if(byteRead.operator==(0x7E)){

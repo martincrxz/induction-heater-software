@@ -50,5 +50,7 @@ QString ThermocoupleFault::error() {
             return QString(faultMessages[6]);
         case OPEN_FAULT:
             return QString(faultMessages[7]);
+        default:
+            return QString("Non-supported thermocouple error");
     }
 }
