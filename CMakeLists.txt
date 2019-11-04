@@ -1,25 +1,44 @@
 cmake_minimum_required(VERSION 3.1.0)
 project(TrabajoProfesional)
+# Cambiar esto a false cuando se haga el release
+set(DEBUG_MODE TRUE)
 
-# Definición de macros de compilación para usuarios MacOs, notar version de Qt
-message("System name: ${CMAKE_SYSTEM_NAME}")
+# Definición de macros de compilación para usuarios MacOs.
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
 	message("[INFO] COMPILING FOR MACOS")
 	set(CMAKE_PREFIX_PATH "/usr/local/Cellar/qt/5.13.0/")
-	# Para producción
-	#set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++11 -Wall -Werror -pedantic -pthread")
-	# Para debug
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -std=c++11 -ggdb -Wall -Werror -pedantic -pthread")
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
-	message("[INFO] COMPILING FOR Windows")
-	set(CMAKE_PREFIX_PATH "C:\\Qt\\5.12.5\\msvc2017_64")
+	message("[INFO] COMPILING FOR WINDOWS")
+	set(QT5_DLL_DIR "C:\\Qt\\5.12.5\\msvc2017\\bin")
+	set(Qt5_DIR "C:\\Qt\\5.12.5\\msvc2017\\lib\\cmake\\Qt5")
+	set(IS_WINDOWS TRUE)
 else()
 	message("[INFO] COMPILING FOR LINUX")
-	# Para producción
-	#set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++11 -Wall -Werror -pedantic -pthread")
-	# Para debug
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -std=c++11 -ggdb -Wall -Werror -pedantic -pthread")
 endif()
+
+if(IS_WINDOWS)
+	message("[INFO] Copying .dll files to the current directory")
+	if(DEBUG_MODE)
+		file(COPY ${QT5_DLL_DIR}/Qt5Cored.dll DESTINATION ./Debug)
+		file(COPY ${QT5_DLL_DIR}/Qt5Chartsd.dll DESTINATION ./Debug)
+		file(COPY ${QT5_DLL_DIR}/Qt5SerialPortd.dll DESTINATION ./Debug)
+		file(COPY ${QT5_DLL_DIR}/Qt5Guid.dll DESTINATION ./Debug)
+		file(COPY ${QT5_DLL_DIR}/Qt5Widgetsd.dll DESTINATION ./Debug)
+	else()
+		file(COPY ${QT5_DLL_DIR}/Qt5Core.dll DESTINATION ./)
+		file(COPY ${QT5_DLL_DIR}/Qt5Charts.dll DESTINATION ./)
+		file(COPY ${QT5_DLL_DIR}/Qt5SerialPort.dll DESTINATION ./)
+		file(COPY ${QT5_DLL_DIR}/Qt5Gui.dll DESTINATION ./)
+		file(COPY ${QT5_DLL_DIR}/Qt5Widgets.dll DESTINATION ./)
+	endif()
+else()
+	if(DEBUG_MODE)
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -std=c++11 -ggdb3 -Wall -Werror -pedantic -pthread")
+	else()
+		set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++11 -Wall -Werror -pedantic -pthread")
+	endif()
+endif()
+message("[INFO] Setting flags = '${CMAKE_CXX_FLAGS}'")
 
 message("[INFO] Including portable-endian project")
 add_subdirectory(${CMAKE_SOURCE_DIR}/libs/portable-endian)
@@ -37,10 +56,7 @@ file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/*.cpp" "src/*.h" "li
 message("[INFO] Loading sources of QT")
 
 # Find the QtWidgets library
-find_package(Qt5 REQUIRED COMPONENTS Core Widgets Charts SerialPort)
-
-get_target_property(QtCore_location Qt5::Core LOCATION)
-message('${QtCore_location}')
+find_package(Qt5 COMPONENTS Core Widgets Charts SerialPort REQUIRED)
 
 qt5_wrap_ui(UIS_HEADERS
         src/view/auto_tunning_tab_view.ui
@@ -66,8 +82,15 @@ file(GLOB RESOURCES ${CMAKE_SOURCE_DIR}
 
 # Tell CMake to create the helloworld executable
 add_executable(application ${SOURCES} ${UIS_HEADERS} ${RESOURCES})
-target_link_libraries(application Qt5::Core Qt5::Widgets Qt5::Charts Qt5::SerialPort)
 
+message("[INFO] Add Qt components to the target link libraries")
+if(IS_WINDOWS)
+	message("[INFO] Adding ws2_32 to the target link libraries")
+	target_link_libraries(application ws2_32 Qt5::Core Qt5::Widgets Qt5::Charts Qt5::SerialPort)
+else()
+	target_link_libraries(application Qt5::Core Qt5::Widgets Qt5::Charts Qt5::SerialPort)
+
+endif()
 # Install phase (commented until necessary)
 #file(COPY assets DESTINATION ./)
 #file(COPY serverConfig.yaml DESTINATION ./)
