@@ -8,14 +8,13 @@
 #define __SHUTDOWN_ACK_H__
 
 #include <QtCore/QByteArray>
-#include "micro_message.h"
+#include "incoming_message.h"
 
-class ShutdownAcknowledge: public MicroMessage {
+class ShutdownAcknowledge: public IncomingMessage {
 
 public:
     explicit ShutdownAcknowledge();
     virtual ~ShutdownAcknowledge() = default;
-    QByteArray serialize() override;
 };
 
 

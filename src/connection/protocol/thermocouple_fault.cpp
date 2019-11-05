@@ -20,16 +20,8 @@ const char *faultMessages[] = {
 };
 
 ThermocoupleFault::ThermocoupleFault(QByteArray buff):
-    MicroMessage(THERMOCOUPLE_FAULT) {
+    IncomingMessage(THERMOCOUPLE_FAULT) {
     fault = (thermocouple_fault_t)(int)buff[2];
-}
-
-QByteArray ThermocoupleFault::serialize() {
-    QByteArray ret(8, 0x00);
-    ret[0] = MESSAGE_SEPARATOR;
-    ret[1] = THERMOCOUPLE_FAULT;
-    ret[2] = fault;
-    return ret;
 }
 
 QString ThermocoupleFault::error() {

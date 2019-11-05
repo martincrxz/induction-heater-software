@@ -8,13 +8,12 @@
 #define __MANUAL_CONTROL_ACKNOWLEDGE_H__
 
 
-#include "micro_message.h"
+#include "incoming_message.h"
 
-class ManualControlAcknowledge : public MicroMessage {
+class ManualControlAcknowledge : public IncomingMessage {
 public:
     ManualControlAcknowledge();
     virtual ~ManualControlAcknowledge() = default;
-    QByteArray serialize() override;
 };
 
 

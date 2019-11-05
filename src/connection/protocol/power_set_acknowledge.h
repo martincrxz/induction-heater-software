@@ -8,15 +8,14 @@
 #define __POWER_SET_ACKNOWLEDGE_H__
 
 
-#include "micro_message.h"
+#include "incoming_message.h"
 
-class PowerSetAcknowledge: public MicroMessage {
+class PowerSetAcknowledge: public IncomingMessage {
 private:
     int data;
 public:
     PowerSetAcknowledge(QByteArray &);
     virtual ~PowerSetAcknowledge() = default;
-    QByteArray serialize() override;
     int getData();
 };
 

@@ -8,13 +8,12 @@
 #define __AUTOMATIC_CONTROL_ACKNOWLEDGE_H__
 
 
-#include "micro_message.h"
+#include "incoming_message.h"
 
-class AutomaticControlAcknowledge: public MicroMessage {
+class AutomaticControlAcknowledge: public IncomingMessage {
 public:
     AutomaticControlAcknowledge();
     virtual ~AutomaticControlAcknowledge() = default;
-    QByteArray serialize() override;
 };
 
 

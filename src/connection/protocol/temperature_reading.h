@@ -7,15 +7,14 @@
 #ifndef __TEMPERATURE_READING_H__
 #define __TEMPERATURE_READING_H__
 
-#include "micro_message.h"
+#include "incoming_message.h"
 
-class TemperatureReading: public MicroMessage {
+class TemperatureReading: public IncomingMessage {
 private:
     float data;
 public:
     TemperatureReading(QByteArray &buff);
     virtual ~TemperatureReading() = default;
-    QByteArray serialize() override;
     float getData();
 };
 

@@ -8,7 +8,7 @@
 #define __thermocouple_fault_H__
 
 
-#include "micro_message.h"
+#include "incoming_message.h"
 
 typedef enum {CJRANGE_FAULT = 0x80,
               TCRANGE_FAULT = 0x40,
@@ -20,13 +20,12 @@ typedef enum {CJRANGE_FAULT = 0x80,
               OPEN_FAULT = 0x01
 } thermocouple_fault_t;
 
-class ThermocoupleFault: public MicroMessage {
+class ThermocoupleFault: public IncomingMessage {
 private:
     thermocouple_fault_t fault;
 public:
     explicit ThermocoupleFault(QByteArray buff);
     virtual ~ThermocoupleFault() = default;
-    QByteArray serialize() override;
     QString error();
 };
 

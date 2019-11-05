@@ -8,13 +8,12 @@
 #define __THERMOCOUPLE_CONFIGURATION_ACKNOWLEDGE_H__
 
 
-#include "micro_message.h"
+#include "incoming_message.h"
 
-class ThermocoupleConfigurationAcknowledge: public MicroMessage {
+class ThermocoupleConfigurationAcknowledge: public IncomingMessage {
 public:
     ThermocoupleConfigurationAcknowledge();
     virtual ~ThermocoupleConfigurationAcknowledge() = default;
-    QByteArray serialize() override;
 };
 
 

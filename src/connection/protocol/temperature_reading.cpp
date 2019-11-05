@@ -14,7 +14,7 @@
 #define DIVISOR 128.0
 
 TemperatureReading::TemperatureReading(QByteArray &buff):
-                MicroMessage(TEMPERATURE_READING) {
+                IncomingMessage(TEMPERATURE_READING) {
     // Por protocolo, el mensaje enviará el dato de 32 bits como un entero
     // sin signo de 32 bits en formato big endian. Mediante uso de las
     // funciones estandar de C, se pasará el dato al endiannes de la máquina,
@@ -30,14 +30,6 @@ TemperatureReading::TemperatureReading(QByteArray &buff):
     this->data += (float)(((uint8_t)buff[3]) / 16.0);
     this->data += (float)(((uint8_t)buff[2] & 0x7f) * 16.0);
     this->data *=  1.0 - 2.0*(((uint8_t)buff[2] & 0x80) >> 7);*/
-}
-
-QByteArray TemperatureReading::serialize() {
-    QByteArray ret(8, 0x00);
-    ret[0] = MESSAGE_SEPARATOR;
-    ret[1] = TEMPERATURE_READING;
-    // It does not really make sense to implement this function for this type of message.
-    return ret;
 }
 
 float TemperatureReading::getData() {
