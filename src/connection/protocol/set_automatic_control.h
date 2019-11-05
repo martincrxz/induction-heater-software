@@ -8,9 +8,9 @@
 #define __SET_AUTOMATIC_CONTROL_H__
 
 
-#include "micro_message.h"
+#include "outgoing_message.h"
 
-class SetAutomaticControl: public MicroMessage {
+class SetAutomaticControl: public OutgoingMessage {
 public:
     SetAutomaticControl();
     virtual ~SetAutomaticControl() = default;

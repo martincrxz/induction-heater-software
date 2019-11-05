@@ -8,9 +8,9 @@
 #define __SHUTDOWN_MESSAGE_H__
 
 
-#include "micro_message.h"
+#include "outgoing_message.h"
 
-class ShutdownMessage: public MicroMessage {
+class ShutdownMessage: public OutgoingMessage {
 public:
     ShutdownMessage();
     virtual ~ShutdownMessage() = default;

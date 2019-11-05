@@ -7,7 +7,7 @@
 #include "set_automatic_control.h"
 
 SetAutomaticControl::SetAutomaticControl():
-            MicroMessage(SET_AUTOMATIC_CONTROL) {}
+            OutgoingMessage(SET_AUTOMATIC_CONTROL) {}
 
 QByteArray SetAutomaticControl::serialize() {
     QByteArray ret(8, 0x00);

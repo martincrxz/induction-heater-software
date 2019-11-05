@@ -8,9 +8,9 @@
 #define __SET_MANUAL_CONTROL_H__
 
 
-#include "micro_message.h"
+#include "outgoing_message.h"
 
-class SetManualControl: MicroMessage {
+class SetManualControl: OutgoingMessage {
 public:
     SetManualControl();
     virtual ~SetManualControl() = default;

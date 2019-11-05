@@ -6,7 +6,7 @@
 
 #include "set_power.h"
 
-SetPower::SetPower(): MicroMessage(SET_POWER) {}
+SetPower::SetPower(): OutgoingMessage(SET_POWER) {}
 
 QByteArray SetPower::serialize() {
     QByteArray ret(8, 0x00);

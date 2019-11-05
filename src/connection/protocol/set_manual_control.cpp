@@ -6,7 +6,7 @@
 
 #include "set_manual_control.h"
 
-SetManualControl::SetManualControl(): MicroMessage(SET_MANUAL_CONTROL) {}
+SetManualControl::SetManualControl(): OutgoingMessage(SET_MANUAL_CONTROL) {}
 
 QByteArray SetManualControl::serialize() {
     QByteArray ret(8, 0x00);

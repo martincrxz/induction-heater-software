@@ -7,7 +7,7 @@
 #ifndef __THERMOCOUPLE_CONFIGURATION_H__
 #define __THERMOCOUPLE_CONFIGURATION_H__
 
-#include "micro_message.h"
+#include "outgoing_message.h"
 
 #define FAUL_CLEAR_MASK 0x02
 
@@ -20,7 +20,7 @@ typedef enum {thermocouple_type_B = 0,
               thermocouple_type_S,
               thermocouple_type_T} thermocouple_type_t;
 
-class ThermocoupleConfiguration: public MicroMessage {
+class ThermocoupleConfiguration: public OutgoingMessage {
 private:
     thermocouple_type_t type = thermocouple_type_B;
     bool faultClear = false;

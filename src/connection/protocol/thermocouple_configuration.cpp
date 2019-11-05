@@ -7,7 +7,7 @@
 #include "thermocouple_configuration.h"
 
 ThermocoupleConfiguration::ThermocoupleConfiguration():
-    MicroMessage(THERMOCOUPLE_CONFIGURATION) {}
+    OutgoingMessage(THERMOCOUPLE_CONFIGURATION) {}
 
 void ThermocoupleConfiguration::setType(thermocouple_type_t typeToSet){
     type = typeToSet;

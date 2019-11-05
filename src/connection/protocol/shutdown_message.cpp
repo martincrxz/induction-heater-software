@@ -6,7 +6,7 @@
 
 #include "shutdown_message.h"
 
-ShutdownMessage::ShutdownMessage(): MicroMessage(SHUTDOWN_MESSAGE) {}
+ShutdownMessage::ShutdownMessage(): OutgoingMessage(SHUTDOWN_MESSAGE) {}
 
 QByteArray ShutdownMessage::serialize() {
     QByteArray ret(8, 0x00);

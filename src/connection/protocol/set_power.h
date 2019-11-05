@@ -8,9 +8,9 @@
 #define __SET_POWER_H__
 
 
-#include "micro_message.h"
+#include "outgoing_message.h"
 
-class SetPower: public MicroMessage {
+class SetPower: public OutgoingMessage {
 public:
     SetPower();
     virtual ~SetPower() = default;
