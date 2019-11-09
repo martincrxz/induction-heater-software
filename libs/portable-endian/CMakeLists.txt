@@ -156,13 +156,13 @@ else()
 	message(STATUS "Collected endianness information...")
 endif()
 
-#message(STATUS "Result: ${ENDIANNESS_CONFIG_TEST_RUN_RESULT}")
-#message(STATUS " - ")
-#message(STATUS "Compile Result: ${ENDIANNESS_CONFIG_TEST_COMPILE_RESULT}")
-#message(STATUS " - ")
-#message(STATUS "Compile Output: ${ENDIANNESS_CONFIG_TEST_COMPILE_OUTPUT}")
-#message(STATUS " - ")
-#message(STATUS "Run Output: ${ENDIANNESS_CONFIG_TEST_RUN_OUTPUT}")
+message(STATUS "Result: ${ENDIANNESS_CONFIG_TEST_RUN_RESULT}")
+message(STATUS " - ")
+message(STATUS "Compile Result: ${ENDIANNESS_CONFIG_TEST_COMPILE_RESULT}")
+message(STATUS " - ")
+message(STATUS "Compile Output: ${ENDIANNESS_CONFIG_TEST_COMPILE_OUTPUT}")
+message(STATUS " - ")
+message(STATUS "Run Output: ${ENDIANNESS_CONFIG_TEST_RUN_OUTPUT}")
 
 # Configure a header file to pass some of the CMake settings to the source code
 configure_file (
@@ -173,15 +173,15 @@ configure_file (
 # Add the binary dir directory
 include_directories("${PROJECT_BINARY_DIR}")
 
-#try_run(ENDIANNESS_SIMPLE_CONFIG_TEST_RUN_RESULT ENDIANNESS_SIMPLE_CONFIG_TEST_COMPILE_RESULT "${PROJECT_BINARY_DIR}/testSimpleConfigTest" "${CMAKE_CURRENT_SOURCE_DIR}/test/simple_test.c" CMAKE_FLAGS "-DINCLUDE_DIRECTORIES:PATH=${PROJECT_BINARY_DIR}" LINK_LIBRARIES "${ENDIANNESS_LINK_LIBRARIES}" COMPILE_OUTPUT_VARIABLE ENDIANNESS_SIMPLE_CONFIG_TEST_COMPILE_OUTPUT RUN_OUTPUT_VARIABLE ENDIANNESS_SIMPLE_CONFIG_TEST_RUN_OUTPUT)
+try_run(ENDIANNESS_SIMPLE_CONFIG_TEST_RUN_RESULT ENDIANNESS_SIMPLE_CONFIG_TEST_COMPILE_RESULT "${PROJECT_BINARY_DIR}/testSimpleConfigTest" "${CMAKE_CURRENT_SOURCE_DIR}/test/simple_test.c" CMAKE_FLAGS "-DINCLUDE_DIRECTORIES:PATH=${PROJECT_BINARY_DIR}" LINK_LIBRARIES "${ENDIANNESS_LINK_LIBRARIES}" COMPILE_OUTPUT_VARIABLE ENDIANNESS_SIMPLE_CONFIG_TEST_COMPILE_OUTPUT RUN_OUTPUT_VARIABLE ENDIANNESS_SIMPLE_CONFIG_TEST_RUN_OUTPUT)
 
-#if (NOT ENDIANNESS_SIMPLE_CONFIG_TEST_RUN_RESULT)
-#	message(FATAL_ERROR "Testing the generated portable endian config file failed: ${ENDIANNESS_SIMPLE_CONFIG_TEST_COMPILE_OUTPUT} ${ENDIANNESS_SIMPLE_CONFIG_TEST_RUN_OUTPUT}")
-#elseif(NOT "${ENDIANNESS_SIMPLE_CONFIG_TEST_RUN_RESULT}" EQUAL "1")
-#	message(FATAL_ERROR "Testing the generated portable endian config file failed: ${ENDIANNESS_SIMPLE_CONFIG_TEST_RUN_OUTPUT}")
-#else()
-#	message(STATUS "Success! The generated portable endian config file seems to work!")
-#endif()
+if (NOT ENDIANNESS_SIMPLE_CONFIG_TEST_RUN_RESULT)
+	message(FATAL_ERROR "Testing the generated portable endian config file failed: ${ENDIANNESS_SIMPLE_CONFIG_TEST_COMPILE_OUTPUT} ${ENDIANNESS_SIMPLE_CONFIG_TEST_RUN_OUTPUT}")
+elseif(NOT "${ENDIANNESS_SIMPLE_CONFIG_TEST_RUN_RESULT}" EQUAL "1")
+	message(FATAL_ERROR "Testing the generated portable endian config file failed: ${ENDIANNESS_SIMPLE_CONFIG_TEST_RUN_OUTPUT}")
+else()
+	message(STATUS "Success! The generated portable endian config file seems to work!")
+endif()
 
 
 
