@@ -68,6 +68,8 @@ qt5_wrap_ui(UIS_HEADERS
         src/view/equipment_status_view.ui
         src/view/general_view.ui
         src/view/manual_power_control_view.ui
+        src/view/classic_control_view.ui
+        src/view/fuzzy_control_view.ui
         )
 # Instruct CMake to run moc automatically when neededcd
 set(CMAKE_AUTOMOC ON)
