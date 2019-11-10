@@ -5,11 +5,11 @@
  */
 
 #include "power_set_acknowledge.h"
-#include "endianness_config.h"
+//#include "endianness_config.h"
 
 PowerSetAcknowledge::PowerSetAcknowledge(QByteArray &buff):
         IncomingMessage(POWER_SET_ACKNOWLEDGE) {
-    uint32_t aux = letoh32(*((uint32_t *) &buff.data()[2]));
+    uint32_t aux = 0; //letoh32(*((uint32_t *) &buff.data()[2]));
     this->data = aux;
 }
 
