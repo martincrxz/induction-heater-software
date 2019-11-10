@@ -109,26 +109,45 @@
       </spacer>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_16">
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
+        <widget class="QLabel" name="controlTypeLabel">
+         <property name="text">
+          <string>Tipo de control:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="controlTypeCombo">
          <item>
-          <widget class="QRadioButton" name="slowHeatingRadioButton">
-           <property name="text">
-            <string>Calentamiento lento (100% hasta objetivo)</string>
-           </property>
-          </widget>
+          <property name="text">
+           <string>Control clásico</string>
+          </property>
          </item>
          <item>
-          <widget class="QRadioButton" name="fastHeatingRadioButton">
-           <property name="text">
-            <string>Calentamiento rápido (Calibración previa + control)</string>
-           </property>
-          </widget>
+          <property name="text">
+           <string>Fuzzy Logic</string>
+          </property>
          </item>
-        </layout>
+        </widget>
        </item>
       </layout>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_5">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="controlConfiguration"/>
      </item>
      <item>
       <spacer name="verticalSpacer_2">
