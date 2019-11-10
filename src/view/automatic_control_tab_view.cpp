@@ -37,7 +37,7 @@ void AutomaticControlTabView::on_controlTypeCombo_currentIndexChanged(int index)
         this->current = new ClassicControlView(this);
         break;
     case 1:
-    	Logger::info("Fuzzy control selected")
+    	Logger::info("Fuzzy control selected");
         this->current = new FuzzyControlView(this);
         break;
     default:
