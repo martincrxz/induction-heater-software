@@ -84,7 +84,7 @@ file(GLOB RESOURCES ${CMAKE_SOURCE_DIR}
         "assets/resources.qrc")
 
 # Tell CMake to create the helloworld executable
-add_executable(application ${SOURCES} ${UIS_HEADERS} ${RESOURCES})
+add_executable(application ${SOURCES} ${UIS_HEADERS} ${RESOURCES} src/control/controller.cpp src/control/controller.h src/control/algorithm.cpp src/control/algorithm.h src/control/classic_pid.cpp src/control/classic_pid.h)
 
 message(STATUS "[INFO] Add Qt components to the target link libraries")
 if(IS_WINDOWS)
@@ -94,6 +94,7 @@ else()
 	target_link_libraries(application Qt5::Core Qt5::Widgets Qt5::Charts Qt5::SerialPort)
 
 endif()
+
 # Install phase (commented until necessary)
 #file(COPY assets DESTINATION ./)
 #file(COPY serverConfig.yaml DESTINATION ./)
