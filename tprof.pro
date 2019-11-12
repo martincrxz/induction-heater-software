@@ -61,8 +61,9 @@ SOURCES += \
         src/view/manual_power_control_view.cpp \
         src/view/chart.cpp \
         src/main.cpp \
-    src/view/classic_control_view.cpp \
-    src/view/fuzzy_control_view.cpp
+    src/view/control_configuration/classic_control_view.cpp \
+    src/view/control_configuration/fuzzy_control_view.cpp \
+    src/view/control_configuration/control_configuration.cpp
 
 
 
@@ -104,8 +105,9 @@ HEADERS += \
         src/view/manual_power_control_view.h \
         src/view/chart.h \
         libs/stream.h \
-    src/view/classic_control_view.h \
-    src/view/fuzzy_control_view.h
+    src/view/control_configuration/classic_control_view.h \
+    src/view/control_configuration/fuzzy_control_view.h \
+    src/view/control_configuration/control_configuration.h
 
 FORMS += \
 		src/view/auto_tunning_tab_view.ui \
@@ -114,5 +116,5 @@ FORMS += \
 		src/view/equipment_status_view.ui \
 		src/view/general_view.ui \
                 src/view/manual_power_control_view.ui \
-    src/view/classic_control_view.ui \
-    src/view/fuzzy_control_view.ui
+    src/view/control_configuration/classic_control_view.ui \
+    src/view/control_configuration/fuzzy_control_view.ui

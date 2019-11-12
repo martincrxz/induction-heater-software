@@ -2,7 +2,7 @@
 #include "ui_fuzzy_control_view.h"
 
 FuzzyControlView::FuzzyControlView(QWidget *parent) :
-    QWidget(parent),
+    ControlConfiguration(parent),
     ui(new Ui::FuzzyControlView)
 {
     ui->setupUi(this);
@@ -11,4 +11,9 @@ FuzzyControlView::FuzzyControlView(QWidget *parent) :
 FuzzyControlView::~FuzzyControlView()
 {
     delete ui;
+}
+
+bool FuzzyControlView::validateInput()
+{
+    return true;
 }

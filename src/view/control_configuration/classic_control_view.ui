@@ -37,7 +37,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="kp_value"/>
      </item>
     </layout>
    </item>
@@ -64,7 +64,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_2"/>
+      <widget class="QLineEdit" name="kd_valjue"/>
      </item>
     </layout>
    </item>
@@ -91,7 +91,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_3"/>
+      <widget class="QLineEdit" name="ki_value"/>
      </item>
     </layout>
    </item>

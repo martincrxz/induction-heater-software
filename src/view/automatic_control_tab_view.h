@@ -6,10 +6,10 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
+#include <QTimer>
 #include <vector>
 
-#include "classic_control_view.h"
-#include "fuzzy_control_view.h"
+#include "control_configuration/control_configuration.h"
 
 namespace Ui {
 class AutomaticControlTabView;
@@ -31,10 +31,15 @@ private slots:
      * @param index
      */
     void on_controlTypeCombo_currentIndexChanged(int index);
+    void on_activateButton_clicked();
 
 private:
+    void resetLabel();
+
     Ui::AutomaticControlTabView *ui;
-    QWidget * current;
+    QTimer *resetLabelTimer;
+    std::vector<ControlConfiguration *> controlConfigViews;
+    unsigned int current{0};
 };
 
 #endif // AUTOMATIC_CONTROL_TAB_VIEW_H
