@@ -4,7 +4,7 @@ build/*
 .idea/
 cmake-build-debug/*
 # QtCreator's files
-tprof.pro.user
+*.pro.user
 ./build*
 CMakeLists.txt.*
 # Python's temporary files (of the old version of the code)
