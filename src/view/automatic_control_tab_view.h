@@ -31,7 +31,12 @@ private slots:
      * @param index
      */
     void on_controlTypeCombo_currentIndexChanged(int index);
+    /**
+     * @brief chequea que los parámetros estén bien seteados
+     * y ¿lanza el hilo de ejecucion?
+     */
     void on_activateButton_clicked();
+    void on_messagePrint(const char *str, unsigned char mode);
 
 private:
     void resetLabel();

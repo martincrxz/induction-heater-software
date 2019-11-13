@@ -3,3 +3,7 @@
 //
 
 #include "classic_pid.h"
+
+void ClassicPID::calculatePower() {
+		
+}

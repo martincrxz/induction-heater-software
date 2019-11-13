@@ -3,3 +3,7 @@
 //
 
 #include "controller.h"
+
+void Controller::receiveNewData(float f) {
+
+}

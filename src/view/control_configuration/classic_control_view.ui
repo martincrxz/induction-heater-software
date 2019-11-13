@@ -95,6 +95,13 @@
      </item>
     </layout>
    </item>
+   <item>
+    <widget class="QPushButton" name="saveButton">
+     <property name="text">
+      <string>Guardar</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources/>

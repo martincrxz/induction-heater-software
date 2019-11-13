@@ -3,12 +3,15 @@
 #include "control_configuration/classic_control_view.h"
 #include "control_configuration/fuzzy_control_view.h"
 
+#define ERROR 1
+
 AutomaticControlTabView::AutomaticControlTabView(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::AutomaticControlTabView)
 {
     ui->setupUi(this);
-    this->controlConfigViews.emplace_back(new ClassicControlView(this));
+    auto classic_control = new ClassicControlView(this);
+    this->controlConfigViews.emplace_back(classic_control);
     this->controlConfigViews.emplace_back(new FuzzyControlView(this));
     this->current = ui->controlTypeCombo->currentIndex();
     ui->controlConfiguration->addWidget(this->controlConfigViews[this->current]);
@@ -16,6 +19,8 @@ AutomaticControlTabView::AutomaticControlTabView(QWidget *parent) :
     this->resetLabelTimer = new QTimer();
     connect(this->resetLabelTimer, &QTimer::timeout, this, 
         &AutomaticControlTabView::resetLabel);
+    connect(classic_control, &ClassicControlView::message,
+            this, &AutomaticControlTabView::on_messagePrint);
 
     ui->warningLabel->setText("");
 }
@@ -43,10 +48,19 @@ void AutomaticControlTabView::on_activateButton_clicked()
 {
     bool isGood = this->controlConfigViews[this->current]->validateInput();
     if ( !isGood ) {
-        ui->warningLabel->setText("Hay un error en los parámetros de control.");
+        on_messagePrint("Hay un error en los parámetros de control.", ERROR);
+    }
+}
+
+void AutomaticControlTabView::on_messagePrint(const char *str, unsigned char mode)
+{
+    ui->warningLabel->setText(str);
+    if (mode == ERROR){
         ui->warningLabel->setStyleSheet("QLabel { color : red; }");
-        this->resetLabelTimer->start(3000);
-    } 
+    } else {
+        ui->warningLabel->setStyleSheet("QLabel { color : green; }");
+    }
+    this->resetLabelTimer->start(3000);
 }
 
 void AutomaticControlTabView::resetLabel() {

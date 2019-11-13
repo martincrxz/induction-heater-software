@@ -12,7 +12,8 @@ class ClassicPID : public Algorithm{
 private:
     float Kp = 0, Ki = 0, Kd = 0;
 
-
+public:
+	void calculatePower() override;
 };
 
 
