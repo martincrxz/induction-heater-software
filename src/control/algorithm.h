@@ -5,20 +5,35 @@
 #ifndef TRABAJOPROFESIONAL_ALGORITHM_H
 #define TRABAJOPROFESIONAL_ALGORITHM_H
 
-#include <QObject>
+#include <QtCore/QThread>
 #include <memory>
-#include "../connection/protocol/micro_message.h"
 
-class Algorithm : public QObject{
+#include <stream.h>
+
+class Algorithm : public QThread{
     Q_OBJECT
 
 private:
+	IO::Stream<int> queue;
+    bool keep_processing{true};
+    /**
+     * @brief Lanza el hilo de ejecución que toma elementos de a uno y
+     * los procesa de forma polimorfica (dependiendo de cada tipo de control)
+     */
+    void run() override;
+    virtual int process(int data) = 0;
 
 public slots:
-    virtual void calculatePower() = 0;
-// senal abstracta... uhmm no lo se rick.
-//signals:
-//    virtual void powerCalculated(std::shared_ptr<MicroMessage>) = 0;
+	void dataAvailable(int data);
+
+public:
+	Algorithm() = default;
+	virtual ~Algorithm() = default;
+	/**
+     * @brief Se encarga de terminar la ejecución ordenada
+     * del hilo
+     */
+    void stop();
 };
 
 

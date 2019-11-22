@@ -13,7 +13,9 @@ private:
     float Kp = 0, Ki = 0, Kd = 0;
 
 public:
-	void calculatePower() override;
+	ClassicPID(float kp, float ki, float kd);
+	virtual ~ClassicPID() = default;
+	int process(int data) override;
 };
 
 
