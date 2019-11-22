@@ -11,6 +11,8 @@
 
 #include "logger_worker.h"
 
+#define FILE_NAME "application.log"
+
 class Logger {
 private:
     /**
@@ -18,15 +20,13 @@ private:
      * thread-safe
      */
     LoggerWorker worker;
-
     Logger();
     static Logger& instance();
 public:
     /**
-     * @brief Crea un archivo de log appendeando al filename la fecha de hoy
-     * @param filename
+     * @brief Crea un archivo de log para appendear informacion
      */
-    static void init(const std::string &filename);
+    static void init();
     /**
      * @brief crea un objeto LoggerInfo y se pushea en la queue.
      * @param msg

@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 	int ret = 0;
 	try {
     	Application a(argc, argv);
-        Logger::init("filename");
+        Logger::init();
     	MainWindow w;
         w.show();
         ret = a.exec();

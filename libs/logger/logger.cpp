@@ -5,12 +5,19 @@
  */
 
 #include <QtCore/QDateTime>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+
 #include "logger.h"
 #include "message/logger_info.h"
 #include "message/logger_debug.h"
 #include "message/logger_warning.h"
-
-//std::unique_ptr<Logger> Logger::instance = nullptr;
+/**
+ *  Variable "global" (solo tiene scope en este archivo)
+ *  que apunta al archivo de loggeo.
+ */
+static std::fstream log_file(FILE_NAME, std::ios_base::out | std::ios_base::trunc);
 /**
  * handler para formatear los mensajes de salida del log.
  * @param type
@@ -27,7 +34,7 @@ Logger& Logger::instance() {
     static Logger s;
     return s;
 }
-void Logger::init(const std::string &filename) {
+void Logger::init() {
     Logger::instance();
     qInstallMessageHandler(messageHandler);
 }
@@ -52,33 +59,40 @@ void Logger::warning(std::string msg) {
     Logger::instance().worker.pushMessage(ptr);
 }
 
-void messageHandler(QtMsgType type, const QMessageLogContext &context,
+void messageHandler(QtMsgType type, 
+                    __attribute__((unused)) const QMessageLogContext &context,
                     const QString &msg) {
     QByteArray localMsg = msg.toLocal8Bit();
     std::string currentDatetime = QDateTime::currentDateTime().
             toString("dd/MM/yyyy HH:mm:ss").toStdString();
-    //const char *file = context.file ? context.file : "";
-    //const char *function = context.function ? context.function : "";
+    std::ostringstream ss;
     switch (type) {
         case QtDebugMsg:
-            fprintf(stderr, "%s [DEBUG] %s\n", currentDatetime.data(),
-                    localMsg.constData());
+            ss  << currentDatetime.data() 
+                << " [DEBUG] "
+                << localMsg.constData();
             break;
         case QtInfoMsg:
-            fprintf(stderr, "%s [INFO] %s\n", currentDatetime.data(),
-                    localMsg.constData());
+            ss  << currentDatetime.data() 
+                << " [INFO] "
+                << localMsg.constData();
             break;
         case QtWarningMsg:
-            fprintf(stderr, "%s [WARNING] %s\n", currentDatetime.data(),
-                    localMsg.constData());
+            ss  << currentDatetime.data() 
+                << " [WARNING] "
+                << localMsg.constData();
             break;
         case QtCriticalMsg:
-            fprintf(stderr, "%s [CRITICAL] %s\n", currentDatetime.data(),
-                    localMsg.constData());
+            ss  << currentDatetime.data() 
+                << " [CRITICAL] "
+                << localMsg.constData();
             break;
         case QtFatalMsg:
-            fprintf(stderr, "%s [FATAL] %s\n", currentDatetime.data(),
-                    localMsg.constData());
+            ss  << currentDatetime.data() 
+                << " [FATAL] "
+                << localMsg.constData();
             break;
     }
+    log_file  << ss.str() << std::endl;
+    std::cerr << ss.str() << std::endl;
 }
