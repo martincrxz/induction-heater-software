@@ -6,17 +6,18 @@
 #include "classic_control_view.h"
 #include "ui_classic_control_view.h"
 
-#define ERROR   1
-#define OK      0
 
 ClassicControlView::ClassicControlView(QWidget *parent) :
     ControlConfiguration(parent),
     ui(new Ui::ClassicControlView)
 {
     ui->setupUi(this);
-    ui->kd_valjue->setValidator(new QDoubleValidator(-9999, 9999, 2));
-    ui->ki_value->setValidator(new QDoubleValidator(-9999, 9999, 2));
-    ui->kp_value->setValidator(new QDoubleValidator(-9999, 9999, 2));
+    this->kdValidator = new QDoubleValidator(-9999, 9999, 2);
+    this->kiValidator = new QDoubleValidator(-9999, 9999, 2);
+    this->kpValidator = new QDoubleValidator(-9999, 9999, 2);
+    ui->kd_valjue->setValidator(this->kdValidator);
+    ui->ki_value->setValidator(this->kiValidator);
+    ui->kp_value->setValidator(this->kpValidator);
 
    loadControlValues();
 }
@@ -24,6 +25,9 @@ ClassicControlView::ClassicControlView(QWidget *parent) :
 ClassicControlView::~ClassicControlView()
 {
     delete ui;
+    delete this->kdValidator;
+    delete this->kiValidator;
+    delete this->kpValidator;
 }
 
 bool ClassicControlView::validateInput()

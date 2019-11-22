@@ -38,6 +38,8 @@ private slots:
     void on_activateButton_clicked();
     void on_messagePrint(const char *str, unsigned char mode);
 
+    void on_deactivateButton_clicked();
+
 private:
     void resetLabel();
 

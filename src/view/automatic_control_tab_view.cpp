@@ -28,6 +28,7 @@ AutomaticControlTabView::AutomaticControlTabView(QWidget *parent) :
 AutomaticControlTabView::~AutomaticControlTabView()
 {
     delete ui;
+    delete this->resetLabelTimer;
     for (auto w: this->controlConfigViews) {
         delete w;
     }
@@ -38,7 +39,7 @@ void AutomaticControlTabView::on_controlTypeCombo_currentIndexChanged(int index)
     for (auto widget: this->controlConfigViews) {
         widget->hide();
     }
-
+    this->controlConfigViews[this->current]->stop();
     ui->controlConfiguration->addWidget(this->controlConfigViews[index]);
     this->controlConfigViews[index]->show();
     this->current = index;
@@ -50,6 +51,7 @@ void AutomaticControlTabView::on_activateButton_clicked()
     if ( !isGood ) {
         on_messagePrint("Hay un error en los parámetros de control.", ERROR);
     }
+    this->controlConfigViews[this->current]->start();
 }
 
 void AutomaticControlTabView::on_messagePrint(const char *str, unsigned char mode)
@@ -65,4 +67,9 @@ void AutomaticControlTabView::on_messagePrint(const char *str, unsigned char mod
 
 void AutomaticControlTabView::resetLabel() {
     ui->warningLabel->setText("");
+}
+
+void AutomaticControlTabView::on_deactivateButton_clicked()
+{
+    this->controlConfigViews[this->current]->stop();
 }
