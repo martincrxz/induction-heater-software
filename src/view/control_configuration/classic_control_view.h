@@ -21,6 +21,7 @@ public:
     explicit ClassicControlView(QWidget *parent = 0);
     ~ClassicControlView();
     bool validateInput() override;
+    void instantiate() override;
 
 private slots:
     void on_saveButton_clicked();

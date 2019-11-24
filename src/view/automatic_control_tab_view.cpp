@@ -40,6 +40,8 @@ void AutomaticControlTabView::on_controlTypeCombo_currentIndexChanged(int index)
     for (auto widget: this->controlConfigViews) {
         widget->hide();
     }
+    // TODO: esto no me gusta acá, debería stoppearse el antiguo hilo de control
+    // cuando se active el nuevo.
     this->controlConfigViews[this->current]->stop();
     ui->controlConfiguration->addWidget(this->controlConfigViews[index]);
     this->controlConfigViews[index]->show();

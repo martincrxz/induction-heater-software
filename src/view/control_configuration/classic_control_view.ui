@@ -64,7 +64,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLineEdit" name="kd_valjue"/>
+      <widget class="QLineEdit" name="kd_value"/>
      </item>
     </layout>
    </item>

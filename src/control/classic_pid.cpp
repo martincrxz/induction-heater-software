@@ -8,7 +8,10 @@
 #include "logger/logger.h"
 
 ClassicPID::ClassicPID(float kp, float ki, float kd): Kp(kp), Ki(ki), Kd(kd) {
-		
+	std::ostringstream oss;
+	oss << "ClassicPID constructor ( kp= ";
+	oss << kp << ", kd= " << kd << ", ki= " << ki << ")";
+	Logger::debug(oss.str());		
 }
 
 int ClassicPID::process(int data) {

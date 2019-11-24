@@ -15,8 +15,8 @@ void ControlConfiguration::start()
 {
     Logger::info("Initiating control algorithm");
     if (this->controlAlgorithm == nullptr) {
-        this->controlAlgorithm.reset(new ClassicPID(1,2,3));
-        //this->instantiate();
+//        this->controlAlgorithm.reset(new ClassicPID(1,2,3));
+        this->instantiate();
         emit message("Se activó el proceso de control correctamente", OK);
     } else {
         emit message("Hay un proceso activo.", ERROR);

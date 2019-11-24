@@ -32,8 +32,11 @@ public:
      * sus recursos, dejando a nullptr el smart pointer
      */
     void stop();
-    virtual void instantiate(){}
-private:
+    /**
+     * @brief instancia el tipo de control de forma polimorfica
+     */
+    virtual void instantiate() = 0;
+protected:
     std::unique_ptr<Algorithm> controlAlgorithm;
 
 signals:
