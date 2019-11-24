@@ -28,6 +28,7 @@ AutomaticControlTabView::AutomaticControlTabView(QWidget *parent) :
 AutomaticControlTabView::~AutomaticControlTabView()
 {
     delete ui;
+    this->resetLabelTimer->stop();
     delete this->resetLabelTimer;
     for (auto w: this->controlConfigViews) {
         delete w;

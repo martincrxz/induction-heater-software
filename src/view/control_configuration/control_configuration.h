@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <memory>
 
-#include "src/control/algorithm.h"
+#include "../../control/algorithm.h"
 
 #define ERROR   1
 #define OK      0
@@ -14,6 +14,7 @@ class ControlConfiguration : public QWidget
     Q_OBJECT
 public:
     explicit ControlConfiguration(QWidget *parent = nullptr);
+    virtual ~ControlConfiguration();
     /**
      * @brief Valida el input del usuario. Se usa tanto para
      * activar el control, como para guardar los datos en un

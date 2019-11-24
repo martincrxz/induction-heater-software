@@ -33,11 +33,14 @@ private slots:
     void on_controlTypeCombo_currentIndexChanged(int index);
     /**
      * @brief chequea que los parámetros estén bien seteados
-     * y ¿lanza el hilo de ejecucion?
+     * y lanza el hilo de ejecucion
      */
     void on_activateButton_clicked();
     void on_messagePrint(const char *str, unsigned char mode);
-
+    /**
+     * @brief Detiene el hilo de ejecución (si lo hay) y libera
+     * los recursos.
+     */
     void on_deactivateButton_clicked();
 
 private:

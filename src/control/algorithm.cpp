@@ -16,6 +16,7 @@ void Algorithm::run() {
             int msg;
             queue.pop(msg, true);
             if (msg < 0) {
+                Logger::info("Exiting control algorithm");
                 keep_processing = false;
             } else {
             	this->process(msg);
@@ -34,4 +35,6 @@ void Algorithm::stop() {
 
 Algorithm::~Algorithm() {
 	Logger::debug("Destroying Algorithm");
+    this->stop();
+    this->wait();
 }
