@@ -65,7 +65,8 @@ SOURCES += \
     src/view/control_configuration/fuzzy_control_view.cpp \
     src/view/control_configuration/control_configuration.cpp \
     src/control/algorithm.cpp \
-    src/control/classic_pid.cpp
+    src/control/classic_pid.cpp \
+    libs/logger/message/logger_critical.cpp
 
 
 
@@ -111,7 +112,8 @@ HEADERS += \
     src/view/control_configuration/fuzzy_control_view.h \
     src/view/control_configuration/control_configuration.h \
     src/control/algorithm.h \
-    src/control/classic_pid.h
+    src/control/classic_pid.h \
+    libs/logger/message/logger_critical.h
 
 FORMS += \
 		src/view/auto_tunning_tab_view.ui \
