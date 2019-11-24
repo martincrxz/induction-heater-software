@@ -15,7 +15,7 @@ private:
 public:
 	ClassicPID(float kp, float ki, float kd);
 	virtual ~ClassicPID() = default;
-	int process(int data) override;
+	virtual int process(std::shared_ptr<TemperatureReading> data) override;
 };
 
 

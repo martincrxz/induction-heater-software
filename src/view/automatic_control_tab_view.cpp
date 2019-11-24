@@ -37,6 +37,7 @@ AutomaticControlTabView::~AutomaticControlTabView()
 
 void AutomaticControlTabView::on_controlTypeCombo_currentIndexChanged(int index)
 {
+    std::lock_guard<std::mutex> lock(this->mutex);
     for (auto widget: this->controlConfigViews) {
         widget->hide();
     }
@@ -50,6 +51,7 @@ void AutomaticControlTabView::on_controlTypeCombo_currentIndexChanged(int index)
 
 void AutomaticControlTabView::on_activateButton_clicked()
 {
+    std::lock_guard<std::mutex> lock(this->mutex);
     bool isGood = this->controlConfigViews[this->current]->validateInput();
     if ( !isGood ) {
         on_messagePrint("Hay un error en los parámetros de control.", ERROR);
@@ -74,5 +76,11 @@ void AutomaticControlTabView::resetLabel() {
 
 void AutomaticControlTabView::on_deactivateButton_clicked()
 {
+    std::lock_guard<std::mutex> lock(this->mutex);
     this->controlConfigViews[this->current]->stop();
+}
+
+void AutomaticControlTabView::dataAvailable(TemperatureReading &temp) {
+    std::lock_guard<std::mutex> lock(this->mutex);
+    this->controlConfigViews[this->current]->dataAvailable(temp);
 }

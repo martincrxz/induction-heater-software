@@ -1,9 +1,7 @@
-
 /*
  * Created by Federico Manuel Gomez Peter
  * on 13/10/19.
  */
-
 #include "temperature_reading.h"
 //#include "endianness_config.h"
 
@@ -31,6 +29,10 @@ TemperatureReading::TemperatureReading(QByteArray &buff):
     this->data += (float)(((uint8_t)buff[2] & 0x7f) * 16.0);
     this->data *=  1.0 - 2.0*(((uint8_t)buff[2] & 0x80) >> 7);*/
 }
+
+TemperatureReading::TemperatureReading(TemperatureReading &copy): 
+        IncomingMessage(TEMPERATURE_READING),
+        data(copy.data) {}
 
 float TemperatureReading::getData() {
     return data;

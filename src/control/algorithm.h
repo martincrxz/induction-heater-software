@@ -7,24 +7,25 @@
 
 #include <QtCore/QThread>
 #include <memory>
-
 #include <stream.h>
+
+#include "../connection/protocol/temperature_reading.h"
 
 class Algorithm : public QThread{
     Q_OBJECT
 
 private:
-	IO::Stream<int> queue;
+	IO::Stream<std::shared_ptr<TemperatureReading>> queue;
     bool keep_processing{true};
     /**
      * @brief Lanza el hilo de ejecución que toma elementos de a uno y
      * los procesa de forma polimorfica (dependiendo de cada tipo de control)
      */
     void run() override;
-    virtual int process(int data) = 0;
+    virtual int process(std::shared_ptr<TemperatureReading> data) = 0;
 
 public slots:
-	void dataAvailable(int data);
+	void dataAvailable(TemperatureReading &data);
 
 public:
 	Algorithm() = default;

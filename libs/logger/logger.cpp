@@ -11,8 +11,10 @@
 
 #include "logger.h"
 #include "message/logger_info.h"
-#include "message/logger_debug.h"
+#include "message/logger_critical.h"
 #include "message/logger_warning.h"
+#include "message/logger_debug.h"
+
 /**
  *  Variable "global" (solo tiene scope en este archivo)
  *  que apunta al archivo de loggeo.
@@ -56,6 +58,12 @@ void Logger::debug(std::string msg) {
 
 void Logger::warning(std::string msg) {
     std::shared_ptr<LoggerMessage> ptr(new LoggerWarning(msg));
+    Logger::instance().worker.pushMessage(ptr);
+}
+
+void Logger::critical(std::string msg) {
+    LoggerCritical *log = new LoggerCritical(msg);
+    std::shared_ptr<LoggerMessage> ptr(log);
     Logger::instance().worker.pushMessage(ptr);
 }
 

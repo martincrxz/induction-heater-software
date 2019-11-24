@@ -6,6 +6,7 @@
 #include <QDoubleValidator>
 
 #include "control_configuration.h"
+#include "../../connection/protocol/temperature_reading.h"
 
 #define FILE_PATH "./classic_control_parameters.txt"
 
@@ -22,6 +23,7 @@ public:
     ~ClassicControlView();
     bool validateInput() override;
     void instantiate() override;
+    void dataAvailable(TemperatureReading &temp);
 
 private slots:
     void on_saveButton_clicked();

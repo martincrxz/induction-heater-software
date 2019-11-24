@@ -8,8 +8,10 @@
 #include <QtWidgets/QPushButton>
 #include <QTimer>
 #include <vector>
+#include <mutex>
 
 #include "control_configuration/control_configuration.h"
+#include "../connection/protocol/temperature_reading.h"
 
 namespace Ui {
 class AutomaticControlTabView;
@@ -22,6 +24,11 @@ class AutomaticControlTabView : public QWidget
 public:
     explicit AutomaticControlTabView(QWidget *parent = 0);
     ~AutomaticControlTabView();
+    /**
+     * @brief postea la temperatura leida para calcular la potencia
+     * del potenciometro con el algoritmo de control.
+     */
+    void dataAvailable(TemperatureReading &temp);
 
 private slots:
     /**
@@ -50,6 +57,7 @@ private:
     QTimer *resetLabelTimer;
     std::vector<ControlConfiguration *> controlConfigViews;
     unsigned int current{0};
+    std::mutex mutex;
 };
 
 #endif // AUTOMATIC_CONTROL_TAB_VIEW_H

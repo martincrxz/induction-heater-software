@@ -63,6 +63,7 @@ void MainWindow::onTemperatureDataArrived(std::shared_ptr<MicroMessage> msg) {
     Logger::info(log.str());
     // TODO: debo actualizar el gráfico, como el hilo de control
     this->chartView->dataAvailable(temp);
+    this->automaticView->dataAvailable(temp);
 }
 
 void MainWindow::onColdJunctionDataArrived(std::shared_ptr<MicroMessage> msg) {

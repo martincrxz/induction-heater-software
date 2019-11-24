@@ -32,3 +32,9 @@ void ControlConfiguration::stop() {
         emit message("No hay proceso que desactivar", ERROR);
     }
 }
+
+void ControlConfiguration::dataAvailable(TemperatureReading &temp) {
+    if (this->controlAlgorithm != nullptr) {
+        this->controlAlgorithm->dataAvailable(temp);
+    }
+}

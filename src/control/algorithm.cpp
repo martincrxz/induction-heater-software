@@ -6,16 +6,17 @@
 #include "algorithm.h"
 #include "logger/logger.h"
 
-void Algorithm::dataAvailable(int data) {
-	this->queue.push(data);
+void Algorithm::dataAvailable(TemperatureReading &data) {
+    std::shared_ptr<TemperatureReading> temp(new TemperatureReading(data));
+	this->queue.push(temp);
 }
 
 void Algorithm::run() {
 	 try {
         while (keep_processing) {
-            int msg;
+            std::shared_ptr<TemperatureReading> msg;
             queue.pop(msg, true);
-            if (msg < 0) {
+            if (msg == nullptr) {
                 Logger::info("Exiting control algorithm");
                 keep_processing = false;
             } else {
@@ -23,14 +24,14 @@ void Algorithm::run() {
             }
         }
     } catch(std::exception &e) {
-        std::cerr << e.what() << std::endl;
+        Logger::critical(e.what());
     } catch(...) {
-        std::cerr << "Unknown error in Algorithm::run" << std::endl;
+        Logger::critical("Unknown error in Algorithm::run");
     }
 }
 
 void Algorithm::stop() {
-	this->queue.push(-1);
+	this->queue.push(nullptr);
 }
 
 Algorithm::~Algorithm() {

@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "../../control/algorithm.h"
+#include "../../connection/protocol/temperature_reading.h"
 
 #define ERROR   1
 #define OK      0
@@ -36,6 +37,7 @@ public:
      * @brief instancia el tipo de control de forma polimorfica
      */
     virtual void instantiate() = 0;
+    void dataAvailable(TemperatureReading &temp);
 protected:
     std::unique_ptr<Algorithm> controlAlgorithm;
 

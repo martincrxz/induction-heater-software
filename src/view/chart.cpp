@@ -39,7 +39,7 @@ Chart::Chart(QGraphicsItem *parent, Qt::WindowFlags wFlags) :
 }
 
 Chart::~Chart() {
-
+    this->acceptData = false;
 }
 
 void Chart::append(double x, double y) {

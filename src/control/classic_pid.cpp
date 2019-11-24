@@ -14,10 +14,10 @@ ClassicPID::ClassicPID(float kp, float ki, float kd): Kp(kp), Ki(ki), Kd(kd) {
 	Logger::debug(oss.str());		
 }
 
-int ClassicPID::process(int data) {
+int ClassicPID::process(std::shared_ptr<TemperatureReading> temp) {
 	std::ostringstream oss;
 	oss << "procesanding: ";
-	oss << data;
+	oss << temp->getData();
 	Logger::info(oss.str());
     return 0;
 }

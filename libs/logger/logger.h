@@ -43,6 +43,11 @@ public:
      */
     static void warning(std::string msg);
     /**
+     * @brief crea un objeto LoggerCritical y se pushea a la queue
+     * @param msg
+     */
+    static void critical(std::string msg);
+    /**
      * @brief Liberará los recursos del worker de forma ordenada
      */
     virtual ~Logger();
