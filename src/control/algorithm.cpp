@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "algorithm.h"
+#include "logger/logger.h"
 
 void Algorithm::dataAvailable(int data) {
 	this->queue.push(data);
@@ -29,4 +30,8 @@ void Algorithm::run() {
 
 void Algorithm::stop() {
 	this->queue.push(-1);
+}
+
+Algorithm::~Algorithm() {
+	Logger::debug("Destroying Algorithm");
 }

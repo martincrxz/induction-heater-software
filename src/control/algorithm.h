@@ -28,7 +28,7 @@ public slots:
 
 public:
 	Algorithm() = default;
-	virtual ~Algorithm() = default;
+	virtual ~Algorithm();
 	/**
      * @brief Se encarga de terminar la ejecución ordenada
      * del hilo
