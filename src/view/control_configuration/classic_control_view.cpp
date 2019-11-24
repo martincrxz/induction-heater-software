@@ -98,4 +98,5 @@ void ClassicControlView::instantiate() {
     float kd = this->ui->kd_value->text().toFloat();
     float ki = this->ui->ki_value->text().toFloat();
     this->controlAlgorithm.reset(new ClassicPID(kp, ki, kd));
+    this->controlAlgorithm->start();
 }
