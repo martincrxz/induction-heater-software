@@ -13,3 +13,6 @@ old/app.log
 # Visual Studio's building folder
 out/*
 .vs/*
+# Codigo viejo
+old
+old/*
