@@ -53,10 +53,12 @@ void AutomaticControlTabView::on_activateButton_clicked()
 {
     std::lock_guard<std::mutex> lock(this->mutex);
     bool isGood = this->controlConfigViews[this->current]->validateInput();
+    // TODO: agregar validador del textinput.
+    float targetTemp = this->ui->targetTemperatureTextEdit->text().toFloat();
     if ( !isGood ) {
         on_messagePrint("Hay un error en los parámetros de control.", ERROR);
     }
-    this->controlConfigViews[this->current]->start();
+    this->controlConfigViews[this->current]->start(targetTemp);
 }
 
 void AutomaticControlTabView::on_messagePrint(const char *str, unsigned char mode)

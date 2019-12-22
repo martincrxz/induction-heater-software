@@ -25,10 +25,13 @@ private:
     virtual int process(std::shared_ptr<TemperatureReading> data) = 0;
 
 public slots:
-	void dataAvailable(TemperatureReading &data);
+	void receiveData(TemperatureReading &data);
+
+protected:
+    float targetTemp = 0;
 
 public:
-	Algorithm() = default;
+	Algorithm(float targetTemp);
 	virtual ~Algorithm();
 	/**
      * @brief Se encarga de terminar la ejecución ordenada

@@ -26,8 +26,9 @@ public:
     /**
      * @brief Instanciará un objeto que hereda de ALgorithm.
      * Luego se ejecutará a este en un hilo aparte
+     * @param targetTemperature
      */
-    void start();
+    void start(float targetTemp);
     /**
      * @brief Si el hilo existe, detiene su ejecución y libera
      * sus recursos, dejando a nullptr el smart pointer
@@ -36,7 +37,7 @@ public:
     /**
      * @brief instancia el tipo de control de forma polimorfica
      */
-    virtual void instantiate() = 0;
+    virtual void instantiate(float targetTemp) = 0;
     void dataAvailable(TemperatureReading &temp);
 protected:
     std::unique_ptr<Algorithm> controlAlgorithm;

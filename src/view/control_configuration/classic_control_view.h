@@ -22,7 +22,11 @@ public:
     explicit ClassicControlView(QWidget *parent = 0);
     ~ClassicControlView();
     bool validateInput() override;
-    void instantiate() override;
+    /**
+     * @brief instancia el algoritmo de control
+     * @param objective temperature
+     */
+    void instantiate(float targetTemp) override;
     void dataAvailable(TemperatureReading &temp);
 
 private slots:

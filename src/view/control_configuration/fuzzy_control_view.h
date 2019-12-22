@@ -16,7 +16,7 @@ public:
     explicit FuzzyControlView(QWidget *parent = 0);
     ~FuzzyControlView();
     bool validateInput() override;
-    void instantiate() override;
+    void instantiate(float targetTemp) override;
     
 private:
     Ui::FuzzyControlView *ui;

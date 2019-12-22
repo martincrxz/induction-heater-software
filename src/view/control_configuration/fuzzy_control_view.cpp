@@ -18,6 +18,6 @@ bool FuzzyControlView::validateInput()
     return true;
 }
 
-void FuzzyControlView::instantiate() {
+void FuzzyControlView::instantiate(float targetTemp) {
     this->controlAlgorithm.reset(nullptr);
 }

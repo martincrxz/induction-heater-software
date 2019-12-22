@@ -6,7 +6,9 @@
 #include "algorithm.h"
 #include "logger/logger.h"
 
-void Algorithm::dataAvailable(TemperatureReading &data) {
+Algorithm::Algorithm(float targetTemp): targetTemp(targetTemp) {}
+
+void Algorithm::receiveData(TemperatureReading &data) {
     std::shared_ptr<TemperatureReading> temp(new TemperatureReading(data));
 	this->queue.push(temp);
 }
