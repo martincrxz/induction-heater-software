@@ -21,7 +21,7 @@ private:
     uint64_t iteration = 0;
 
 public:
-	ClassicPID(float kp, float ki, float kd, float targetTemp);
+	ClassicPID(float kp, float ki, float kd, float targetTemp, SerialPort *sp);
 	virtual ~ClassicPID() = default;
 	/**
 	 *	Dado una temperatura nueva, calcula por medio del control clásico
@@ -32,7 +32,7 @@ public:
 	 *	La aplicación no debe saber como el horno controla la potencia a 
 	 *	aplicar. Esta transformación debe hacerla el micro.
 	 */
-	virtual int process(std::shared_ptr<TemperatureReading> data) override;
+	virtual unsigned char process(std::shared_ptr<TemperatureReading> data) override;
 };
 
 

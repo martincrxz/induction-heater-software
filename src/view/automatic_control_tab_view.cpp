@@ -5,14 +5,16 @@
 
 #define ERROR 1
 
-AutomaticControlTabView::AutomaticControlTabView(QWidget *parent) :
+AutomaticControlTabView::AutomaticControlTabView(QWidget *parent,
+                                                 SerialPort *pPort) :
     QWidget(parent),
-    ui(new Ui::AutomaticControlTabView)
+    ui(new Ui::AutomaticControlTabView),
+    port(pPort)
 {
     ui->setupUi(this);
-    auto classic_control = new ClassicControlView(this);
+    auto classic_control = new ClassicControlView(this, this->port);
     this->controlConfigViews.emplace_back(classic_control);
-    this->controlConfigViews.emplace_back(new FuzzyControlView(this));
+    this->controlConfigViews.emplace_back(new FuzzyControlView(this, this->port));
     this->current = ui->controlTypeCombo->currentIndex();
     ui->controlConfiguration->addWidget(this->controlConfigViews[this->current]);
 

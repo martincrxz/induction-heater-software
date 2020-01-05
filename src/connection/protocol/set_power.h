@@ -12,9 +12,12 @@
 
 class SetPower: public OutgoingMessage {
 public:
-    SetPower();
+    SetPower(unsigned char taps);
     virtual ~SetPower() = default;
     QByteArray serialize() override;
+
+private:
+    unsigned char taps;
 };
 
 

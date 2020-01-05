@@ -9,8 +9,8 @@
 #include "../../control/classic_pid.h"
 
 
-ClassicControlView::ClassicControlView(QWidget *parent) :
-    ControlConfiguration(parent),
+ClassicControlView::ClassicControlView(QWidget *parent, SerialPort *sp) :
+    ControlConfiguration(parent, sp),
     ui(new Ui::ClassicControlView)
 {
     ui->setupUi(this);
@@ -97,6 +97,6 @@ void ClassicControlView::instantiate(float targetTemp) {
     float kp = this->ui->kp_value->text().toFloat();
     float kd = this->ui->kd_value->text().toFloat();
     float ki = this->ui->ki_value->text().toFloat();
-    this->controlAlgorithm.reset(new ClassicPID(kp, ki, kd, targetTemp));
+    this->controlAlgorithm.reset(new ClassicPID(kp, ki, kd, targetTemp, this->sp));
     this->controlAlgorithm->start();
 }

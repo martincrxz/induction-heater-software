@@ -2,7 +2,9 @@
 #include "logger/logger.h"
 
 #include "../../control/classic_pid.h"
-ControlConfiguration::ControlConfiguration(QWidget *parent) : QWidget(parent)
+ControlConfiguration::ControlConfiguration(QWidget *parent, SerialPort *sp) :
+        QWidget(parent),
+        sp(sp)
 {
 
 }

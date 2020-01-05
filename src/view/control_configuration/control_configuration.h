@@ -14,7 +14,7 @@ class ControlConfiguration : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ControlConfiguration(QWidget *parent = nullptr);
+    explicit ControlConfiguration(QWidget *parent, SerialPort *sp);
     virtual ~ControlConfiguration();
     /**
      * @brief Valida el input del usuario. Se usa tanto para
@@ -40,6 +40,7 @@ public:
     virtual void instantiate(float targetTemp) = 0;
     void dataAvailable(TemperatureReading &temp);
 protected:
+    SerialPort *sp;
     std::unique_ptr<Algorithm> controlAlgorithm;
 
 signals:

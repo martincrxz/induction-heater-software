@@ -13,7 +13,7 @@ class FuzzyControlView : public ControlConfiguration
     Q_OBJECT
 
 public:
-    explicit FuzzyControlView(QWidget *parent = 0);
+    explicit FuzzyControlView(QWidget *parent, SerialPort *sp);
     ~FuzzyControlView();
     bool validateInput() override;
     void instantiate(float targetTemp) override;

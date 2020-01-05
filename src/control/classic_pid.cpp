@@ -10,12 +10,13 @@
 
 #include <cmath>
 
+//  TODO: se podría hacer configurable en runtime
 #define WINDOW_SIZE 4
 #define MINIMUM_TAP 0 	// potencia maxima (100%)
 #define MAXIMUM_TAP 127	// potencia minima (0%) 
 
-ClassicPID::ClassicPID(float kp, float ki, float kd, float targetTemp): 
-		Algorithm(targetTemp), Kp(kp), Ki(ki), Kd(kd), 
+ClassicPID::ClassicPID(float kp, float ki, float kd, float targetTemp, SerialPort *sp):
+		Algorithm(targetTemp, sp), Kp(kp), Ki(ki), Kd(kd),
 		errorValues() {
 	std::ostringstream oss;
 	oss << "ClassicPID constructor ( kp= ";
@@ -23,7 +24,7 @@ ClassicPID::ClassicPID(float kp, float ki, float kd, float targetTemp):
 	Logger::debug(oss.str());		
 }
 
-int ClassicPID::process(std::shared_ptr<TemperatureReading> temp) {
+unsigned char ClassicPID::process(std::shared_ptr<TemperatureReading> temp) {
 	/**
 	 *	El control se va a aplicar usando una ventana de tiempo, donde se 
 	 *	calcula el error medio de esa ventana.
@@ -59,5 +60,5 @@ int ClassicPID::process(std::shared_ptr<TemperatureReading> temp) {
 	//	Se devuelve las vueltas del potenciometro (es muy feo esto, esta 
 	//	transformacion debería hacerla el código del micro).
 	float taps = (100 - power) * MAXIMUM_TAP / 100;
-    return (int) std::floor(taps);
+    return (unsigned char) std::floor(taps);
 }

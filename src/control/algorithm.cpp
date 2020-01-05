@@ -6,8 +6,11 @@
 
 #include "algorithm.h"
 #include "logger/logger.h"
+#include "../connection/protocol/set_power.h"
 
-Algorithm::Algorithm(float targetTemp): targetTemp(targetTemp) {}
+Algorithm::Algorithm(float targetTemp, SerialPort *sp):
+                        serialPort(sp),
+                        targetTemp(targetTemp) {}
 
 void Algorithm::receiveData(TemperatureReading &data) {
     std::shared_ptr<TemperatureReading> temp(new TemperatureReading(data));
@@ -27,11 +30,13 @@ void Algorithm::run() {
                 std::ostringstream oss;
                 oss << "Recibido " << msg->getData() << " °C";
                 Logger::info(oss.str());
-            	int tapToSend = this->process(msg);
+            	std::uint8_t tapToSend = this->process(msg);
                 oss = std::ostringstream();
                 oss << "Vueltas a enviar: ";
-                oss << tapToSend;
+                oss << (int) tapToSend;
                 Logger::info(oss.str());
+                std::shared_ptr<MicroMessage> msgPower(new SetPower(tapToSend));
+                this->serialPort->send(msgPower);
             }
         }
     } catch(std::exception &e) {

@@ -19,7 +19,7 @@ class ClassicControlView : public ControlConfiguration
     Q_OBJECT
 
 public:
-    explicit ClassicControlView(QWidget *parent = 0);
+    explicit ClassicControlView(QWidget *parent, SerialPort *sp);
     ~ClassicControlView();
     bool validateInput() override;
     /**
@@ -34,7 +34,6 @@ private slots:
 
 private:
     void loadControlValues();
-
     Ui::ClassicControlView *ui;
     QDoubleValidator *kpValidator;
     QDoubleValidator *kdValidator;

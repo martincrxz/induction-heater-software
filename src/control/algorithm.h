@@ -10,6 +10,7 @@
 #include <stream.h>
 
 #include "../connection/protocol/temperature_reading.h"
+#include "../connection/serialport.h"
 
 class Algorithm : public QThread{
     Q_OBJECT
@@ -17,12 +18,13 @@ class Algorithm : public QThread{
 private:
 	IO::Stream<std::shared_ptr<TemperatureReading>> queue;
     bool keep_processing{true};
+    SerialPort *serialPort;
     /**
      * @brief Lanza el hilo de ejecución que toma elementos de a uno y
      * los procesa de forma polimorfica (dependiendo de cada tipo de control)
      */
     void run() override;
-    virtual int process(std::shared_ptr<TemperatureReading> data) = 0;
+    virtual unsigned char process(std::shared_ptr<TemperatureReading> data) = 0;
 
 public slots:
 	void receiveData(TemperatureReading &data);
@@ -31,7 +33,7 @@ protected:
     float targetTemp = 0;
 
 public:
-	Algorithm(float targetTemp);
+	Algorithm(float targetTemp, SerialPort *sp);
 	virtual ~Algorithm();
 	/**
      * @brief Se encarga de terminar la ejecución ordenada

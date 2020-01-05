@@ -12,6 +12,7 @@
 
 #include "control_configuration/control_configuration.h"
 #include "../connection/protocol/temperature_reading.h"
+#include "../connection/serialport.h"
 
 namespace Ui {
 class AutomaticControlTabView;
@@ -22,7 +23,7 @@ class AutomaticControlTabView : public QWidget
     Q_OBJECT
 
 public:
-    explicit AutomaticControlTabView(QWidget *parent = 0);
+    explicit AutomaticControlTabView(QWidget *parent, SerialPort *pPort);
     ~AutomaticControlTabView();
     /**
      * @brief postea la temperatura leida para calcular la potencia
@@ -54,6 +55,7 @@ private:
     void resetLabel();
 
     Ui::AutomaticControlTabView *ui;
+    SerialPort *port;
     QTimer *resetLabelTimer;
     std::vector<ControlConfiguration *> controlConfigViews;
     unsigned int current{0};
