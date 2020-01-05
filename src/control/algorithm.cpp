@@ -2,6 +2,7 @@
 // Created by Martín García on 11/11/2019.
 //
 #include <iostream>
+#include <sstream>
 
 #include "algorithm.h"
 #include "logger/logger.h"
@@ -17,12 +18,20 @@ void Algorithm::run() {
 	 try {
         while (keep_processing) {
             std::shared_ptr<TemperatureReading> msg;
+            // pop bloqueante
             queue.pop(msg, true);
             if (msg == nullptr) {
                 Logger::info("Exiting control algorithm");
                 keep_processing = false;
             } else {
-            	this->process(msg);
+                std::ostringstream oss;
+                oss << "Recibido " << msg->getData() << " °C";
+                Logger::info(oss.str());
+            	int tapToSend = this->process(msg);
+                oss = std::ostringstream();
+                oss << "Vueltas a enviar: ";
+                oss << tapToSend;
+                Logger::info(oss.str());
             }
         }
     } catch(std::exception &e) {
