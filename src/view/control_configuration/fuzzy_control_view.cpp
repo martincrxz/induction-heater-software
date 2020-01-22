@@ -1,8 +1,8 @@
 #include "fuzzy_control_view.h"
 #include "ui_fuzzy_control_view.h"
 
-FuzzyControlView::FuzzyControlView(QWidget *parent, SerialPort *sp) :
-    ControlConfiguration(parent, sp),
+FuzzyControlView::FuzzyControlView(QWidget *parent, SerialPort *s, QDoubleValidator *tv) :
+    ControlConfiguration(parent, sp, tv),
     ui(new Ui::FuzzyControlView)
 {
     ui->setupUi(this);
@@ -13,7 +13,7 @@ FuzzyControlView::~FuzzyControlView()
     delete ui;
 }
 
-bool FuzzyControlView::validateInput()
+bool FuzzyControlView::validateInput(QString *targetTemp)
 {
     return true;
 }

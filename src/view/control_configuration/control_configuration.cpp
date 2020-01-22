@@ -2,9 +2,10 @@
 #include "logger/logger.h"
 
 #include "../../control/classic_pid.h"
-ControlConfiguration::ControlConfiguration(QWidget *parent, SerialPort *sp) :
+ControlConfiguration::ControlConfiguration(QWidget *parent, SerialPort *sp, QDoubleValidator *tv) :
         QWidget(parent),
-        sp(sp)
+        sp(sp),
+        tempValidator(tv)
 {
 
 }

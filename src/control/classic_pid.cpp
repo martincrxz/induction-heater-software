@@ -20,7 +20,8 @@ ClassicPID::ClassicPID(float kp, float ki, float kd, float targetTemp, SerialPor
 		errorValues() {
 	std::ostringstream oss;
 	oss << "ClassicPID constructor ( kp= ";
-	oss << kp << ", kd= " << kd << ", ki= " << ki << ")";
+	oss << kp << ", kd= " << kd << ", ki= " << ki << ") ";
+	oss << "Target Temperature: " << targetTemp << " °C";
 	Logger::debug(oss.str());		
 }
 

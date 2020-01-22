@@ -9,17 +9,15 @@
 #include "../../control/classic_pid.h"
 
 
-ClassicControlView::ClassicControlView(QWidget *parent, SerialPort *sp) :
-    ControlConfiguration(parent, sp),
+ClassicControlView::ClassicControlView(QWidget *parent, SerialPort *sp, QDoubleValidator *tv) :
+    ControlConfiguration(parent, sp, tv),
     ui(new Ui::ClassicControlView)
 {
     ui->setupUi(this);
-    this->kdValidator = new QDoubleValidator(-9999, 9999, 2);
-    this->kiValidator = new QDoubleValidator(-9999, 9999, 2);
-    this->kpValidator = new QDoubleValidator(-9999, 9999, 2);
-    ui->kd_value->setValidator(this->kdValidator);
-    ui->ki_value->setValidator(this->kiValidator);
-    ui->kp_value->setValidator(this->kpValidator);
+    this->kValidator = new QDoubleValidator(-9999, 9999, 2);
+    ui->kd_value->setValidator(this->kValidator);
+    ui->ki_value->setValidator(this->kValidator);
+    ui->kp_value->setValidator(this->kValidator);
 
    loadControlValues();
 }
@@ -27,28 +25,32 @@ ClassicControlView::ClassicControlView(QWidget *parent, SerialPort *sp) :
 ClassicControlView::~ClassicControlView()
 {
     delete ui;
-    delete this->kdValidator;
-    delete this->kiValidator;
-    delete this->kpValidator;
+    delete this->kValidator;
 }
 
-bool ClassicControlView::validateInput()
+bool ClassicControlView::validateInput(QString *targetTemp)
 {
     QString kd = ui->kd_value->text();
     QString ki = ui->ki_value->text();
     QString kp = ui->kp_value->text();
     int d = 0;
-    auto validator = ui->kd_value->validator();
-    auto kdState = validator->validate(kd, d);
-    auto kiState = validator->validate(ki, d);
-    auto kpState = validator->validate(kp, d);
-
+    auto kdState = this->kValidator->validate(kd, d);
+    auto kiState = this->kValidator->validate(ki, d);
+    auto kpState = this->kValidator->validate(kp, d);
+    if (targetTemp != nullptr) {
+        if (*targetTemp == "") {
+            return false;
+        }
+        auto tempState = this->tempValidator->validate(*targetTemp, d);
+        if (tempState != QValidator::Acceptable) {
+            return false;
+        }
+    }
     if ( kdState != QValidator::Acceptable ||
          kiState != QValidator::Acceptable ||
          kpState != QValidator::Acceptable ) {
         return false;
     }
-
     return true;
 }
 

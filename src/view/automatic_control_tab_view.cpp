@@ -12,9 +12,11 @@ AutomaticControlTabView::AutomaticControlTabView(QWidget *parent,
     port(pPort)
 {
     ui->setupUi(this);
-    auto classic_control = new ClassicControlView(this, this->port);
+    this->tempValidator = new QDoubleValidator(-99999, 99999, 2);
+    this->ui->targetTemperatureTextEdit->setValidator(this->tempValidator);
+    auto classic_control = new ClassicControlView(this, this->port, this->tempValidator);
     this->controlConfigViews.emplace_back(classic_control);
-    this->controlConfigViews.emplace_back(new FuzzyControlView(this, this->port));
+    this->controlConfigViews.emplace_back(new FuzzyControlView(this, this->port, this->tempValidator));
     this->current = ui->controlTypeCombo->currentIndex();
     ui->controlConfiguration->addWidget(this->controlConfigViews[this->current]);
 
@@ -32,6 +34,7 @@ AutomaticControlTabView::~AutomaticControlTabView()
     delete ui;
     this->resetLabelTimer->stop();
     delete this->resetLabelTimer;
+    delete this->tempValidator;
     for (auto w: this->controlConfigViews) {
         delete w;
     }
@@ -54,11 +57,13 @@ void AutomaticControlTabView::on_controlTypeCombo_currentIndexChanged(int index)
 void AutomaticControlTabView::on_activateButton_clicked()
 {
     std::lock_guard<std::mutex> lock(this->mutex);
-    bool isGood = this->controlConfigViews[this->current]->validateInput();
+    QString targetTempStr = this->ui->targetTemperatureTextEdit->text();
+    bool isGood = this->controlConfigViews[this->current]->validateInput(&targetTempStr);
     // TODO: agregar validador del textinput.
-    float targetTemp = this->ui->targetTemperatureTextEdit->text().toFloat();
+    float targetTemp = targetTempStr.toFloat();
     if ( !isGood ) {
         on_messagePrint("Hay un error en los parámetros de control.", ERROR);
+        return;
     }
     this->controlConfigViews[this->current]->start(targetTemp);
 }

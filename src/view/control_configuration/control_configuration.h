@@ -1,6 +1,8 @@
 #ifndef __CONTROL_CONFIGURATION_H__
 #define __CONTROL_CONFIGURATION_H__
 
+#include <QDoubleValidator>
+#include <QString>
 #include <QWidget>
 #include <memory>
 
@@ -14,7 +16,7 @@ class ControlConfiguration : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ControlConfiguration(QWidget *parent, SerialPort *sp);
+    ControlConfiguration(QWidget *parent, SerialPort *sp, QDoubleValidator *tv);
     virtual ~ControlConfiguration();
     /**
      * @brief Valida el input del usuario. Se usa tanto para
@@ -22,7 +24,7 @@ public:
      * archivo
      * @return
      */
-    virtual bool validateInput() = 0;
+    virtual bool validateInput(QString *targetTemp = nullptr) = 0;
     /**
      * @brief Instanciará un objeto que hereda de ALgorithm.
      * Luego se ejecutará a este en un hilo aparte
@@ -42,6 +44,7 @@ public:
 protected:
     SerialPort *sp;
     std::unique_ptr<Algorithm> controlAlgorithm;
+    QDoubleValidator *tempValidator;
 
 signals:
     void message(const char *str, unsigned char mode);
