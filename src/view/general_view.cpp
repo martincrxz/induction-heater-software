@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <logger/logger.h>
+
 #include "general_view.h"
 #include "ui_general_view.h"
 #include "../connection/serialport.h"
@@ -16,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     port = new SerialPort(this);
     equipmentView = new EquipmentStatusView(this);
     automaticView = new AutomaticControlTabView(this, this->port);
-    manualPowerView = new ManualPowerControlView(this);
+    manualPowerView = new ManualPowerControlView(this, this->port);
     autotunningView = new AutoTunningTabView(this);
     chartView = new ChartTabView(this);
 

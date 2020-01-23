@@ -6,10 +6,10 @@
 #define TRABAJOPROFESIONAL_CLASSIC_PID_H
 
 
-#include "algorithm.h"
+#include "control_algorithm.h"
 #include <cstdint>
 
-class ClassicPID : public Algorithm{
+class ClassicPID : public ControlAlgorithm{
 private:
     float Kp = 0, Ki = 0, Kd = 0;
     //	ventana de tiempo para procesar las muestras

@@ -6,7 +6,7 @@
 #include <QWidget>
 #include <memory>
 
-#include "../../control/algorithm.h"
+#include "../../control/control_algorithm.h"
 #include "../../connection/protocol/temperature_reading.h"
 
 #define ERROR   1
@@ -43,7 +43,7 @@ public:
     void dataAvailable(TemperatureReading &temp);
 protected:
     SerialPort *sp;
-    std::unique_ptr<Algorithm> controlAlgorithm;
+    std::unique_ptr<ControlAlgorithm> controlAlgorithm;
     QDoubleValidator *tempValidator;
 
 signals:

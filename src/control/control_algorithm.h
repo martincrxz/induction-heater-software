@@ -2,8 +2,8 @@
 // Created by Martín García on 11/11/2019.
 //
 
-#ifndef TRABAJOPROFESIONAL_ALGORITHM_H
-#define TRABAJOPROFESIONAL_ALGORITHM_H
+#ifndef TRABAJOPROFESIONAL_CONTROL_ALGORITHM_H
+#define TRABAJOPROFESIONAL_CONTROL_ALGORITHM_H
 
 #include <QtCore/QThread>
 #include <memory>
@@ -12,7 +12,7 @@
 #include "../connection/protocol/temperature_reading.h"
 #include "../connection/serialport.h"
 
-class Algorithm : public QThread{
+class ControlAlgorithm : public QThread{
     Q_OBJECT
 
 private:
@@ -33,14 +33,21 @@ protected:
     float targetTemp = 0;
 
 public:
-	Algorithm(float targetTemp, SerialPort *sp);
-	virtual ~Algorithm();
+	ControlAlgorithm(float targetTemp, SerialPort *sp);
+	virtual ~ControlAlgorithm();
 	/**
      * @brief Se encarga de terminar la ejecución ordenada
      * del hilo
      */
     void stop();
+    /**
+     * @brief Convierte la potencia (numero real entre 0 y 100) a vueltas 
+     * del potenciometro.
+     * @param  power: real de 0 a 100 (si está fuera de este limite lo ajusta solo)
+     * @return cantidad de vueltas para el potenciómetro   
+     */
+    static unsigned char powerToTaps(float power);
 };
 
 
-#endif //TRABAJOPROFESIONAL_ALGORITHM_H
+#endif //TRABAJOPROFESIONAL_CONTROL_ALGORITHM_H
