@@ -22,13 +22,14 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-signals:
-    void shutdownMessage(std::shared_ptr<MicroMessage> msg);
+
 public slots:
     void on_shutdownButton_clicked();
     void onTemperatureDataArrived(std::shared_ptr<MicroMessage> msg);
     void onColdJunctionDataArrived(std::shared_ptr<MicroMessage> msg);
     void thermocoupleChange(int);
+    void onPowerSetAckArrived(std::shared_ptr<MicroMessage> msg);
+    void setManualControl(int index);
 private:
     Ui::MainWindow *ui;
     SerialPort *port;

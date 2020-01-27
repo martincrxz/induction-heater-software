@@ -71,8 +71,7 @@ void messageHandler(QtMsgType type,
                     __attribute__((unused)) const QMessageLogContext &context,
                     const QString &msg) {
     QByteArray localMsg = msg.toLocal8Bit();
-    std::string currentDatetime = QDateTime::currentDateTime().
-            toString("dd/MM/yyyy HH:mm:ss").toStdString();
+    std::string currentDatetime = QDateTime::currentDateTime().toString("dd/MM/yyyy HH:mm:ss").toStdString();
     std::ostringstream ss;
     switch (type) {
         case QtDebugMsg:

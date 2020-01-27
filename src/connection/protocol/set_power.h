@@ -7,7 +7,6 @@
 #ifndef __SET_POWER_H__
 #define __SET_POWER_H__
 
-
 #include "outgoing_message.h"
 
 class SetPower: public OutgoingMessage {

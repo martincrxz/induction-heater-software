@@ -7,6 +7,8 @@
 #ifndef __POWER_SET_ACKNOWLEDGE_H__
 #define __POWER_SET_ACKNOWLEDGE_H__
 
+#define MINIMUM_TAP 0   // potencia maxima (100%)
+#define MAXIMUM_TAP 127 // potencia minima (0%)
 
 #include "incoming_message.h"
 
@@ -16,7 +18,7 @@ private:
 public:
     PowerSetAcknowledge(QByteArray &);
     virtual ~PowerSetAcknowledge() = default;
-    int getData();
+    float getPower();
 };
 
 

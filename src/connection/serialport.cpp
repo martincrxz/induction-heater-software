@@ -125,12 +125,17 @@ void SerialPort::processMessage(QByteArray buff){
                 Logger::info("Thermocouple configuration acknowledge message.");
                 break;
             case POWER_SET_ACKNOWLEDGE:
+                emit powerSetAcknowledge(msg);
                 Logger::info("Power set acknowledge message.");
                 break;
             case MANUAL_CONTROL_ACKNOWLEDGE:
+                emit manualControlAcknowledge(QString::number(MANUAL_CONTROL_ACKNOWLEDGE),
+                        "Manual control set");
                 Logger::info("Manual control activated message.");
                 break;
             case AUTOMATIC_CONTROL_ACKNOWLEDGE:
+                emit automaticControlAcknowledge(QString::number(AUTOMATIC_CONTROL_ACKNOWLEDGE),
+                        "Automatic control set");
                 Logger::info("Automatic control activated message.");
                 break;
             default:

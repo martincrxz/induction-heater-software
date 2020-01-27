@@ -10,7 +10,7 @@
 
 #include "outgoing_message.h"
 
-class SetManualControl: OutgoingMessage {
+class SetManualControl : public OutgoingMessage {
 public:
     SetManualControl();
     virtual ~SetManualControl() = default;

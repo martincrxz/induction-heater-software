@@ -4,6 +4,7 @@
  * on 13/10/19.
  */
 
+#include <iostream>
 #include "set_power.h"
 
 SetPower::SetPower(unsigned char i) : OutgoingMessage(SET_POWER), taps(i) {}

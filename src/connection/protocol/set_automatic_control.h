@@ -10,7 +10,7 @@
 
 #include "outgoing_message.h"
 
-class SetAutomaticControl: public OutgoingMessage {
+class SetAutomaticControl : public OutgoingMessage {
 public:
     SetAutomaticControl();
     virtual ~SetAutomaticControl() = default;
