@@ -10,11 +10,13 @@
 #define MINIMUM_TAP 0   // potencia maxima (100%)
 #define MAXIMUM_TAP 127 // potencia minima (0%)
 
+#include <cstdint>
+
 #include "incoming_message.h"
 
 class PowerSetAcknowledge: public IncomingMessage {
 private:
-    int data;
+    std::uint8_t data;
 public:
     PowerSetAcknowledge(QByteArray &);
     virtual ~PowerSetAcknowledge() = default;
