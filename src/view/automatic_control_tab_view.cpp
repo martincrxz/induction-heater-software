@@ -27,6 +27,7 @@ AutomaticControlTabView::AutomaticControlTabView(QWidget *parent,
             this, &AutomaticControlTabView::on_messagePrint);
 
     ui->warningLabel->setText("");
+    this->enableButtons(false);
 }
 
 AutomaticControlTabView::~AutomaticControlTabView()
@@ -92,4 +93,9 @@ void AutomaticControlTabView::on_deactivateButton_clicked()
 void AutomaticControlTabView::dataAvailable(TemperatureReading &temp) {
     std::lock_guard<std::mutex> lock(this->mutex);
     this->controlConfigViews[this->current]->dataAvailable(temp);
+}
+
+void AutomaticControlTabView::enableButtons(bool enable) {
+    this->ui->deactivateButton->setEnabled(enable);
+    this->ui->activateButton->setEnabled(enable);
 }

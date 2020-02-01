@@ -30,7 +30,13 @@ public:
      * del potenciometro con el algoritmo de control.
      */
     void dataAvailable(TemperatureReading &temp);
-
+    /**
+     * @brief Habilita (o no) los botones de la vista. Se usa para evitar
+     * envio de mensajes al micro que quieran controlar el horno cuando este
+     * se encuentre en modo manual.
+     * @param enable
+     */
+    void enableButtons(bool enable);
 private slots:
     /**
      * @brief Instancia la vista de paráemtros extras para ser
@@ -50,7 +56,6 @@ private slots:
      * los recursos.
      */
     void on_deactivateButton_clicked();
-
 private:
     void resetLabel();
 

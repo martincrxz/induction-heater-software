@@ -12,3 +12,8 @@ AutoTunningTabView::~AutoTunningTabView()
 {
     delete ui;
 }
+
+void AutoTunningTabView::enableButtons(bool enable) {
+	this->ui->activateButton->setEnabled(enable);
+	this->ui->deactivateButton->setEnabled(enable);
+}

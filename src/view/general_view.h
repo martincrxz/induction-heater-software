@@ -38,6 +38,7 @@ private:
     ManualPowerControlView *manualPowerView;
     AutoTunningTabView *autotunningView;
     ChartTabView *chartView;
+    void enableAutomaticControlButtons(bool enable);
 };
 
 #endif // MAINWINDOW_H

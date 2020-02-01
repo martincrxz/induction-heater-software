@@ -26,6 +26,13 @@ public:
      * @brief deja el mensaje de warning con texto vacio
      */
     void resetLabel();
+    /**
+     * @brief Habilita (o no) los botones de la vista. Se usa para evitar
+     * envio de mensajes al micro que quieran controlar el horno cuando este
+     * se encuentre en modo manual.
+     * @param enable
+     */
+    void enableButtons(bool enable);
     ~ManualPowerControlView();
 
 private slots:

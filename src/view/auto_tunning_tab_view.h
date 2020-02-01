@@ -14,6 +14,13 @@ class AutoTunningTabView : public QWidget
 public:
     explicit AutoTunningTabView(QWidget *parent = 0);
     ~AutoTunningTabView();
+    /**
+     * @brief Habilita (o no) los botones de la vista. Se usa para evitar
+     * envio de mensajes al micro que quieran controlar el horno cuando este
+     * se encuentre en modo manual.
+     * @param enable
+     */
+    void enableButtons(bool enable);
 
 private:
     Ui::AutoTunningTabView *ui;
