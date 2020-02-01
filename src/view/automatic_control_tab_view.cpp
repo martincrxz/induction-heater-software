@@ -27,7 +27,6 @@ AutomaticControlTabView::AutomaticControlTabView(QWidget *parent,
             this, &AutomaticControlTabView::on_messagePrint);
 
     ui->warningLabel->setText("");
-    this->enableButtons(false);
 }
 
 AutomaticControlTabView::~AutomaticControlTabView()
