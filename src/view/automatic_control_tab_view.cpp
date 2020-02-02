@@ -12,13 +12,12 @@ AutomaticControlTabView::AutomaticControlTabView(QWidget *parent,
     port(pPort)
 {
     ui->setupUi(this);
-    this->tempValidator = new QDoubleValidator(-99999, 99999, 2);
-    this->ui->targetTemperatureTextEdit->setValidator(this->tempValidator);
-    auto classic_control = new ClassicControlView(this, this->port, this->tempValidator);
+    auto classic_control = new ClassicControlView(this, this->port);
     this->controlConfigViews.emplace_back(classic_control);
-    this->controlConfigViews.emplace_back(new FuzzyControlView(this, this->port, this->tempValidator));
+    this->controlConfigViews.emplace_back(new FuzzyControlView(this, this->port));
     this->current = ui->controlTypeCombo->currentIndex();
     ui->controlConfiguration->addWidget(this->controlConfigViews[this->current]);
+    this->on_controlTypeCombo_currentIndexChanged(this->current);
 
     this->resetLabelTimer = new QTimer();
     connect(this->resetLabelTimer, &QTimer::timeout, this, 
@@ -34,7 +33,6 @@ AutomaticControlTabView::~AutomaticControlTabView()
     delete ui;
     this->resetLabelTimer->stop();
     delete this->resetLabelTimer;
-    delete this->tempValidator;
     for (auto w: this->controlConfigViews) {
         delete w;
     }
@@ -46,9 +44,6 @@ void AutomaticControlTabView::on_controlTypeCombo_currentIndexChanged(int index)
     for (auto widget: this->controlConfigViews) {
         widget->hide();
     }
-    // TODO: esto no me gusta acá, debería stoppearse el antiguo hilo de control
-    // cuando se active el nuevo.
-    this->controlConfigViews[this->current]->stop();
     ui->controlConfiguration->addWidget(this->controlConfigViews[index]);
     this->controlConfigViews[index]->show();
     this->current = index;
@@ -57,15 +52,18 @@ void AutomaticControlTabView::on_controlTypeCombo_currentIndexChanged(int index)
 void AutomaticControlTabView::on_activateButton_clicked()
 {
     std::lock_guard<std::mutex> lock(this->mutex);
-    QString targetTempStr = this->ui->targetTemperatureTextEdit->text();
-    bool isGood = this->controlConfigViews[this->current]->validateInput(&targetTempStr);
-    // TODO: agregar validador del textinput.
-    float targetTemp = targetTempStr.toFloat();
-    if ( !isGood ) {
-        on_messagePrint("Hay un error en los parámetros de control.", ERROR);
-        return;
+    if (activatedControlAlgorithmIndex < 0) {
+        bool isGood = this->controlConfigViews[this->current]->validateInput();
+        if ( !isGood ) {
+            on_messagePrint("Hay un error en los parámetros de control.", ERROR);
+            return;
+        }
+        this->controlConfigViews[this->current]->start();
+        activatedControlAlgorithmIndex = this->current;
+        on_messagePrint("Se activó el proceso de control correctamente", OK);
+    } else {
+        on_messagePrint("Hay un proceso activo.", ERROR);
     }
-    this->controlConfigViews[this->current]->start(targetTemp);
 }
 
 void AutomaticControlTabView::on_messagePrint(const char *str, unsigned char mode)
@@ -86,7 +84,13 @@ void AutomaticControlTabView::resetLabel() {
 void AutomaticControlTabView::on_deactivateButton_clicked()
 {
     std::lock_guard<std::mutex> lock(this->mutex);
-    this->controlConfigViews[this->current]->stop();
+    if (activatedControlAlgorithmIndex >= 0){
+        this->controlConfigViews[this->activatedControlAlgorithmIndex]->stop();
+        activatedControlAlgorithmIndex = -1;
+        on_messagePrint("Proceso detenido correctamente", OK);
+    } else {
+        on_messagePrint("No hay proceso que desactivar", ERROR);
+    }
 }
 
 void AutomaticControlTabView::dataAvailable(TemperatureReading &temp) {

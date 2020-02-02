@@ -19,14 +19,14 @@ class ClassicControlView : public ControlConfiguration
     Q_OBJECT
 
 public:
-    ClassicControlView(QWidget *parent, SerialPort *sp, QDoubleValidator *tv);
+    ClassicControlView(QWidget *parent, SerialPort *sp);
     ~ClassicControlView();
-    bool validateInput(QString *targetTemp = nullptr) override;
+    bool validateInput() override;
     /**
      * @brief instancia el algoritmo de control
      * @param objective temperature
      */
-    void instantiate(float targetTemp) override;
+    void instantiate() override;
     void dataAvailable(TemperatureReading &temp);
 
 private slots:
@@ -36,6 +36,7 @@ private:
     void loadControlValues();
     Ui::ClassicControlView *ui;
     QDoubleValidator *kValidator;
+    QDoubleValidator *tempValidator;
 };
 
 #endif // CLASSIC_CONTROL_VIEW_H

@@ -62,10 +62,10 @@ private:
     Ui::AutomaticControlTabView *ui;
     SerialPort *port;
     QTimer *resetLabelTimer;
-    QDoubleValidator *tempValidator;
     std::vector<ControlConfiguration *> controlConfigViews;
     unsigned int current{0};
     std::mutex mutex;
+    int activatedControlAlgorithmIndex{-1};
 };
 
 #endif // AUTOMATIC_CONTROL_TAB_VIEW_H

@@ -16,7 +16,7 @@ class ControlConfiguration : public QWidget
 {
     Q_OBJECT
 public:
-    ControlConfiguration(QWidget *parent, SerialPort *sp, QDoubleValidator *tv);
+    ControlConfiguration(QWidget *parent, SerialPort *sp);
     virtual ~ControlConfiguration();
     /**
      * @brief Valida el input del usuario. Se usa tanto para
@@ -24,13 +24,13 @@ public:
      * archivo
      * @return
      */
-    virtual bool validateInput(QString *targetTemp = nullptr) = 0;
+    virtual bool validateInput() = 0;
     /**
      * @brief Instanciará un objeto que hereda de ALgorithm.
      * Luego se ejecutará a este en un hilo aparte
      * @param targetTemperature
      */
-    void start(float targetTemp);
+    void start();
     /**
      * @brief Si el hilo existe, detiene su ejecución y libera
      * sus recursos, dejando a nullptr el smart pointer
@@ -39,12 +39,11 @@ public:
     /**
      * @brief instancia el tipo de control de forma polimorfica
      */
-    virtual void instantiate(float targetTemp) = 0;
+    virtual void instantiate() = 0;
     void dataAvailable(TemperatureReading &temp);
 protected:
     SerialPort *sp;
     std::unique_ptr<ControlAlgorithm> controlAlgorithm;
-    QDoubleValidator *tempValidator;
 
 signals:
     void message(const char *str, unsigned char mode);
