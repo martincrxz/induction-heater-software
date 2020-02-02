@@ -22,7 +22,6 @@ ManualPowerControlView::ManualPowerControlView(QWidget *parent, SerialPort *pPor
     this->resetLabelTimer = new QTimer();
     connect(this->resetLabelTimer, &QTimer::timeout, this,
         &ManualPowerControlView::resetLabel);
-
 }
 
 ManualPowerControlView::~ManualPowerControlView()
@@ -71,4 +70,8 @@ void ManualPowerControlView::printMessage(const char *str, unsigned char mode)
         ui->warningLabel->setStyleSheet("QLabel { color : green; }");
     }
     this->resetLabelTimer->start(3000);
+}
+
+void ManualPowerControlView::enableButtons(bool enable) {
+    this->ui->setPowerButton->setEnabled(enable);
 }

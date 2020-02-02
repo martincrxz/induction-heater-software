@@ -9,12 +9,14 @@
 #include "../../control/classic_pid.h"
 
 
-ClassicControlView::ClassicControlView(QWidget *parent, SerialPort *sp, QDoubleValidator *tv) :
-    ControlConfiguration(parent, sp, tv),
+ClassicControlView::ClassicControlView(QWidget *parent, SerialPort *sp) :
+    ControlConfiguration(parent, sp),
     ui(new Ui::ClassicControlView)
 {
     ui->setupUi(this);
     this->kValidator = new QDoubleValidator(-9999, 9999, 2);
+    this->tempValidator = new QDoubleValidator(-99999, 99999, 2);
+    ui->targetTemperatureTextEdit->setValidator(this->tempValidator);
     ui->kd_value->setValidator(this->kValidator);
     ui->ki_value->setValidator(this->kValidator);
     ui->kp_value->setValidator(this->kValidator);
@@ -28,23 +30,22 @@ ClassicControlView::~ClassicControlView()
     delete this->kValidator;
 }
 
-bool ClassicControlView::validateInput(QString *targetTemp)
+bool ClassicControlView::validateInput()
 {
     QString kd = ui->kd_value->text();
     QString ki = ui->ki_value->text();
     QString kp = ui->kp_value->text();
+    QString targetTemp = this->ui->targetTemperatureTextEdit->text();
     int d = 0;
     auto kdState = this->kValidator->validate(kd, d);
     auto kiState = this->kValidator->validate(ki, d);
     auto kpState = this->kValidator->validate(kp, d);
-    if (targetTemp != nullptr) {
-        if (*targetTemp == "") {
-            return false;
-        }
-        auto tempState = this->tempValidator->validate(*targetTemp, d);
-        if (tempState != QValidator::Acceptable) {
-            return false;
-        }
+    if (targetTemp == "") {
+        return false;
+    }
+    auto tempState = this->tempValidator->validate(targetTemp, d);
+    if (tempState != QValidator::Acceptable) {
+        return false;
     }
     if ( kdState != QValidator::Acceptable ||
          kiState != QValidator::Acceptable ||
@@ -95,10 +96,16 @@ void ClassicControlView::loadControlValues()
     }
 }
 
-void ClassicControlView::instantiate(float targetTemp) {
+void ClassicControlView::instantiate() {
+    float targetTemp = this->ui->targetTemperatureTextEdit->text().toFloat();
     float kp = this->ui->kp_value->text().toFloat();
     float kd = this->ui->kd_value->text().toFloat();
     float ki = this->ui->ki_value->text().toFloat();
     this->controlAlgorithm.reset(new ClassicPID(kp, ki, kd, targetTemp, this->sp));
     this->controlAlgorithm->start();
+}
+
+const char *ClassicControlView::getName()
+{
+    return "Clásico";
 }

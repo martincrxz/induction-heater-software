@@ -45,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(port, &SerialPort::manualControlAcknowledge, equipmentView, &EquipmentStatusView::insert);
     connect(port, &SerialPort::automaticControlAcknowledge, equipmentView, &EquipmentStatusView::insert);
     connect(port, &SerialPort::powerSetAcknowledge, this, &MainWindow::onPowerSetAckArrived);
+    this->enableAutomaticControlButtons(false);
 }
 
 MainWindow::~MainWindow()
@@ -100,13 +101,26 @@ void MainWindow::setManualControl(int index){
     switch(index){
         case 0:
             msg.reset(new SetManualControl());
+            enableAutomaticControlButtons(false);
             break;
         case 1:
             msg.reset(new SetAutomaticControl());
+            enableAutomaticControlButtons(true);
             break;
         default:
             msg.reset(new SetManualControl());
+            enableAutomaticControlButtons(false);
             break;
     }
     port->send(msg);
+}
+
+void MainWindow::enableAutomaticControlButtons(bool enable) {
+    if (enable)
+        Logger::info("Enabling automatic buttons");
+    else
+        Logger::info("Disabling automatic buttons");
+    this->automaticView->enableButtons(enable);
+    this->autotunningView->enableButtons(enable);
+    this->manualPowerView->enableButtons(enable);
 }

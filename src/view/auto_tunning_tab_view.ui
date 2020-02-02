@@ -82,14 +82,14 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="activateButton">
          <property name="text">
           <string>Activar</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_2">
+        <widget class="QPushButton" name="deactivateButton">
          <property name="text">
           <string>Desactivar</string>
          </property>

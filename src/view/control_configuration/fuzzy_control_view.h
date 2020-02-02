@@ -14,10 +14,11 @@ class FuzzyControlView : public ControlConfiguration
     Q_OBJECT
 
 public:
-    FuzzyControlView(QWidget *parent, SerialPort *sp, QDoubleValidator *tv);
+    FuzzyControlView(QWidget *parent, SerialPort *sp);
     ~FuzzyControlView();
-    bool validateInput(QString *targetTemp = nullptr) override;
-    void instantiate(float targetTemp) override;
+    bool validateInput() override;
+    void instantiate() override;
+    const char * getName() override;
     
 private:
     Ui::FuzzyControlView *ui;
