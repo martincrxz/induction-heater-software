@@ -18,6 +18,7 @@ public:
     ~FuzzyControlView();
     bool validateInput() override;
     void instantiate() override;
+    const char * getName() override;
     
 private:
     Ui::FuzzyControlView *ui;

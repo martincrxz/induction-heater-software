@@ -21,3 +21,8 @@ bool FuzzyControlView::validateInput()
 void FuzzyControlView::instantiate() {
     this->controlAlgorithm.reset(nullptr);
 }
+
+const char *FuzzyControlView::getName()
+{
+    return "Fuzzy logic";
+}

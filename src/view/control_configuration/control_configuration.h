@@ -40,6 +40,11 @@ public:
      * @brief instancia el tipo de control de forma polimorfica
      */
     virtual void instantiate() = 0;
+    /**
+     * @brief devuelve el nombre del tipo de control
+     * @return
+     */
+    virtual const char * getName() = 0;
     void dataAvailable(TemperatureReading &temp);
 protected:
     SerialPort *sp;

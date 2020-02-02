@@ -28,6 +28,7 @@ public:
      */
     void instantiate() override;
     void dataAvailable(TemperatureReading &temp);
+    const char * getName() override;
 
 private slots:
     void on_saveButton_clicked();

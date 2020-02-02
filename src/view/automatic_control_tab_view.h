@@ -58,6 +58,7 @@ private slots:
     void on_deactivateButton_clicked();
 private:
     void resetLabel();
+    void fillControlConfigViews();
 
     Ui::AutomaticControlTabView *ui;
     SerialPort *port;

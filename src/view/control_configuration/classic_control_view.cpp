@@ -104,3 +104,8 @@ void ClassicControlView::instantiate() {
     this->controlAlgorithm.reset(new ClassicPID(kp, ki, kd, targetTemp, this->sp));
     this->controlAlgorithm->start();
 }
+
+const char *ClassicControlView::getName()
+{
+    return "Clásico";
+}
