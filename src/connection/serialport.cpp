@@ -73,19 +73,18 @@ void SerialPort::handleError(QSerialPort::SerialPortError error){
 }
 
 void SerialPort::handleMessage(){
-    qint64 bytesAvailable = this->bytesAvailable();
-    for(int i = 0; i < bytesAvailable; i++){
-        QByteRef byteRead = this->read(ONE_BYTE)[0];
+    QByteArray readArray = this->readAll();
+    for(auto readByte : readArray){
         switch(readingStatus){
             case WAITING:
-                if(byteRead.operator==(0x7E)){
-                    arrivingPacket[arrivingBytesCount] = byteRead;
+                if(readByte == 0x7E){
+                    arrivingPacket[arrivingBytesCount] = readByte;
                     arrivingBytesCount++;
                     readingStatus = READING;
                 }
                 break;
             case READING:
-                arrivingPacket[arrivingBytesCount] = byteRead;
+                arrivingPacket[arrivingBytesCount] = readByte;
                 arrivingBytesCount++;
                 if(arrivingBytesCount == PACKET_SIZE){
                     readingStatus = WAITING;
