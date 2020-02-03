@@ -7,6 +7,7 @@
 #include <iostream>
 #include <sstream>
 #include <logger/logger.h>
+#include "ui_general_view.h"
 
 #define SEPARATOR ':'
 
@@ -22,7 +23,6 @@ arrivingPacket(8,0)
     connect(&reconectionTimer, &QTimer::timeout, this, &SerialPort::findDevice);
     connect(this, &SerialPort::errorOccurred, this, &SerialPort::handleError);
     connect(this, &SerialPort::readyRead, this, &SerialPort::handleMessage);
-    this->findDevice();
 }
 
 SerialPort::~SerialPort() {
@@ -45,6 +45,7 @@ void SerialPort::findDevice() {
             this->setPort(info);
             if(this->open(QIODevice::ReadWrite)){
                 reconectionTimer.stop();
+                emit serialPortConnected();
                 Logger::info("Serial port connected.");
                 connected = true;
                 this->clear();
@@ -54,6 +55,7 @@ void SerialPort::findDevice() {
             }
         }
     }
+    emit serialPortDisconnected();
     Logger::warning("Device not found.");
     reconectionTimer.start(RECONNECTION_TIMEOUT);
 }
@@ -128,11 +130,13 @@ void SerialPort::processMessage(QByteArray buff){
                 Logger::info("Power set acknowledge message.");
                 break;
             case MANUAL_CONTROL_ACKNOWLEDGE:
+                emit manualControlAcknowledge();
                 emit manualControlAcknowledge(QString::number(MANUAL_CONTROL_ACKNOWLEDGE),
                         "Manual control set");
                 Logger::info("Manual control activated message.");
                 break;
             case AUTOMATIC_CONTROL_ACKNOWLEDGE:
+                emit automaticControlAcknowledge();
                 emit automaticControlAcknowledge(QString::number(AUTOMATIC_CONTROL_ACKNOWLEDGE),
                         "Automatic control set");
                 Logger::info("Automatic control activated message.");

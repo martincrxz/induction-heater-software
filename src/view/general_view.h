@@ -11,6 +11,8 @@
 #include "../connection/protocol/micro_message.h"
 #include "../connection/serialport.h"
 
+typedef enum {MANUAL, AUTOMATIC} control_type_t;
+
 namespace Ui {
 class MainWindow;
 }
@@ -30,6 +32,12 @@ public slots:
     void thermocoupleChange(int);
     void onPowerSetAckArrived(std::shared_ptr<MicroMessage> msg);
     void setManualControl(int index);
+    void onStatusChanged();
+    void onSerialPortConnected();
+    void onSerialPortDisconnected();
+    void onManualPowerSet();
+    void onAutomaticPowerSet();
+    void onControlTypeChanged();
 private:
     Ui::MainWindow *ui;
     SerialPort *port;
@@ -39,6 +47,11 @@ private:
     AutoTunningTabView *autotunningView;
     ChartTabView *chartView;
     void enableAutomaticControlButtons(bool enable);
+
+    bool usbOk = true;
+    bool thermocoupleOk = true;
+
+    control_type_t controlType = MANUAL;
 };
 
 #endif // MAINWINDOW_H

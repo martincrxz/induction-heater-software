@@ -19,11 +19,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     port = new SerialPort(this);
-    equipmentView = new EquipmentStatusView(this);
+    equipmentView = new EquipmentStatusView(this, this->port);
     automaticView = new AutomaticControlTabView(this, this->port);
     manualPowerView = new ManualPowerControlView(this, this->port);
     autotunningView = new AutoTunningTabView(this);
     chartView = new ChartTabView(this);
+
+    port->findDevice();
 
     ui->setupUi(this);
     ui->tabWidget->addTab(equipmentView, "Estado del equipo");
@@ -31,6 +33,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tabWidget->addTab(manualPowerView, "Potencia manual");
     ui->tabWidget->addTab(autotunningView, "Auto-sintonía");
     ui->tabWidget->addTab(chartView, "Gráfico");
+
+    ui->statusValue->setText("OK");
 
     /**
      * Conecto las distintas señales con los slots
@@ -42,9 +46,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(port, &SerialPort::configurationAcknowledge, equipmentView, &EquipmentStatusView::insert);
     connect(port, &SerialPort::temperatureArrived, this, &MainWindow::onTemperatureDataArrived);
     connect(port, &SerialPort::coldJunctionArrived, this, &MainWindow::onColdJunctionDataArrived);
-    connect(port, &SerialPort::manualControlAcknowledge, equipmentView, &EquipmentStatusView::insert);
-    connect(port, &SerialPort::automaticControlAcknowledge, equipmentView, &EquipmentStatusView::insert);
+    connect(port, SIGNAL(manualControlAcknowledge()), this, SLOT(onManualPowerSet()));
+    connect(port, SIGNAL(manualControlAcknowledge(QString,QString)), equipmentView, SLOT(insert(QString,QString)));
+    connect(port, SIGNAL(automaticControlAcknowledge()), this, SLOT(onAutomaticPowerSet()));
+    connect(port, SIGNAL(automaticControlAcknowledge(QString,QString)), equipmentView, SLOT(insert(QString,QString)));
     connect(port, &SerialPort::powerSetAcknowledge, this, &MainWindow::onPowerSetAckArrived);
+    connect(port, &SerialPort::serialPortConnected, this, &MainWindow::onSerialPortConnected);
+    connect(port, &SerialPort::serialPortDisconnected, this, &MainWindow::onSerialPortDisconnected);
     this->enableAutomaticControlButtons(false);
 }
 
@@ -108,8 +116,6 @@ void MainWindow::setManualControl(int index){
             enableAutomaticControlButtons(true);
             break;
         default:
-            msg.reset(new SetManualControl());
-            enableAutomaticControlButtons(false);
             break;
     }
     port->send(msg);
@@ -123,4 +129,54 @@ void MainWindow::enableAutomaticControlButtons(bool enable) {
     this->automaticView->enableButtons(enable);
     this->autotunningView->enableButtons(enable);
     this->manualPowerView->enableButtons(enable);
+}
+
+void MainWindow::onSerialPortConnected() {
+    usbOk = true;
+    onStatusChanged();
+}
+
+void MainWindow::onSerialPortDisconnected() {
+    usbOk = false;
+    onStatusChanged();
+}
+
+void MainWindow::onStatusChanged(){
+    std::string statusMessage;
+    if(!usbOk)
+        statusMessage = "USB desconectado";
+    else if(!thermocoupleOk)
+        statusMessage = "Falla en termocupla";
+    else
+        statusMessage = "OK";
+    ui->statusValue->setText(QString::fromStdString(statusMessage));
+}
+
+void MainWindow::onManualPowerSet() {
+    controlType = MANUAL;
+    onControlTypeChanged();
+}
+
+void MainWindow::onAutomaticPowerSet() {
+    controlType = AUTOMATIC;
+    onControlTypeChanged();
+}
+
+void MainWindow::onControlTypeChanged(){
+    std::string controlTypeValue;
+    std::string automaticControlValue;
+    switch(controlType){
+        case MANUAL:
+            controlTypeValue = "MANUAL";
+            automaticControlValue = "OFF";
+            break;
+        case AUTOMATIC:
+            controlTypeValue = "AUTOMATICO";
+            automaticControlValue = "ON";
+            break;
+        default:
+            break;
+    }
+    ui->operationModeValue->setText(QString::fromStdString(controlTypeValue));
+    ui->automaticControlValue->setText(QString::fromStdString(automaticControlValue));
 }

@@ -14,5 +14,5 @@ PowerSetAcknowledge::PowerSetAcknowledge(QByteArray &buff):
 }
 
 float PowerSetAcknowledge::getPower() {
-    return 100 * (MAXIMUM_TAP - (1.0f * data)) / MAXIMUM_TAP;
+    return 100 * (MAXIMUM_TAP - data) / MAXIMUM_TAP;
 }

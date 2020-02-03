@@ -50,8 +50,12 @@ signals:
     void temperatureArrived(std::shared_ptr<MicroMessage> msg);
     void coldJunctionArrived(std::shared_ptr<MicroMessage> msg);
     void powerSetAcknowledge(std::shared_ptr<MicroMessage> msg);
+    void manualControlAcknowledge();
     void manualControlAcknowledge(QString code, QString desc);
+    void automaticControlAcknowledge();
     void automaticControlAcknowledge(QString code, QString desc);
+    void serialPortConnected();
+    void serialPortDisconnected();
 };
 
 

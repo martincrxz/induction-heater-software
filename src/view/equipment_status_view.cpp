@@ -4,11 +4,15 @@
 #include "ui_equipment_status_view.h"
 typedef enum { ERROR_CODE, TIMESTAMP, INFO} error_table_t;
 
-EquipmentStatusView::EquipmentStatusView(QWidget *parent) :
+EquipmentStatusView::EquipmentStatusView(QWidget *parent, SerialPort *pPort) :
     QWidget(parent),
-    ui(new Ui::EquipmentStatusView)
+    ui(new Ui::EquipmentStatusView),
+    port(pPort)
 {
     ui->setupUi(this);
+
+    connect(port, &SerialPort::serialPortConnected, this, &EquipmentStatusView::onSerialPortConnected);
+    connect(port, &SerialPort::serialPortDisconnected, this, &EquipmentStatusView::onSerialPortDisconnected);
 }
 
 EquipmentStatusView::~EquipmentStatusView()
@@ -24,4 +28,12 @@ void EquipmentStatusView::insert(QString code, QString desc){
     ui->errorLogTable->setItem(row, ERROR_CODE, new QTableWidgetItem(code));
     ui->errorLogTable->setItem(row, TIMESTAMP, new QTableWidgetItem(currentDatetime.data()));
     ui->errorLogTable->setItem(row, INFO, new QTableWidgetItem(desc));
+}
+
+void EquipmentStatusView::onSerialPortConnected() {
+    ui->usbPortValue->setText(port->portName());
+}
+
+void EquipmentStatusView::onSerialPortDisconnected() {
+    ui->usbPortValue->setText("-");
 }
