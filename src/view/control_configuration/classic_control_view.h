@@ -8,8 +8,6 @@
 #include "control_configuration.h"
 #include "../../connection/protocol/temperature_reading.h"
 
-#define FILE_PATH "./classic_control_parameters.txt"
-
 namespace Ui {
 class ClassicControlView;
 }
@@ -27,7 +25,6 @@ public:
      * @param objective temperature
      */
     void instantiate() override;
-    void dataAvailable(TemperatureReading &temp);
     const char * getName() override;
 
 private slots:

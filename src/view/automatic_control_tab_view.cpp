@@ -21,9 +21,10 @@ AutomaticControlTabView::AutomaticControlTabView(QWidget *parent,
     this->resetLabelTimer = new QTimer();
     connect(this->resetLabelTimer, &QTimer::timeout, this, 
         &AutomaticControlTabView::resetLabel);
-    connect(this->controlConfigViews[0], &ClassicControlView::message,
+    for (auto controlView : this->controlConfigViews) {
+        connect(controlView, &ControlConfiguration::message,
             this, &AutomaticControlTabView::on_messagePrint);
-
+    }
     ui->warningLabel->setText("");
 }
 

@@ -9,6 +9,7 @@
 #include "../../control/control_algorithm.h"
 #include "../../connection/protocol/temperature_reading.h"
 
+#define FILE_PATH "./classic_control_parameters.txt"
 #define ERROR   1
 #define OK      0
 

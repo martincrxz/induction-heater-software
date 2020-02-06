@@ -63,6 +63,7 @@ SOURCES += \
         src/main.cpp \
     src/view/control_configuration/classic_control_view.cpp \
     src/view/control_configuration/fuzzy_control_view.cpp \
+    src/view/control_configuration/from_file_control_view.cpp \
     src/view/control_configuration/control_configuration.cpp \
     src/control/control_algorithm.cpp \
     src/control/classic_pid.cpp \
@@ -111,6 +112,7 @@ HEADERS += \
     src/view/control_configuration/classic_control_view.h \
     src/view/control_configuration/fuzzy_control_view.h \
     src/view/control_configuration/control_configuration.h \
+    src/view/control_configuration/from_file_control_view.h \
     src/control/control_algorithm.h \
     src/control/classic_pid.h \
     libs/logger/message/logger_critical.h
@@ -123,4 +125,5 @@ FORMS += \
 		src/view/general_view.ui \
                 src/view/manual_power_control_view.ui \
     src/view/control_configuration/classic_control_view.ui \
-    src/view/control_configuration/fuzzy_control_view.ui
+    src/view/control_configuration/fuzzy_control_view.ui \
+    src/view/control_configuration/from_file_control_view.ui

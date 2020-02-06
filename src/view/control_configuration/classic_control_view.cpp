@@ -21,7 +21,7 @@ ClassicControlView::ClassicControlView(QWidget *parent, SerialPort *sp) :
     ui->ki_value->setValidator(this->kValidator);
     ui->kp_value->setValidator(this->kValidator);
 
-   loadControlValues();
+    loadControlValues();
 }
 
 ClassicControlView::~ClassicControlView()

@@ -78,27 +78,27 @@ void messageHandler(QtMsgType type,
             ss  << currentDatetime.data() 
                 << " [DEBUG] "
                 << localMsg.constData();
-            break;
+        break;
         case QtInfoMsg:
             ss  << currentDatetime.data() 
                 << " [INFO] "
                 << localMsg.constData();
-            break;
+        break;
         case QtWarningMsg:
             ss  << currentDatetime.data() 
                 << " [WARNING] "
                 << localMsg.constData();
-            break;
+        break;
         case QtCriticalMsg:
             ss  << currentDatetime.data() 
                 << " [CRITICAL] "
                 << localMsg.constData();
-            break;
+        break;
         case QtFatalMsg:
             ss  << currentDatetime.data() 
                 << " [FATAL] "
                 << localMsg.constData();
-            break;
+        break;
     }
     log_file  << ss.str() << std::endl;
     std::cerr << ss.str() << std::endl;
