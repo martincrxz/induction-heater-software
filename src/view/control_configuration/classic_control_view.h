@@ -32,6 +32,18 @@ private slots:
 
 private:
     void loadControlValues();
+    /**
+     * Un workaround para seguir manteniendo la misma interfaz polimorfica 
+     * en la clase padre y tener una especialización que depende de donde se 
+     * llame revisa o no la validez de la temperatura (por ejempo, cuando 
+     * quiero guardar los parámetros de control en el archivo, no quiero
+     * que la función me retorne false por no tener una temperatura 
+     * puesta, que no se va a grabar en el archivo)
+     * @param  check_temp 
+     * @return            
+     */
+    bool validateInput(bool check_temp);
+
     Ui::ClassicControlView *ui;
     QDoubleValidator *kValidator;
     QDoubleValidator *tempValidator;

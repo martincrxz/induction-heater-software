@@ -32,20 +32,27 @@ ClassicControlView::~ClassicControlView()
 
 bool ClassicControlView::validateInput()
 {
+    return validateInput(true);
+}
+
+bool ClassicControlView::validateInput(bool check_temp)
+{
     QString kd = ui->kd_value->text();
     QString ki = ui->ki_value->text();
     QString kp = ui->kp_value->text();
-    QString targetTemp = this->ui->targetTemperatureTextEdit->text();
     int d = 0;
     auto kdState = this->kValidator->validate(kd, d);
     auto kiState = this->kValidator->validate(ki, d);
     auto kpState = this->kValidator->validate(kp, d);
-    if (targetTemp == "") {
-        return false;
-    }
-    auto tempState = this->tempValidator->validate(targetTemp, d);
-    if (tempState != QValidator::Acceptable) {
-        return false;
+    if (check_temp) {
+        QString targetTemp = this->ui->targetTemperatureTextEdit->text();
+        if (targetTemp == "") {
+            return false;
+        }
+        auto tempState = this->tempValidator->validate(targetTemp, d);
+        if (tempState != QValidator::Acceptable) {
+            return false;
+        }
     }
     if ( kdState != QValidator::Acceptable ||
          kiState != QValidator::Acceptable ||
@@ -57,7 +64,7 @@ bool ClassicControlView::validateInput()
 
 void ClassicControlView::on_saveButton_clicked()
 {
-    if (this->validateInput()) {
+    if (this->validateInput(false)) {
         std::fstream file(FILE_PATH, std::fstream::out |
                           std::fstream::trunc);
         file << "kp " << this->ui->kp_value->text().toStdString() << std::endl;
