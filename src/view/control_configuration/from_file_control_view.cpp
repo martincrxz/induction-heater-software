@@ -158,6 +158,13 @@ void FromFileControlView::parseFile() {
             }
             config.emplace_back(row);
         }
+        /*
+         * Se aplica un cambio de unidad a los tiempos, para pasarlo a
+         * milisegundos
+         */
+        for (auto &row: config) {
+            row[0] *= 1000;
+        }
         this->controlDirectives = std::move(config);
         this->message("El archivo se cargó correctamente", OK);
     } catch (std::exception &e) {

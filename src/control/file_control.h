@@ -7,17 +7,19 @@
 #define __FILE_CONTROL_H__
 
 #include <cstdint>
+#include <chrono.h>
 
 #include "classic_pid.h"
 #include "control_algorithm.h"
 
-typedef std::vector<std::vector<std::uint32_t>> control_steps;
+typedef std::vector<std::vector<std::uint32_t>> ControlSteps;
+typedef enum{OPEN_LOOP, CLOSED_LOOP} ControlState;
 
 class FileControl: public ClassicPID
 {
 public:
-	FileControl(float kp, float ki, float kd, control_steps &controlDirectives, 
-		SerialPort *sp);
+	FileControl(float kp, float ki, float kd, ControlSteps &controlDirectives,
+                SerialPort *sp);
 	~FileControl();
     /**
      *	Dado una temperatura nueva, se deja calentar a lazo abierto hasta que
@@ -38,7 +40,17 @@ protected:
 		void reset(float newTargetTemp);
 		
 private:
-	control_steps &steps;
+	ControlSteps &steps;
+	std::uint32_t  step_count{0};
+	/**
+	 * Estado del control por archivo, cuando está a lazo abierto, se devuelve
+	 * siempre la potencia que diga el step[step_count][2]. En lazo cerrado
+	 * se aplicará control clásico, reutilizando el método del padre.
+	 */
+    ControlState state{OPEN_LOOP};
+    float current_power{100.0f};
+    Chrono chrono;
+
 };
 
 #endif
