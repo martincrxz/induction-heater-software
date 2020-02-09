@@ -14,11 +14,8 @@
 ClassicPID::ClassicPID(float kp, float ki, float kd, float targetTemp, SerialPort *sp):
         ControlAlgorithm(targetTemp, sp), Kp(kp), Ki(ki), Kd(kd),
         errorValues() {
-	std::ostringstream oss;
-	oss << "ClassicPID constructor ( kp= ";
-	oss << kp << ", kd= " << kd << ", ki= " << ki << ") ";
-	oss << "Target Temperature: " << targetTemp << " °C";
-	Logger::debug(oss.str());		
+	Logger::debug("ClassicPID constructor ( kp= %.2f, kd= %.2f, ki= %.2f). Target temperature: %.0f °C",
+		kp, kd, ki, targetTemp);		
 }
 
 unsigned char ClassicPID::process(std::shared_ptr<TemperatureReading> temp) {

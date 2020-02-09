@@ -3,10 +3,9 @@
  * Created by Federico Manuel Gomez Peter
  * on 3/9/19.
  */
-
-#include <QtCore/QDateTime>
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <QtCore/QDateTime>
 #include <sstream>
 
 #include "logger.h"
@@ -41,27 +40,67 @@ void Logger::init() {
     qInstallMessageHandler(messageHandler);
 }
 
-void Logger::info(std::string msg) {
-    std::shared_ptr<LoggerMessage> ptr(new LoggerInfo(msg));
-    Logger::instance().worker.pushMessage(ptr);
-}
-
 Logger::~Logger() {
     Logger::instance().worker.stop();
     Logger::instance().worker.wait();
 }
 
-void Logger::debug(std::string msg) {
+void Logger::parseString(const char *fmt, va_list &args, std::string &msg) {
+    va_list args_copy;
+    va_copy(args_copy, args);
+    try {
+        std::size_t size = std::vsnprintf(nullptr, 0, fmt, args) + 1;
+
+        msg.reserve(size);
+        std::vsnprintf(&msg.front(), size, fmt, args_copy);
+
+        va_end(args_copy);
+    } catch (...) {
+        va_end(args_copy);
+    }
+}
+
+void Logger::info(const char * fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+    std::string msg;
+    Logger::parseString(fmt, args, msg);
+    va_end(args);
+
+    std::shared_ptr<LoggerMessage> ptr(new LoggerInfo(msg));
+    Logger::instance().worker.pushMessage(ptr);
+}
+
+
+void Logger::debug(const char * fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+    std::string msg;
+    Logger::parseString(fmt, args, msg);
+    va_end(args);
+
     std::shared_ptr<LoggerMessage> ptr(new LoggerDebug(msg));
     Logger::instance().worker.pushMessage(ptr);
 }
 
-void Logger::warning(std::string msg) {
+void Logger::warning(const char * fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+    std::string msg;
+    Logger::parseString(fmt, args, msg);
+    va_end(args);
+
     std::shared_ptr<LoggerMessage> ptr(new LoggerWarning(msg));
     Logger::instance().worker.pushMessage(ptr);
 }
 
-void Logger::critical(std::string msg) {
+void Logger::critical(const char * fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+    std::string msg;
+    Logger::parseString(fmt, args, msg);
+    va_end(args);
+
     LoggerCritical *log = new LoggerCritical(msg);
     std::shared_ptr<LoggerMessage> ptr(log);
     Logger::instance().worker.pushMessage(ptr);

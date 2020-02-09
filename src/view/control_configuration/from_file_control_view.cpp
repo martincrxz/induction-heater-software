@@ -76,9 +76,7 @@ void FromFileControlView::on_saveButton_clicked()
         file << "kd " << this->ui->kdLineEdit->text().toStdString() << std::endl;
         file << "ki " << this->ui->kiLineEdit->text().toStdString() << std::endl;
 
-        std::ostringstream oss;
-        oss << "Data saved in file: " << FILE_PATH;
-        Logger::info(oss.str());
+        Logger::info("Data saved in file: %s", FILE_PATH);
         emit message("Parámetros de control guardados.", OK);
     } else {
         emit message("No se pudo guardar los parámetros de control. Revisar formato", ERROR);
@@ -112,10 +110,7 @@ void FromFileControlView::loadControlValues()
 void FromFileControlView::parseFile() {
     try {
         std::string filename = this->ui->filenameLabel->text().toStdString();
-        // TODO: mejorar el logger agregandole argumentos variables (tipo printf)
-        std::ostringstream oss;
-        oss << "Lading file: " << filename;
-        Logger::debug(oss.str());
+        Logger::debug("Loading file: %s", filename);
         std::fstream file(filename);
         if (!file.is_open()) {
             this->message("El archivo no existe", ERROR);

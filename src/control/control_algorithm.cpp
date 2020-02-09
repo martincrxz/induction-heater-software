@@ -31,14 +31,9 @@ void ControlAlgorithm::run() {
                 Logger::info("Exiting control algorithm");
                 keep_processing = false;
             } else {
-                std::ostringstream oss;
-                oss << "Recibido " << msg->getData() << " °C";
-                Logger::info(oss.str());
+                Logger::info("Recibido %0.2f °C", msg->getData());
             	std::uint8_t tapToSend = this->process(msg);
-                oss = std::ostringstream();
-                oss << "Vueltas a enviar: ";
-                oss << (int) tapToSend;
-                Logger::info(oss.str());
+                Logger::info("Vueltas a enviar: %i", (int) tapToSend);
                 std::shared_ptr<MicroMessage> msgPower(new SetPower(tapToSend));
                 this->serialPort->send(msgPower);
             }

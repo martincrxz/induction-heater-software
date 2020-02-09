@@ -71,9 +71,7 @@ void ClassicControlView::on_saveButton_clicked()
         file << "kd " << this->ui->kd_value->text().toStdString() << std::endl;
         file << "ki " << this->ui->ki_value->text().toStdString() << std::endl;
 
-        std::ostringstream oss;
-        oss << "Data saved in file: " << FILE_PATH;
-        Logger::info(oss.str());
+        Logger::info("Data saved in file: %s", FILE_PATH);
         emit message("Datos guardados.", OK);
     } else {
         emit message("No se pudo guardar los datos. Revisar formato", ERROR);

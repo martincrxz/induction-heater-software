@@ -66,10 +66,7 @@ unsigned char FileControl::process(std::shared_ptr<TemperatureReading> data) {
             this->reset(this->steps[this->step_count][TEMP_POSITION]);
             return ClassicPID::process(data);
         } else {
-            //TODO, mejorar el logger, pasarle argumentos variables
-            std::ostringstream oss;
-            oss << "Open loop. Current power: " << this->current_power << "%";
-            Logger::debug(oss.str());
+            Logger::debug("Open loop. Current power: %0.2f %", this->current_power);
             return ControlAlgorithm::powerToTaps(this->current_power);
         }
     } else {
@@ -85,9 +82,7 @@ unsigned char FileControl::process(std::shared_ptr<TemperatureReading> data) {
             return ControlAlgorithm::powerToTaps(this->current_power);
         } else {
             auto taps = ClassicPID::process(data);
-            std::ostringstream oss;
-            oss << "Closed loop. taps: " << taps;
-            Logger::debug(oss.str());
+            Logger::debug("Closed loop. taps: %i", (int) taps);
             return taps;
         }
     }

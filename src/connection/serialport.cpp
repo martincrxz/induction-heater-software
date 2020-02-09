@@ -32,8 +32,8 @@ SerialPort::~SerialPort() {
 
 void SerialPort::send(std::shared_ptr<MicroMessage> msg) {
     QByteArray buff = protocol.translate(msg);
-    Logger::debug("Sending message: " + buff.toHex(SEPARATOR).
-                  toStdString());
+    Logger::debug("Sending message: %s", buff.toHex(SEPARATOR).
+            toStdString().c_str());
     this->write(buff);
     this->waitForBytesWritten(USB_WRITE_TIMEOUT);
 }
@@ -61,11 +61,9 @@ void SerialPort::findDevice() {
 }
 
 void SerialPort::handleError(QSerialPort::SerialPortError error){
-    std::ostringstream oss;
-    oss << "Serial port error - ";
-    oss << this->errorString().toStdString() << " (";
-    oss << (int) error << ")";
-    Logger::warning(oss.str());
+    Logger::warning("Serial port error - %s (%i)", 
+        this->errorString().toStdString().c_str(),
+        (int) error);
     // TODO: tal vez debería intentar reconectarse siempre.
     if (this->isOpen()){
         this->close();
@@ -101,8 +99,8 @@ void SerialPort::handleMessage(){
 void SerialPort::processMessage(QByteArray buff){
     int crc = crcChecksum(buff, PACKET_SIZE-1);
     if(crc==(uint8_t)buff[PACKET_SIZE-1]) {
-        Logger::debug("Message received: " + buff.toHex(SEPARATOR).
-                toStdString());
+        Logger::debug("Message received: %s", buff.toHex(SEPARATOR).
+                toStdString().c_str());
         std::shared_ptr<MicroMessage> msg(this->protocol.translate(buff));
         switch(msg->getId()) {
             case SHUTDOWN_ACKNOWLEDGE:
@@ -147,8 +145,10 @@ void SerialPort::processMessage(QByteArray buff){
         }
     }
     else {
-        Logger::warning("CRC failed: " + buff.toHex(SEPARATOR).
-                toStdString() + " | " + std::to_string(buff[7]) + " : " + std::to_string(crc));
+        Logger::warning("CRC failed: %s | %c : %i", 
+            buff.toHex(SEPARATOR).toStdString().c_str(), 
+            buff[7],
+            crc);
     }
 }
 

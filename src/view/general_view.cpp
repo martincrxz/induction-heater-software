@@ -69,15 +69,11 @@ void MainWindow::on_shutdownButton_clicked()
 
 void MainWindow::onTemperatureDataArrived(std::shared_ptr<MicroMessage> msg) {
     auto &temp = (TemperatureReading &) *msg;
-    std::stringstream log;
-    log << "Temperatura recibida: ";
-    log << temp.getData();
-    log << " °C";
     QString currentDatetime = QDateTime::currentDateTime().
             toString("dd/MM/yyyy HH:mm:ss");
     ui->lastTimestampValue->setText(currentDatetime);
     ui->thermocoupleTempValue->setText(QString::number(temp.getData()));
-    Logger::info(log.str());
+    Logger::info("Temperatura recibida: %.2f °C", temp.getData());
     // TODO: debo actualizar el gráfico, como el hilo de control
     this->chartView->dataAvailable(temp);
     this->automaticView->dataAvailable(temp);
@@ -85,12 +81,8 @@ void MainWindow::onTemperatureDataArrived(std::shared_ptr<MicroMessage> msg) {
 
 void MainWindow::onColdJunctionDataArrived(std::shared_ptr<MicroMessage> msg) {
     auto &temp = (ColdJunctionReading &) *msg;
-    std::stringstream log;
-    log << "Temperatura de juntura fría: ";
-    log << temp.getData();
-    log << " °C";
     ui->coldJointTempValue->setText(QString::number(temp.getData()));
-    Logger::info(log.str());
+    Logger::info("Temperatura de juntura fría: %.2f °C", temp.getData());
 }
 
 void MainWindow::thermocoupleChange(int index){
