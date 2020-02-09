@@ -4,6 +4,7 @@
 #include <string>
 #include <sstream>
 
+#include "../../control/file_control.h"
 #include "from_file_control_view.h"
 #include "ui_from_file_control_view.h"
 // TODO: wrappear el formulario de ki,kd.kp en un componente propio y unico
@@ -45,7 +46,11 @@ bool FromFileControlView::validateInput()
 }
 
 void FromFileControlView::instantiate() {
-    this->controlAlgorithm.reset(nullptr);
+    float kp = this->ui->kpLineEdit->text().toFloat();
+    float kd = this->ui->kdLineEdit->text().toFloat();
+    float ki = this->ui->kiLineEdit->text().toFloat();
+    this->controlAlgorithm.reset(new FileControl(kp, ki, kd, controlDirectives, this->sp));
+    this->controlAlgorithm->start();
 }
 
 const char *FromFileControlView::getName()
