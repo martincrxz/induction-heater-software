@@ -7,6 +7,7 @@
 #include <iostream>
 #include <QtCore/QDateTime>
 #include <sstream>
+#include <vector>
 
 #include "logger.h"
 #include "message/logger_info.h"
@@ -50,10 +51,9 @@ void Logger::parseString(const char *fmt, va_list &args, std::string &msg) {
     va_copy(args_copy, args);
     try {
         std::size_t size = std::vsnprintf(nullptr, 0, fmt, args) + 1;
-
-        msg.reserve(size);
-        std::vsnprintf(&msg.front(), size, fmt, args_copy);
-
+        std::vector<char> buff(size);
+        std::vsnprintf(buff.data(), size, fmt, args_copy);
+        msg = buff.data();
         va_end(args_copy);
     } catch (...) {
         va_end(args_copy);
