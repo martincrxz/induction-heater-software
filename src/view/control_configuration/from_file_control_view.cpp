@@ -110,7 +110,7 @@ void FromFileControlView::loadControlValues()
 void FromFileControlView::parseFile() {
     try {
         std::string filename = this->ui->filenameLabel->text().toStdString();
-        Logger::debug("Loading file: %s", filename);
+        Logger::debug("Loading file: %s", filename.c_str());
         std::fstream file(filename);
         if (!file.is_open()) {
             this->message("El archivo no existe", ERROR);
