@@ -9,10 +9,13 @@
 
 #include <cstdarg>
 #include <memory>
+#include <vector>
 
 #include "logger_worker.h"
 
 #define FILE_NAME "application.log"
+typedef enum {NOTHING = 0, DEBUG = 1, INFO = (1 << 1), WARNING = (1 << 2),
+              CRITICAL = (1 << 3), FATAL = (1 << 4)} LogLevel;
 
 class Logger {
 private:
@@ -52,6 +55,11 @@ public:
      * @param argumentos variables
      */
     static void critical(const char * fmt, ...);
+    /**
+     * @brief Cambia el nivel de loggeo para agregar precisión al log.
+     * @param level
+     */
+    static void logLevelChanged(std::vector<LogLevel> &levels);
     /**
      * @brief Liberará los recursos del worker de forma ordenada
      */

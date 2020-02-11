@@ -3,6 +3,7 @@
  * Created by Federico Manuel Gomez Peter
  * on 3/9/19.
  */
+#include <atomic>
 #include <fstream>
 #include <iostream>
 #include <QtCore/QDateTime>
@@ -20,6 +21,8 @@
  *  que apunta al archivo de loggeo.
  */
 static std::fstream log_file(FILE_NAME, std::ios_base::out | std::ios_base::trunc);
+// Variable atómica para evitar race conditions
+static std::atomic<unsigned char> current_level{INFO | WARNING | CRITICAL | FATAL};
 /**
  * handler para formatear los mensajes de salida del log.
  * @param type
@@ -28,6 +31,13 @@ static std::fstream log_file(FILE_NAME, std::ios_base::out | std::ios_base::trun
  */
 void messageHandler(QtMsgType type, const QMessageLogContext &context,
         const QString &msg);
+/**
+ * @brief Transforma el QtMsgType en un LogLevel. Esto se hizo
+ * para reordenar la prioridad de los niveles de loggeo
+ * @param type
+ * @return
+ */
+static LogLevel toLogLevel(const QtMsgType &type);
 
 Logger::Logger() {
     this->worker.start();
@@ -106,39 +116,67 @@ void Logger::critical(const char * fmt, ...) {
     Logger::instance().worker.pushMessage(ptr);
 }
 
+void Logger::logLevelChanged(std::vector<LogLevel> &levels)
+{
+    unsigned char newConf = 0;
+    for (auto level: levels) {
+        newConf |= level;
+    }
+    current_level = newConf;
+}
+
+LogLevel toLogLevel(const QtMsgType &type) {
+    switch (type) {
+    case QtDebugMsg:
+        return DEBUG;
+    case QtInfoMsg:
+        return INFO;
+    case QtWarningMsg:
+        return WARNING;
+    case QtCriticalMsg:
+        return CRITICAL;
+    case QtFatalMsg:
+        return FATAL;
+    default:
+        return NOTHING;
+    }
+}
 void messageHandler(QtMsgType type, 
                     __attribute__((unused)) const QMessageLogContext &context,
                     const QString &msg) {
-    QByteArray localMsg = msg.toLocal8Bit();
-    std::string currentDatetime = QDateTime::currentDateTime().toString("dd/MM/yyyy HH:mm:ss").toStdString();
-    std::ostringstream ss;
-    switch (type) {
-        case QtDebugMsg:
-            ss  << currentDatetime.data() 
-                << " [DEBUG] "
-                << localMsg.constData();
-        break;
-        case QtInfoMsg:
-            ss  << currentDatetime.data() 
-                << " [INFO] "
-                << localMsg.constData();
-        break;
-        case QtWarningMsg:
-            ss  << currentDatetime.data() 
-                << " [WARNING] "
-                << localMsg.constData();
-        break;
-        case QtCriticalMsg:
-            ss  << currentDatetime.data() 
-                << " [CRITICAL] "
-                << localMsg.constData();
-        break;
-        case QtFatalMsg:
-            ss  << currentDatetime.data() 
-                << " [FATAL] "
-                << localMsg.constData();
-        break;
+    if (current_level & toLogLevel(type)) {
+        QByteArray localMsg = msg.toLocal8Bit();
+        std::string currentDatetime = QDateTime::currentDateTime().toString("dd/MM/yyyy HH:mm:ss").toStdString();
+        std::ostringstream ss;
+
+        switch (type) {
+            case QtDebugMsg:
+                ss  << currentDatetime.data()
+                    << " [DEBUG] "
+                    << localMsg.constData();
+            break;
+            case QtInfoMsg:
+                ss  << currentDatetime.data()
+                    << " [INFO] "
+                    << localMsg.constData();
+            break;
+            case QtWarningMsg:
+                ss  << currentDatetime.data()
+                    << " [WARNING] "
+                    << localMsg.constData();
+            break;
+            case QtCriticalMsg:
+                ss  << currentDatetime.data()
+                    << " [CRITICAL] "
+                    << localMsg.constData();
+            break;
+            case QtFatalMsg:
+                ss  << currentDatetime.data()
+                    << " [FATAL] "
+                    << localMsg.constData();
+            break;
+        }
+        log_file  << ss.str() << std::endl;
+        std::cerr << ss.str() << std::endl;
     }
-    log_file  << ss.str() << std::endl;
-    std::cerr << ss.str() << std::endl;
 }
