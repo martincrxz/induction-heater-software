@@ -165,3 +165,7 @@ void MainWindow::onControlTypeChanged(){
         }
     }
 }
+
+bool MainWindow::isControlActivated(){
+    return automaticView->isControlActivated();
+}

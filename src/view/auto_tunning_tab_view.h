@@ -7,6 +7,8 @@ namespace Ui {
 class AutoTunningTabView;
 }
 
+class MainWindow;
+
 class AutoTunningTabView : public QWidget
 {
     Q_OBJECT
@@ -22,8 +24,12 @@ public:
      */
     void enableButtons(bool enable);
 
+public slots:
+    void activate();
+
 private:
     Ui::AutoTunningTabView *ui;
+    MainWindow* mainWindow;
 };
 
 #endif // AUTO_TUNNING_TAB_VIEW_H
