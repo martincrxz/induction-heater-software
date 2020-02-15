@@ -15,16 +15,16 @@ AutomaticControlTabView::AutomaticControlTabView(QWidget *parent,
     ui->setupUi(this);
     fillControlConfigViews();
     this->current = ui->controlTypeCombo->currentIndex();
-    ui->controlConfiguration->addWidget(this->controlConfigViews[this->current]);
-    this->on_controlTypeCombo_currentIndexChanged(this->current);
 
     this->resetLabelTimer = new QTimer();
     connect(this->resetLabelTimer, &QTimer::timeout, this, 
         &AutomaticControlTabView::resetLabel);
     for (auto controlView : this->controlConfigViews) {
+        ui->controlConfiguration->addWidget(controlView);
         connect(controlView, &ControlConfiguration::message,
             this, &AutomaticControlTabView::on_messagePrint);
     }
+    this->on_controlTypeCombo_currentIndexChanged(this->current);
     ui->warningLabel->setText("");
 }
 
@@ -44,7 +44,6 @@ void AutomaticControlTabView::on_controlTypeCombo_currentIndexChanged(int index)
     for (auto widget: this->controlConfigViews) {
         widget->hide();
     }
-    ui->controlConfiguration->addWidget(this->controlConfigViews[index]);
     this->controlConfigViews[index]->show();
     this->current = index;
 }
