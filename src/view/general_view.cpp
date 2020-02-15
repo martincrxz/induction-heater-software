@@ -35,13 +35,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tabWidget->addTab(chartView, "Gráfico");
 
     ui->statusValue->setText("OK");
+    onManualPowerSet();
 
     /**
      * Conecto las distintas señales con los slots
      **/
     connect(port, &SerialPort::shutdownAcknowledge, equipmentView, &EquipmentStatusView::insert);
     connect(ui->thermocoupleTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(thermocoupleChange(int)));
-    connect(ui->ovenCommandTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setManualControl(int)));
+    connect(ui->ovenCommandTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onSetManualControl(int)));
     connect(port, SIGNAL(thermocoupleFault(QString,QString)), equipmentView, SLOT(insert(QString,QString)));
     connect(port, &SerialPort::configurationAcknowledge, equipmentView, &EquipmentStatusView::insert);
     connect(port, &SerialPort::temperatureArrived, this, &MainWindow::onTemperatureDataArrived);
@@ -53,7 +54,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(port, &SerialPort::powerSetAcknowledge, this, &MainWindow::onPowerSetAckArrived);
     connect(port, &SerialPort::serialPortConnected, this, &MainWindow::onSerialPortConnected);
     connect(port, &SerialPort::serialPortDisconnected, this, &MainWindow::onSerialPortDisconnected);
-    this->enableAutomaticControlButtons(false);
 }
 
 MainWindow::~MainWindow()
@@ -96,19 +96,12 @@ void MainWindow::onPowerSetAckArrived(std::shared_ptr<MicroMessage> msg) {
     ui->powerValue->setText(QString::number(temp.getPower()) + " %");
 }
 
-void MainWindow::setManualControl(int index){
+void MainWindow::onSetManualControl(int index){
     std::shared_ptr<MicroMessage> msg;
-    switch(index){
-        case 0:
-            msg.reset(new SetManualControl());
-            enableAutomaticControlButtons(false);
-            break;
-        case 1:
-            msg.reset(new SetAutomaticControl());
-            enableAutomaticControlButtons(true);
-            break;
-        default:
-            break;
+    if (index == 0) {
+        msg.reset(new SetManualControl());
+    } else {
+        msg.reset(new SetAutomaticControl());
     }
     port->send(msg);
 }
@@ -146,11 +139,13 @@ void MainWindow::onStatusChanged(){
 
 void MainWindow::onManualPowerSet() {
     controlType = MANUAL;
+    enableAutomaticControlButtons(false);
     onControlTypeChanged();
 }
 
 void MainWindow::onAutomaticPowerSet() {
     controlType = AUTOMATIC;
+    enableAutomaticControlButtons(true);
     onControlTypeChanged();
 }
 

@@ -31,7 +31,7 @@ public slots:
     void onColdJunctionDataArrived(std::shared_ptr<MicroMessage> msg);
     void thermocoupleChange(int);
     void onPowerSetAckArrived(std::shared_ptr<MicroMessage> msg);
-    void setManualControl(int index);
+    void onSetManualControl(int index);
     void onStatusChanged();
     void onSerialPortConnected();
     void onSerialPortDisconnected();

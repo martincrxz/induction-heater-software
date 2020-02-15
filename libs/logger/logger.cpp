@@ -22,7 +22,7 @@
  */
 static std::fstream log_file(FILE_NAME, std::ios_base::out | std::ios_base::trunc);
 // Variable atómica para evitar race conditions
-static std::atomic<unsigned char> current_level{INFO | WARNING | CRITICAL | FATAL};
+static std::atomic<unsigned char> current_level{INFO | WARNING | CRITICAL | FATAL | DEBUG};
 /**
  * handler para formatear los mensajes de salida del log.
  * @param type

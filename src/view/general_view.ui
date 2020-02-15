@@ -197,7 +197,7 @@
             <item>
              <widget class="QLabel" name="automaticControlLabel">
               <property name="text">
-               <string>Control automático:</string>
+               <string>Control activado:</string>
               </property>
              </widget>
             </item>
