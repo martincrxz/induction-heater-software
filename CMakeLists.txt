@@ -85,7 +85,7 @@ file(GLOB RESOURCES ${CMAKE_SOURCE_DIR}
         "assets/resources.qrc")
 
 # Tell CMake to create the helloworld executable
-add_executable(application ${SOURCES} ${UIS_HEADERS} ${RESOURCES})
+add_executable(application ${SOURCES} ${UIS_HEADERS} ${RESOURCES} src/control/zieglers_nichols.cpp src/control/zieglers_nichols.h)
 
 message(STATUS "[INFO] Add Qt components to the target link libraries")
 if(IS_WINDOWS)

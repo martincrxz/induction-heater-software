@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     equipmentView = new EquipmentStatusView(this, this->port);
     automaticView = new AutomaticControlTabView(this, this->port);
     manualPowerView = new ManualPowerControlView(this, this->port);
-    autotunningView = new AutoTunningTabView(this);
+    autotunningView = new AutoTunningTabView(this, this->port);
     chartView = new ChartTabView(this);
 
     port->findDevice();

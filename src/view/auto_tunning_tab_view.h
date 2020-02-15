@@ -2,6 +2,8 @@
 #define AUTO_TUNNING_TAB_VIEW_H
 
 #include <QWidget>
+#include "../connection/serialport.h"
+#include "../control/zieglers_nichols.h"
 
 namespace Ui {
 class AutoTunningTabView;
@@ -14,7 +16,7 @@ class AutoTunningTabView : public QWidget
     Q_OBJECT
 
 public:
-    explicit AutoTunningTabView(QWidget *parent = 0);
+    explicit AutoTunningTabView(QWidget *parent, SerialPort *port);
     ~AutoTunningTabView();
     /**
      * @brief Habilita (o no) los botones de la vista. Se usa para evitar
@@ -26,10 +28,13 @@ public:
 
 public slots:
     void activate();
+    void deactivate();
 
 private:
     Ui::AutoTunningTabView *ui;
     MainWindow* mainWindow;
+    SerialPort *port;
+    std::unique_ptr<ZieglerNichols> zn;
 };
 
 #endif // AUTO_TUNNING_TAB_VIEW_H
