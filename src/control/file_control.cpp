@@ -66,7 +66,7 @@ unsigned char FileControl::process(std::shared_ptr<TemperatureReading> data) {
             this->reset(this->steps[this->step_count][TEMP_POSITION]);
             return ClassicPID::process(data);
         } else {
-            Logger::debug("Open loop. Current power: %0.2f %", this->current_power);
+            Logger::debug("Open loop. Current power: %0.2f %%", this->current_power);
             return ControlAlgorithm::powerToTaps(this->current_power);
         }
     } else {
