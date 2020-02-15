@@ -54,6 +54,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(port, &SerialPort::powerSetAcknowledge, this, &MainWindow::onPowerSetAckArrived);
     connect(port, &SerialPort::serialPortConnected, this, &MainWindow::onSerialPortConnected);
     connect(port, &SerialPort::serialPortDisconnected, this, &MainWindow::onSerialPortDisconnected);
+    connect(this->automaticView, &AutomaticControlTabView::controlAlgorithmDeactivated, this, &MainWindow::onControlTypeChanged);
+    connect(this->automaticView, &AutomaticControlTabView::controlAlgorithmActivated, this, &MainWindow::onControlTypeChanged);
 }
 
 MainWindow::~MainWindow()
@@ -150,20 +152,16 @@ void MainWindow::onAutomaticPowerSet() {
 }
 
 void MainWindow::onControlTypeChanged(){
-    std::string controlTypeValue;
-    std::string automaticControlValue;
-    switch(controlType){
-        case MANUAL:
-            controlTypeValue = "MANUAL";
-            automaticControlValue = "OFF";
-            break;
-        case AUTOMATIC:
-            controlTypeValue = "AUTOMATICO";
-            automaticControlValue = "ON";
-            break;
-        default:
-            break;
+    if (controlType == MANUAL) {
+        ui->operationModeValue->setText("MANUAL");
+        ui->automaticControlValue->setText("OFF");
+        this->automaticView->on_deactivateButton_clicked();
+    } else {
+        ui->operationModeValue->setText("AUTOMATICO");
+        if (this->automaticView->isControlActivated()) {
+            ui->automaticControlValue->setText("ON");
+        } else {
+            ui->automaticControlValue->setText("OFF");
+        }
     }
-    ui->operationModeValue->setText(QString::fromStdString(controlTypeValue));
-    ui->automaticControlValue->setText(QString::fromStdString(automaticControlValue));
 }

@@ -40,7 +40,7 @@ AutomaticControlTabView::~AutomaticControlTabView()
 
 void AutomaticControlTabView::on_controlTypeCombo_currentIndexChanged(int index)
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
     for (auto widget: this->controlConfigViews) {
         widget->hide();
     }
@@ -50,8 +50,8 @@ void AutomaticControlTabView::on_controlTypeCombo_currentIndexChanged(int index)
 
 void AutomaticControlTabView::on_activateButton_clicked()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
-    if (activatedControlAlgorithmIndex < 0) {
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+    if (!isControlActivated()) {
         bool isGood = this->controlConfigViews[this->current]->validateInput();
         if ( !isGood ) {
             on_messagePrint("Hay un error en los parámetros de control.", ERROR);
@@ -60,6 +60,7 @@ void AutomaticControlTabView::on_activateButton_clicked()
         this->controlConfigViews[this->current]->start();
         activatedControlAlgorithmIndex = this->current;
         on_messagePrint("Se activó el proceso de control correctamente", OK);
+        emit controlAlgorithmActivated();
     } else {
         on_messagePrint("Hay un proceso activo.", ERROR);
     }
@@ -82,18 +83,19 @@ void AutomaticControlTabView::resetLabel() {
 
 void AutomaticControlTabView::on_deactivateButton_clicked()
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
-    if (activatedControlAlgorithmIndex >= 0){
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+    if (isControlActivated()){
         this->controlConfigViews[this->activatedControlAlgorithmIndex]->stop();
         activatedControlAlgorithmIndex = -1;
         on_messagePrint("Proceso detenido correctamente", OK);
+        emit controlAlgorithmDeactivated();
     } else {
         on_messagePrint("No hay proceso que desactivar", ERROR);
     }
 }
 
 void AutomaticControlTabView::dataAvailable(TemperatureReading &temp) {
-    std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
     this->controlConfigViews[this->current]->dataAvailable(temp);
 }
 
@@ -110,4 +112,9 @@ void AutomaticControlTabView::fillControlConfigViews() {
     for (auto widget : this->controlConfigViews) {
         ui->controlTypeCombo->addItem(widget->getName());
     }
+}
+
+bool AutomaticControlTabView::isControlActivated() {
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+    return activatedControlAlgorithmIndex >= 0;
 }

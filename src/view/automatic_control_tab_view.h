@@ -37,6 +37,12 @@ public:
      * @param enable
      */
     void enableButtons(bool enable);
+    bool isControlActivated();
+
+signals:
+    void controlAlgorithmDeactivated();
+    void controlAlgorithmActivated();
+
 private slots:
     /**
      * @brief Instancia la vista de paráemtros extras para ser
@@ -51,6 +57,8 @@ private slots:
      */
     void on_activateButton_clicked();
     void on_messagePrint(const char *str, unsigned char mode);
+
+public slots:
     /**
      * @brief Detiene el hilo de ejecución (si lo hay) y libera
      * los recursos.
@@ -65,7 +73,7 @@ private:
     QTimer *resetLabelTimer;
     std::vector<ControlConfiguration *> controlConfigViews;
     unsigned int current{0};
-    std::mutex mutex;
+    std::recursive_mutex mutex;
     int activatedControlAlgorithmIndex{-1};
 };
 
