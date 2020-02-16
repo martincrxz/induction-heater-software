@@ -4,9 +4,12 @@
 
 #include "zieglers_nichols.h"
 #include "../connection/protocol/set_power.h"
+#include "../view/auto_tunning_tab_view.h"
 
-ZieglerNichols::ZieglerNichols(SerialPort *port) : ControlAlgorithm(0, port) {
 
+ZieglerNichols::ZieglerNichols(AutoTunningTabView *view, SerialPort *port) : ControlAlgorithm(0, port) {
+
+    autoTunningView = view;
     std::shared_ptr<MicroMessage> msg(new SetPower(powerToTaps(10)));
     port->send(msg);
     powerLevel = POWER_AT_10;
@@ -48,7 +51,6 @@ void ZieglerNichols::nextState(){
         powerLevel = POWER_AT_20;
 
     if(powerLevel == POWER_AT_20) {
-        // hacer algo con el stepResponse
-        stop();
+        autoTunningView->calculateParameters(stepResponse);
     }
 }

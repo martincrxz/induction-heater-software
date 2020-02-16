@@ -29,7 +29,7 @@ void AutoTunningTabView::enableButtons(bool enable) {
 void AutoTunningTabView::activate() {
     if(!mainWindow->isControlActivated()) {
         Logger::info("Se activo el ZN");
-        zn.reset(new ZieglerNichols(port));
+        zn.reset(new ZieglerNichols(this, port));
         zn->start();
     }
     else
@@ -39,4 +39,9 @@ void AutoTunningTabView::activate() {
 void AutoTunningTabView::deactivate() {
     zn.reset(nullptr);
     Logger::info("Se interrumpe ZN");
+}
+
+void AutoTunningTabView::calculateParameters(std::vector<float> stepResponse) {
+    
+    zn.reset(nullptr);
 }

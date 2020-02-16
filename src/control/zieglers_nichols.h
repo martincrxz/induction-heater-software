@@ -14,10 +14,12 @@
 
 typedef enum {POWER_AT_10, POWER_AT_20, UNDEFINED} power_level_t;
 
+class AutoTunningTabView;
+
 class ZieglerNichols : public ControlAlgorithm {
 
 public:
-    explicit ZieglerNichols(SerialPort *);
+    explicit ZieglerNichols(AutoTunningTabView *, SerialPort *);
 
 private:
     unsigned char process(std::shared_ptr<TemperatureReading> data) override;
@@ -28,6 +30,7 @@ private:
     std::vector<float> tempBuffer;
     std::vector<float> stepResponse;
     uint64_t buffCounter = 0;
+    AutoTunningTabView *autoTunningView;
 };
 
 

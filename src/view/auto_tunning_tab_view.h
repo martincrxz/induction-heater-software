@@ -25,6 +25,7 @@ public:
      * @param enable
      */
     void enableButtons(bool enable);
+    void calculateParameters(std::vector<float> stepResponse);
 
 public slots:
     void activate();
