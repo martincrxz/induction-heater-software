@@ -106,6 +106,8 @@ void MainWindow::onSetManualControl(int index){
         msg.reset(new SetManualControl());
     } else {
         msg.reset(new SetAutomaticControl());
+        // TODO: borrar esto, lo uso de debug
+        // enableAutomaticControlButtons(true);
     }
     port->send(msg);
 }
