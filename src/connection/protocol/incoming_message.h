@@ -15,6 +15,10 @@ public:
     explicit IncomingMessage(message_id id);
     virtual ~IncomingMessage() = default;
     QByteArray serialize() override;
+    std::uint64_t getTimestamp();
+
+private:
+    std::uint64_t timestamp;
 };
 
 
