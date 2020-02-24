@@ -17,7 +17,6 @@ class ControlAlgorithm : public QThread{
 
 private:
 	IO::Stream<std::shared_ptr<TemperatureReading>> queue;
-    bool keep_processing{true};
     SerialPort *serialPort;
     /**
      * @brief Lanza el hilo de ejecución que toma elementos de a uno y
@@ -25,11 +24,12 @@ private:
      */
     void run() override;
     virtual unsigned char process(std::shared_ptr<TemperatureReading> data) = 0;
-
 public slots:
-	void receiveData(TemperatureReading &data);
+
+    void receiveData(TemperatureReading &data);
 
 protected:
+    bool keep_processing{true};
     float targetTemp = 0;
 
 public:

@@ -26,12 +26,12 @@ public:
      */
     void instantiate() override;
     const char * getName() override;
+    void loadControlValues(std::string filepath = FILE_PATH) override;
 
 private slots:
-    void on_saveButton_clicked();
 
+    void on_saveButton_clicked();
 private:
-    void loadControlValues();
     /**
      * Un workaround para seguir manteniendo la misma interfaz polimorfica 
      * en la clase padre y tener una especialización que depende de donde se 

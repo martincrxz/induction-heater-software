@@ -22,6 +22,7 @@ public:
     bool validateInput() override;
     void instantiate() override;
     const char * getName() override;
+    void loadControlValues(std::string filepath = FILE_PATH) override;
 
 private slots:
     void on_openFile_clicked();
@@ -31,8 +32,6 @@ private:
     Ui::FromFileControlView *ui;
     std::vector<std::vector<std::uint32_t>> controlDirectives;
     QDoubleValidator *kValidator;
-
-    void loadControlValues();
     void parseFile();
 };
 

@@ -23,6 +23,7 @@ class AutomaticControlTabView : public QWidget
     Q_OBJECT
 
 public:
+
     explicit AutomaticControlTabView(QWidget *parent, SerialPort *pPort);
     ~AutomaticControlTabView();
     /**
@@ -38,6 +39,7 @@ public:
      */
     void enableButtons(bool enable);
     bool isControlActivated();
+    void loadFile(std::string file_path);
 
 signals:
     void controlAlgorithmDeactivated();

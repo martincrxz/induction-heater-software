@@ -19,6 +19,7 @@ public:
     bool validateInput() override;
     void instantiate() override;
     const char * getName() override;
+    void loadControlValues(std::string filepath = FILE_PATH) override;
     
 private:
     Ui::FuzzyControlView *ui;

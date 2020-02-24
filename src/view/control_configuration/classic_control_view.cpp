@@ -65,22 +65,19 @@ bool ClassicControlView::validateInput(bool check_temp)
 void ClassicControlView::on_saveButton_clicked()
 {
     if (this->validateInput(false)) {
-        std::fstream file(FILE_PATH, std::fstream::out |
-                          std::fstream::trunc);
-        file << "kp " << this->ui->kp_value->text().toStdString() << std::endl;
-        file << "kd " << this->ui->kd_value->text().toStdString() << std::endl;
-        file << "ki " << this->ui->ki_value->text().toStdString() << std::endl;
-
-        Logger::info("Data saved in file: %s", FILE_PATH);
+        float kp = this->ui->kp_value->text().toFloat();
+        float ki = this->ui->ki_value->text().toFloat();
+        float kd = this->ui->kd_value->text().toFloat();
+        ClassicControlView::saveConstantsInFile(kp, ki, kd, FILE_PATH);
         emit message("Datos guardados.", OK);
     } else {
         emit message("No se pudo guardar los datos. Revisar formato", ERROR);
     }
 }
 
-void ClassicControlView::loadControlValues()
+void ClassicControlView::loadControlValues(std::string filepath)
 {
-    std::fstream file(FILE_PATH, std::fstream::in);
+    std::fstream file(filepath, std::fstream::in);
     // TODO: podría usar un formato estandar como Json o Yaml
     std::string line;
     std::string key;

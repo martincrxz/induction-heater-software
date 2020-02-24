@@ -83,30 +83,6 @@ void FromFileControlView::on_saveButton_clicked()
     }
 }
 
-
-void FromFileControlView::loadControlValues()
-{
-    std::fstream file(FILE_PATH, std::fstream::in);
-    // TODO: podría usar un formato estandar como Json o Yaml
-    std::string line;
-    std::string key;
-    std::string value;
-    while (std::getline(file, line)) {
-        std::istringstream iss(line);
-        iss >> key;
-        iss >> value;
-        if (key == "kp") {
-            this->ui->kpLineEdit->setText(QString(value.c_str()));
-        } else if (key == "kd") {
-            this->ui->kdLineEdit->setText(QString(value.c_str()));
-        } else if (key == "ki") {
-            this->ui->kiLineEdit->setText(QString(value.c_str()));
-        } else {
-            throw Exception("Invalid format of classic control parameters file");
-        }
-    }
-}
-
 void FromFileControlView::parseFile() {
     try {
         std::string filename = this->ui->filenameLabel->text().toStdString();
@@ -164,5 +140,27 @@ void FromFileControlView::parseFile() {
         this->message("El archivo se cargó correctamente", OK);
     } catch (std::exception &e) {
         this->message("El csv está mal formateado", ERROR);
+    }
+}
+
+void FromFileControlView::loadControlValues(std::string filepath) {
+    std::fstream file(filepath, std::fstream::in);
+    // TODO: podría usar un formato estandar como Json o Yaml
+    std::string line;
+    std::string key;
+    std::string value;
+    while (std::getline(file, line)) {
+        std::istringstream iss(line);
+        iss >> key;
+        iss >> value;
+        if (key == "kp") {
+            this->ui->kpLineEdit->setText(QString(value.c_str()));
+        } else if (key == "kd") {
+            this->ui->kdLineEdit->setText(QString(value.c_str()));
+        } else if (key == "ki") {
+            this->ui->kiLineEdit->setText(QString(value.c_str()));
+        } else {
+            throw Exception("Invalid format of classic control parameters file");
+        }
     }
 }

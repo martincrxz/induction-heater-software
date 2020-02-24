@@ -25,11 +25,15 @@ public:
      * @param enable
      */
     void enableButtons(bool enable);
-    void calculateParameters(std::vector<float> stepResponse);
+    void calculateParameters(
+            std::vector<std::shared_ptr<TemperatureReading>> &stepResponse);
+
+signals:
+    void ZNCalculated(float kp, float ki, float kd);
 
 public slots:
     void activate();
-    void deactivate();
+    void deactivate(bool finished = false);
 
 private:
     Ui::AutoTunningTabView *ui;

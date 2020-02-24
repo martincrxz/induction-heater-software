@@ -26,3 +26,7 @@ const char *FuzzyControlView::getName()
 {
     return "Fuzzy logic";
 }
+
+void FuzzyControlView::loadControlValues(std::string filepath) {
+
+}

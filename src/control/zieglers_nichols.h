@@ -28,7 +28,7 @@ private:
 
     power_level_t powerLevel = UNDEFINED;
     std::vector<float> tempBuffer;
-    std::vector<float> stepResponse;
+    std::vector<std::shared_ptr<TemperatureReading>> stepResponse;
     uint64_t buffCounter = 0;
     AutoTunningTabView *autoTunningView;
 };

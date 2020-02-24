@@ -118,3 +118,9 @@ bool AutomaticControlTabView::isControlActivated() {
     std::lock_guard<std::recursive_mutex> lock(this->mutex);
     return activatedControlAlgorithmIndex >= 0;
 }
+
+void AutomaticControlTabView::loadFile(std::string file_path) {
+    for (auto view : this->controlConfigViews) {
+        view->loadControlValues(file_path);
+    }
+}

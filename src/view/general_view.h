@@ -39,6 +39,7 @@ public slots:
     void onManualPowerSet();
     void onAutomaticPowerSet();
     void onControlTypeChanged();
+    void onZNCalculated(float, float, float);
 private:
     Ui::MainWindow *ui;
     SerialPort *port;

@@ -28,7 +28,7 @@ unsigned char ZieglerNichols::process(std::shared_ptr<TemperatureReading> data) 
              nextState();
 
     if(powerLevel == POWER_AT_20)
-        stepResponse.emplace_back(data->getData());
+        stepResponse.emplace_back(data);
 
     float power = (powerLevel == POWER_AT_10) ? 10 : 20;
 
@@ -51,6 +51,9 @@ void ZieglerNichols::nextState(){
         powerLevel = POWER_AT_20;
 
     if(powerLevel == POWER_AT_20) {
+        // Evito que se acepten nuevas muestras después de terminar este
+        // procesamiento lento.
+        this->keep_processing = false;
         autoTunningView->calculateParameters(stepResponse);
     }
 }

@@ -13,6 +13,7 @@
 #include "../connection/protocol/set_manual_control.h"
 #include "../connection/protocol/set_automatic_control.h"
 #include "../connection/protocol/automatic_control_acknowledge.h"
+#include "control_configuration/classic_control_view.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -56,6 +57,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(port, &SerialPort::serialPortDisconnected, this, &MainWindow::onSerialPortDisconnected);
     connect(this->automaticView, &AutomaticControlTabView::controlAlgorithmDeactivated, this, &MainWindow::onControlTypeChanged);
     connect(this->automaticView, &AutomaticControlTabView::controlAlgorithmActivated, this, &MainWindow::onControlTypeChanged);
+    connect(this->autotunningView, &AutoTunningTabView::ZNCalculated, this, &MainWindow::onZNCalculated);
 }
 
 MainWindow::~MainWindow()
@@ -168,4 +170,12 @@ void MainWindow::onControlTypeChanged(){
 
 bool MainWindow::isControlActivated(){
     return automaticView->isControlActivated();
+}
+
+void MainWindow::onZNCalculated(float kp, float ki, float kd) {
+    std::ostringstream oss;
+    oss << "zn-" << QDateTime::currentDateTime().toString("dd-MM-yyyy").toStdString();
+    ClassicControlView::saveConstantsInFile(kp, ki, kd, oss.str());
+    this->automaticView->loadFile(oss.str());
+    this->autotunningView->deactivate(true);
 }
