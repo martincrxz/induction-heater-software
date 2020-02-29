@@ -40,6 +40,11 @@ public:
     void enableButtons(bool enable);
     bool isControlActivated();
     void loadFile(std::string file_path);
+    /**
+     * @brief Returns current process name, or "-" if none is activated
+     * @return
+     */
+    const char * getProcessName();
 
 signals:
     void controlAlgorithmDeactivated();

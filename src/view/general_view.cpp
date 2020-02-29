@@ -81,6 +81,7 @@ void MainWindow::onTemperatureDataArrived(std::shared_ptr<MicroMessage> msg) {
     // TODO: debo actualizar el gráfico, como el hilo de control
     this->chartView->dataAvailable(temp);
     this->automaticView->dataAvailable(temp);
+    ui->dut_temp_value->setText(QString::number(temp.getData()));
 }
 
 void MainWindow::onColdJunctionDataArrived(std::shared_ptr<MicroMessage> msg) {
@@ -158,16 +159,19 @@ void MainWindow::onAutomaticPowerSet() {
 void MainWindow::onControlTypeChanged(){
     if (controlType == MANUAL) {
         ui->operationModeValue->setText("MANUAL");
+        ui->control_type_value->setText("MANUAL");
         ui->automaticControlValue->setText("OFF");
         this->automaticView->on_deactivateButton_clicked();
     } else {
         ui->operationModeValue->setText("AUTOMATICO");
+        ui->control_type_value->setText("AUTOMATICO");
         if (this->automaticView->isControlActivated()) {
             ui->automaticControlValue->setText("ON");
         } else {
             ui->automaticControlValue->setText("OFF");
         }
     }
+    ui->current_process->setText(this->automaticView->getProcessName());
 }
 
 bool MainWindow::isControlActivated(){

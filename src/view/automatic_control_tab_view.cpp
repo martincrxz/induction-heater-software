@@ -124,3 +124,12 @@ void AutomaticControlTabView::loadFile(std::string file_path) {
         view->loadControlValues(file_path);
     }
 }
+
+const char *AutomaticControlTabView::getProcessName()
+{
+    std::lock_guard<std::recursive_mutex> lock(this->mutex);
+    if (isControlActivated())
+        return this->controlConfigViews[this->current]->getName();
+    else
+        return "-";
+}

@@ -68,7 +68,8 @@ SOURCES += \
     src/control/control_algorithm.cpp \
     src/control/classic_pid.cpp \
     libs/logger/message/logger_critical.cpp \
-    src/control/file_control.cpp
+    src/control/file_control.cpp \
+    src/control/zieglers_nichols.cpp
 
 
 
@@ -117,7 +118,8 @@ HEADERS += \
     src/control/control_algorithm.h \
     src/control/classic_pid.h \
     libs/logger/message/logger_critical.h \
-    src/control/file_control.h
+    src/control/file_control.h \
+    src/control/zieglers_nichols.h
 
 FORMS += \
 		src/view/auto_tunning_tab_view.ui \
