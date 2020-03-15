@@ -8,7 +8,7 @@ QT       += core gui charts serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = tprof
+TARGET = horno-induccion
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -131,3 +131,5 @@ FORMS += \
     src/view/control_configuration/classic_control_view.ui \
     src/view/control_configuration/fuzzy_control_view.ui \
     src/view/control_configuration/from_file_control_view.ui 
+
+RESOURCES = assets/resources.qrc

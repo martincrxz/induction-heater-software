@@ -57,29 +57,26 @@ make
 #### Windows
 Recomiendo instalar primero `git`. Con ese programa clonen el proyecto
 de este repositorio. Luego instalen `QTcreator`. Los elementos necesarios
-para que funcione todo se muestran en la siguiente imagen.
+para que funcione todo son:
 
-![alt text](https://gitlab.com/fedemgp/trabajoprofesional/raw/master/common/windows-installation-1.png "Instalación QT")
+- Qt 5.14.1/MinGW7.3.0 32-bit
+- Qt 5.14.1/Qt Charts
+- Developers and Designers Tools/MinGW7.3.0 32-bit
+- Developers and Designers Tools/Qt Installer Framework 3.2
 
-Como puede verse se necesita:
-* Developers and Designers Tools (la instalación base)
-* Sources y QtCharts
-* Qt Data Visualization
-* MSVC 2017 32/64 bits (trae todas las configuraciones de para cmake)
+Opcionalmente se pueden instalar:
+- Qt 5.14.1/MinGW7.3.0 64-bit
+- Developers and Designers Tools/CMake 3.16.0 32 y/o 64-bit
+- Developers and Designers Tools/MinGW7.3.0 64-bit
+- Developers and Designers Tools/Qt Creator 4.11.1 CDB Debugger Support
+- Developers and Designers Tools/Debugging  Tools for Windows
 
-Luego se requiere bajar Visual Studio (2017 o posterior), para
-que instale el entorno de desarrollo para C++. 
+##### Importante!!
 
-Finalmente, instalar Cmake y abrir la gui de este.
+Si instala otras versiones de Qt o de alguno de sus componentes, revisar y modificar el script de 
+compilación `deploy-installer.bat`
 
-![alt text](https://gitlab.com/fedemgp/trabajoprofesional/raw/master/common/windows-2.png "Cmake")
-
-Setear las rutas a donde se encuentra el código y a donde se va a buildear el 
-ejecutable (dentro de la carpeta del codigo crear una carpeta `build`). Una 
-vez seteado esto, darle click a `Configure`, `Generate`y finalmente a 
-`Open project`. Cmake abrirá el visual studio, donde podrán ver el projecto.
-Hagan click derecho en el nuestra `application` y denle a 
-"Establecer como proyecto de inicio". Luego compilen y finalmente denle play.
+Ejecutar dicho script, este compilará y generará un instalador `horno-induccion-installer.exe`. Una vez generado, instalar el programa, y usarlo libremente.
 
 ### Links útiles
 * [QT](https://www.qt.io/download)
