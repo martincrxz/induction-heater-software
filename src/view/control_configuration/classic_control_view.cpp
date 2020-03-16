@@ -69,9 +69,9 @@ void ClassicControlView::on_saveButton_clicked()
         float ki = this->ui->ki_value->text().toFloat();
         float kd = this->ui->kd_value->text().toFloat();
         ClassicControlView::saveConstantsInFile(kp, ki, kd, FILE_PATH);
-        emit message("Datos guardados.", OK);
+        emit message("Datos guardados.", OK, true);
     } else {
-        emit message("No se pudo guardar los datos. Revisar formato", ERROR);
+        emit message("No se pudo guardar los datos. Revisar formato", ERROR, true);
     }
 }
 

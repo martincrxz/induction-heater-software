@@ -59,7 +59,7 @@ protected:
     std::unique_ptr<ControlAlgorithm> controlAlgorithm;
 
 signals:
-    void message(const char *str, unsigned char mode);
+    void message(const char *str, unsigned char mode, bool reset);
 
 public slots:
 };

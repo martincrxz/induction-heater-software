@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     manualPowerView = new ManualPowerControlView(this, this->port);
     autotunningView = new AutoTunningTabView(this, this->port);
     chartView = new ChartTabView(this);
-
+    resetLabelTimer = new QTimer();
     port->findDevice();
 
     ui->setupUi(this);
@@ -37,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->statusValue->setText("OK");
     onManualPowerSet();
-
+    //onAutomaticPowerSet();
     /**
      * Conecto las distintas señales con los slots
      **/
@@ -58,10 +58,17 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this->automaticView, &AutomaticControlTabView::controlAlgorithmDeactivated, this, &MainWindow::onControlTypeChanged);
     connect(this->automaticView, &AutomaticControlTabView::controlAlgorithmActivated, this, &MainWindow::onControlTypeChanged);
     connect(this->autotunningView, &AutoTunningTabView::ZNCalculated, this, &MainWindow::onZNCalculated);
+    // conecto signals relacionados a la ipmresion de mensajes de notificacion
+    connect(this->resetLabelTimer, &QTimer::timeout, this, &MainWindow::resetLabel);
+    connect(this->autotunningView, &AutoTunningTabView::printMessage, this, &MainWindow::on_messagePrint);
+    connect(this->automaticView, &AutomaticControlTabView::printMessage, this, &MainWindow::on_messagePrint);
+    connect(this->manualPowerView, &ManualPowerControlView::printMessage, this, &MainWindow::on_messagePrint);
 }
 
 MainWindow::~MainWindow()
 {
+    this->resetLabelTimer->stop();
+    delete this->resetLabelTimer;
     delete ui;
 }
 
@@ -184,4 +191,26 @@ void MainWindow::onZNCalculated(float kp, float ki, float kd) {
     ClassicControlView::saveConstantsInFile(kp, ki, kd, oss.str());
     this->automaticView->loadFile(oss.str());
     this->autotunningView->deactivate(true);
+}
+
+void MainWindow::on_messagePrint(const char *str, unsigned char mode, bool reset)
+{
+    ui->notificationLabel->setText(str);
+    if (mode == ERROR){
+        ui->notificationLabel->setStyleSheet("QLabel { color : red; }");
+    } else if (mode == OK) {
+        ui->notificationLabel->setStyleSheet("QLabel { color : green; }");
+    } else {
+        ui->notificationLabel->setStyleSheet("QLabel { color : black; }");
+    }
+
+    if (reset) {
+        this->resetLabelTimer->start(3000);
+    } else {
+        this->resetLabelTimer->stop();
+    }
+}
+
+void MainWindow::resetLabel() {
+    ui->notificationLabel->setText("");
 }

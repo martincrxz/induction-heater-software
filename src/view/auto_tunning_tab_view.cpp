@@ -13,8 +13,6 @@ AutoTunningTabView::AutoTunningTabView(QWidget *parent, SerialPort* port) :
     port(port)
 {
     ui->setupUi(this);
-    this->resetLabelTimer = new QTimer();
-    connect(this->resetLabelTimer, &QTimer::timeout, this, &AutoTunningTabView::resetLabel);
     connect(ui->activateButton, &QPushButton::clicked, this, &AutoTunningTabView::activate);
     connect(ui->deactivateButton, &QPushButton::clicked, this, &AutoTunningTabView::deactivate);
 }
@@ -31,30 +29,30 @@ void AutoTunningTabView::enableButtons(bool enable) {
 
 void AutoTunningTabView::activate() {
     if(!mainWindow->isControlActivated() && zn == nullptr) {
-        on_messagePrint("Calculando...", 2, false);
+        emit printMessage("Calculando...", 2, false);
         Logger::info(ZN_ACTIVATED_MSG);
         zn.reset(new ZieglerNichols(this, port));
         zn->start();
     }
     else{
-        on_messagePrint(ZN_CANT_BE_ACTIVATED_MSG, ERROR);
+        emit printMessage(ZN_CANT_BE_ACTIVATED_MSG, ERROR, true);
         Logger::info(ZN_CANT_BE_ACTIVATED_MSG);
     }
 }
 
 void AutoTunningTabView::deactivate(bool finished) {
     if (zn == nullptr){
-        on_messagePrint("No hay proceso para desactivar", ERROR);
+        emit printMessage("No hay proceso para desactivar", ERROR, true);
         return;
     }
 
     zn.reset(nullptr);
     if (finished){
-        on_messagePrint(ZN_SUCCESFULY_FINISHED, OK);
+        emit printMessage(ZN_SUCCESFULY_FINISHED, OK, true);
         Logger::info(ZN_SUCCESFULY_FINISHED);
     } else {
 
-        on_messagePrint(ZN_INTERRUPTED, ERROR);
+        emit printMessage(ZN_INTERRUPTED, ERROR, true);
         Logger::info(ZN_INTERRUPTED);
     }
 }
@@ -121,26 +119,4 @@ void AutoTunningTabView::calculateParameters(
     ki = 0.6f * k0/t10;     // [ki] = % / (ms * °C)
     kd = 0.6f * k0 * t10;   // [kd] = % * ms / °C
     emit ZNCalculated(kp, ki, kd);
-}
-
-void AutoTunningTabView::on_messagePrint(const char *str, unsigned char mode, bool reset)
-{
-    ui->status_label->setText(str);
-    if (mode == ERROR){
-        ui->status_label->setStyleSheet("QLabel { color : red; }");
-    } else if (mode == OK) {
-        ui->status_label->setStyleSheet("QLabel { color : green; }");
-    } else {
-        ui->status_label->setStyleSheet("QLabel { color : black; }");
-    }
-
-    if (reset){
-        this->resetLabelTimer->start(3000);
-    } else {
-        this->resetLabelTimer->stop();
-    }
-}
-
-void AutoTunningTabView::resetLabel() {
-    ui->status_label->setText("");
 }

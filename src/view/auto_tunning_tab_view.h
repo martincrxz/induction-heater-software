@@ -35,21 +35,17 @@ public:
 
 signals:
     void ZNCalculated(float kp, float ki, float kd);
+    void printMessage(const char *str, unsigned char mode, bool reset);
 
 public slots:
     void activate();
     void deactivate(bool finished = false);
 
-private slots:
-    void on_messagePrint(const char *str, unsigned char mode, bool reset = true);
-
 private:
-    void resetLabel();
     Ui::AutoTunningTabView *ui;
     MainWindow* mainWindow;
     SerialPort *port;
     std::unique_ptr<ZieglerNichols> zn;
-    QTimer *resetLabelTimer;
 };
 
 #endif // AUTO_TUNNING_TAB_VIEW_H

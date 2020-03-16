@@ -40,6 +40,13 @@ public slots:
     void onAutomaticPowerSet();
     void onControlTypeChanged();
     void onZNCalculated(float, float, float);
+    /**
+     * @brief Imprime un mensaje de error o de exito al querer enviar
+     * un mensaje de seteo de conrol manual
+     * @param str
+     * @param mode
+     */
+    void on_messagePrint(const char *str, unsigned char mode, bool reset);
 private:
     Ui::MainWindow *ui;
     SerialPort *port;
@@ -48,12 +55,15 @@ private:
     ManualPowerControlView *manualPowerView;
     AutoTunningTabView *autotunningView;
     ChartTabView *chartView;
-    void enableAutomaticControlButtons(bool enable);
-
+    QTimer *resetLabelTimer;
     bool usbOk = true;
     bool thermocoupleOk = true;
-
     control_type_t controlType = MANUAL;
+    /**
+     * @brief deja el mensaje de warning con texto vacio
+     */
+    void resetLabel();
+    void enableAutomaticControlButtons(bool enable);
 };
 
 #endif // MAINWINDOW_H

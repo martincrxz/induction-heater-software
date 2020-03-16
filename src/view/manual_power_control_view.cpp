@@ -18,26 +18,18 @@ ManualPowerControlView::ManualPowerControlView(QWidget *parent, SerialPort *pPor
     serialPort(pPort)
 {
     ui->setupUi(this);
-    ui->warningLabel->setText("");
-    this->resetLabelTimer = new QTimer();
-    connect(this->resetLabelTimer, &QTimer::timeout, this,
-        &ManualPowerControlView::resetLabel);
-}
+ }
 
 ManualPowerControlView::~ManualPowerControlView()
 {
     delete ui;
 }
 
-void ManualPowerControlView::resetLabel() {
-    ui->warningLabel->setText("");
-}
-
 void ManualPowerControlView::on_setPowerButton_clicked()
 {
     float powerValue = this->ui->powerValue->text().toFloat();
     if (powerValue < 0 || powerValue > 100) {
-        this->printMessage("Potencia inválida", ERROR);
+        emit printMessage("Potencia inválida", ERROR, true);
         return;
     }
     /*
@@ -58,18 +50,7 @@ void ManualPowerControlView::on_setPowerButton_clicked()
     unsigned char taps = ControlAlgorithm::powerToTaps(powerValue);
     std::shared_ptr<OutgoingMessage> toSend(new SetPower(taps));
     this->serialPort->send(toSend);
-    this->printMessage("Mensaje enviado");
-}
-
-void ManualPowerControlView::printMessage(const char *str, unsigned char mode)
-{
-    ui->warningLabel->setText(str);
-    if (mode == ERROR){
-        ui->warningLabel->setStyleSheet("QLabel { color : red; }");
-    } else {
-        ui->warningLabel->setStyleSheet("QLabel { color : green; }");
-    }
-    this->resetLabelTimer->start(3000);
+    emit printMessage("Mensaje enviado", OK, true);
 }
 
 void ManualPowerControlView::enableButtons(bool enable) {

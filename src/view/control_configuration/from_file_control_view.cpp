@@ -77,9 +77,9 @@ void FromFileControlView::on_saveButton_clicked()
         file << "ki " << this->ui->kiLineEdit->text().toStdString() << std::endl;
 
         Logger::info("Data saved in file: %s", FILE_PATH);
-        emit message("Parámetros de control guardados.", OK);
+        emit message("Parámetros de control guardados.", OK, true);
     } else {
-        emit message("No se pudo guardar los parámetros de control. Revisar formato", ERROR);
+        emit message("No se pudo guardar los parámetros de control. Revisar formato", ERROR, true);
     }
 }
 
@@ -89,7 +89,7 @@ void FromFileControlView::parseFile() {
         Logger::debug("Loading file: %s", filename.c_str());
         std::fstream file(filename);
         if (!file.is_open()) {
-            this->message("El archivo no existe", ERROR);
+            emit message("El archivo no existe", ERROR, true);
             return;
         }
         std::string line;
@@ -124,7 +124,7 @@ void FromFileControlView::parseFile() {
             if (row.size() != 3) {
             	throw std::exception();
             } else if (row[2] > 100) {
-            	emit message("La potencia no puede superar 100%", ERROR);
+            	emit message("La potencia no puede superar 100%", ERROR, true);
             	return;
             }
             config.emplace_back(row);
@@ -137,9 +137,9 @@ void FromFileControlView::parseFile() {
             row[0] *= 1000;
         }
         this->controlDirectives = std::move(config);
-        this->message("El archivo se cargó correctamente", OK);
+        emit message("El archivo se cargó correctamente", OK, true);
     } catch (std::exception &e) {
-        this->message("El csv está mal formateado", ERROR);
+        emit message("El csv está mal formateado", ERROR, true);
     }
 }
 

@@ -49,6 +49,7 @@ public:
 signals:
     void controlAlgorithmDeactivated();
     void controlAlgorithmActivated();
+    void printMessage(const char *str, unsigned char mode, bool reset);    
 
 private slots:
     /**
@@ -63,7 +64,6 @@ private slots:
      * y lanza el hilo de ejecucion
      */
     void on_activateButton_clicked();
-    void on_messagePrint(const char *str, unsigned char mode);
 
 public slots:
     /**
@@ -72,12 +72,10 @@ public slots:
      */
     void on_deactivateButton_clicked();
 private:
-    void resetLabel();
     void fillControlConfigViews();
 
     Ui::AutomaticControlTabView *ui;
     SerialPort *port;
-    QTimer *resetLabelTimer;
     std::vector<ControlConfiguration *> controlConfigViews;
     unsigned int current{0};
     std::recursive_mutex mutex;

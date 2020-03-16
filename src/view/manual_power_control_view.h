@@ -16,17 +16,6 @@ class ManualPowerControlView : public QWidget
 public:
     explicit ManualPowerControlView(QWidget *parent, SerialPort *pPort);
     /**
-     * @brief Imprime un mensaje de error o de exito al querer enviar
-     * un mensaje de seteo de conrol manual
-     * @param str
-     * @param mode
-     */
-    void printMessage(const char *str, unsigned char mode = 0);
-    /**
-     * @brief deja el mensaje de warning con texto vacio
-     */
-    void resetLabel();
-    /**
      * @brief Habilita (o no) los botones de la vista. Se usa para evitar
      * envio de mensajes al micro que quieran controlar el horno cuando este
      * se encuentre en modo manual.
@@ -34,6 +23,9 @@ public:
      */
     void enableButtons(bool enable);
     ~ManualPowerControlView();
+
+signals:
+    void printMessage(const char *str, unsigned char mode, bool reset);    
 
 private slots:
     /**
@@ -45,7 +37,6 @@ private slots:
 private:
     Ui::ManualPowerControlView *ui;
     SerialPort *serialPort;
-    QTimer *resetLabelTimer;
 };
 
 #endif // MANUAL_POWER_CONTROL_VIEW_H
