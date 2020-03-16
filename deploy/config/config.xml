@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>Fiuba - Horno de inducción</Name>
+    <Version>1.0.0</Version>
+    <Title>Horno inducción</Title>
+    <Publisher>Federico Gomez Peter, Martín Cruz García, Mariana S.</Publisher>
+    <!-- Directory name is used in component.xml -->
+    <StartMenuDir>fiuba</StartMenuDir>
+    <TargetDir>@HomeDir@/fiuba</TargetDir>
+</Installer>

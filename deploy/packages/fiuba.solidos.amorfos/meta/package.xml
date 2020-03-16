@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+    <DisplayName>Horno Induccion</DisplayName>
+    <Description>Trabajo profesional. Horno de inducción magnética</Description>
+    <Version>1.0.0-1</Version>
+    <ReleaseDate>2020-03-08</ReleaseDate>
+    <Default>true</Default>
+    <Script>installscript.qs</Script>
+</Package>

@@ -1,5 +1,14 @@
 # Standard building folder
 build/*
+# deployment folder
+deploy/*.dll
+deploy/*.exe
+deploy/iconengines
+deploy/imageformats
+deploy/platforms
+deploy/styles
+deploy/translations
+*.exe
 # CLION's folders
 .idea/
 cmake-build-debug/*
