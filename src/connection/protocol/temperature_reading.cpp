@@ -41,3 +41,5 @@ float TemperatureReading::getData() {
     return data;
 }
 
+TemperatureReading::TemperatureReading(float temp): IncomingMessage(TEMPERATURE_READING), data(temp) {}
+

@@ -16,7 +16,8 @@ typedef enum {MANUAL, AUTOMATIC} control_type_t;
 namespace Ui {
 class MainWindow;
 }
-
+#define STEP_SIZE 1000
+#define POWER_STEP_SIZE 500
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -59,6 +60,15 @@ private:
     bool usbOk = true;
     bool thermocoupleOk = true;
     control_type_t controlType = MANUAL;
+    // Testing
+    QTimer *testTimer;
+    Chrono chrono;
+    std::uint8_t power_value{50};
+    std::uint64_t  temp_step{STEP_SIZE};
+    std::uint64_t  power_step{POWER_STEP_SIZE};
+    float amplitude{2};
+    void injectData();
+
     /**
      * @brief deja el mensaje de warning con texto vacio
      */

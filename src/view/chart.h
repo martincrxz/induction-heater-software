@@ -9,7 +9,7 @@
 #include <QtCharts/QChart>
 #include <QtCharts/QDateTimeAxis>
 #include <QtCharts/QValueAxis>
-#include <QtCharts/QLineSeries>
+#include <QtCharts/QSplineSeries>
 #include <QtCore/QDateTime>
 #include <QtCore/QMutex>
 #include <chrono.h>
@@ -41,8 +41,14 @@ public:
 private:
     void append(double x, double y, unsigned int id = 1);
     bool secondCurveEnabled{false};
-    QLineSeries series1;
-    QLineSeries series2;
+    double y1min{0};
+    double y1max{0};
+    double y2min{0};
+    double y2max{0};
+    double xmin{0};
+    double xmax{0};
+    QSplineSeries series1;
+    QSplineSeries series2;
     QDateTimeAxis xAxis;
     QValueAxis yAxis1;
     QValueAxis yAxis2;

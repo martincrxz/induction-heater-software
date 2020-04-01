@@ -18,7 +18,8 @@ class PowerSetAcknowledge: public IncomingMessage {
 private:
     std::uint8_t data;
 public:
-    PowerSetAcknowledge(QByteArray &);
+    explicit PowerSetAcknowledge(QByteArray &);
+    explicit PowerSetAcknowledge(std::uint8_t power);
     virtual ~PowerSetAcknowledge() = default;
     float getPower();
 };

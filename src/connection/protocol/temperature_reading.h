@@ -14,6 +14,7 @@ private:
     float data;
 public:
     TemperatureReading(QByteArray &buff);
+    TemperatureReading(float temp);
     TemperatureReading(TemperatureReading &cpy);
     virtual ~TemperatureReading() = default;
     float getData();
