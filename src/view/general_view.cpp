@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <logger/logger.h>
+#include <QtCore/QDateTime>
 
 #include "general_view.h"
 #include "ui_general_view.h"
@@ -105,6 +106,7 @@ void MainWindow::thermocoupleChange(int index){
 
 void MainWindow::onPowerSetAckArrived(std::shared_ptr<MicroMessage> msg) {
     auto &temp = (PowerSetAcknowledge &) *msg;
+    this->chartView->dataAvailable(temp);
     ui->powerValue->setText(QString::number(temp.getPower()) + " %");
 }
 

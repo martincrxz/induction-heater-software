@@ -11,33 +11,23 @@
 
 ChartTabView::ChartTabView(QWidget *parent) :
         QWidget(parent),
-        ui(new Ui::ChartTabView),
-        chart(new Chart) {
+        ui(new Ui::ChartTabView) {
     this->ui->setupUi(this);
-    this->ui->chartLayout->addWidget(&this->chartView);
-    this->ui->chartLayout->addWidget(&this->initChartButton);
-    /**
-      * Conecto la señal onClick del botón para que ejecute
-      * el método correspondiente
-      **/
-    this->initChartButton.connect(&this->initChartButton, &QPushButton::clicked,
-                                  this, &ChartTabView::onInitChartClicked);
-
-    this->chartView.setChart(this->chart);
-    this->chartView.setRenderHint(QPainter::Antialiasing);
-
+    this->widget = new ChartWidget();
 }
 
 ChartTabView::~ChartTabView() {
     delete this->ui;
-    delete this->chart;
-}
-
-void ChartTabView::onInitChartClicked() {
-    this->chart->init();
 }
 
 void ChartTabView::dataAvailable(TemperatureReading &temp) {
-    this->chart->dataAvailable(temp);
+    this->widget->dataAvailable(temp);
 }
 
+void ChartTabView::dataAvailable(PowerSetAcknowledge &power) {
+    this->widget->dataAvailable(power);
+}
+
+void ChartTabView::on_initChartButton_clicked() {
+    this->widget->show();
+}

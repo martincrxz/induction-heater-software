@@ -16,21 +16,35 @@
 #include "../connection/protocol/temperature_reading.h"
 
 QT_CHARTS_USE_NAMESPACE
+struct ChartConfiguration {
+    const char* yAxisName1;
+    const char* yAxisType1;
+    const char* yAxisName2;
+    const char* yAxisType2;
+    const char* xAxisName;
+    const char* xAxisType;
+    const char* title;
+};
 
 class Chart :  public QChart {
     Q_OBJECT
 
 public:
-    explicit Chart(QGraphicsItem *parent = nullptr, Qt::WindowFlags wFlags = nullptr);
+    Chart(ChartConfiguration *chartConfig, QGraphicsItem *parent = nullptr, 
+            Qt::WindowFlags wFlags = nullptr);
+
     virtual ~Chart();
     void init();
-    void dataAvailable(TemperatureReading &msg);
+    void dataAvailable(double y, unsigned int id = 1);
 
 private:
-    void append(double x, double y);
-    QLineSeries series;
+    void append(double x, double y, unsigned int id = 1);
+    bool secondCurveEnabled{false};
+    QLineSeries series1;
+    QLineSeries series2;
     QDateTimeAxis xAxis;
-    QValueAxis yAxis;
+    QValueAxis yAxis1;
+    QValueAxis yAxis2;
     QMutex mutex;
     bool acceptData;
     Chrono chrono;

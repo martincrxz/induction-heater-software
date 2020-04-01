@@ -69,7 +69,8 @@ SOURCES += \
     src/control/classic_pid.cpp \
     libs/logger/message/logger_critical.cpp \
     src/control/file_control.cpp \
-    src/control/zieglers_nichols.cpp
+    src/control/zieglers_nichols.cpp \
+    src/view/chart_widget.cpp
 
 
 
@@ -119,7 +120,8 @@ HEADERS += \
     src/control/classic_pid.h \
     libs/logger/message/logger_critical.h \
     src/control/file_control.h \
-    src/control/zieglers_nichols.h
+    src/control/zieglers_nichols.h \
+    src/view/chart_widget.h
 
 FORMS += \
 		src/view/auto_tunning_tab_view.ui \
@@ -130,6 +132,7 @@ FORMS += \
                 src/view/manual_power_control_view.ui \
     src/view/control_configuration/classic_control_view.ui \
     src/view/control_configuration/fuzzy_control_view.ui \
-    src/view/control_configuration/from_file_control_view.ui 
+    src/view/control_configuration/from_file_control_view.ui \ 
+    src/view/chart_widget.ui
 
 RESOURCES = assets/resources.qrc

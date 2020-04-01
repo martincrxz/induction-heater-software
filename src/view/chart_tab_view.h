@@ -2,13 +2,11 @@
 #define CHART_TAB_VIEW_H
 
 #include <QPushButton>
-#include <QtCharts/QChartView>
 #include <QWidget>
 
-#include "chart.h"
+#include "chart_widget.h"
 #include "../connection/protocol/temperature_reading.h"
-
-QT_CHARTS_USE_NAMESPACE
+#include "../connection/protocol/power_set_acknowledge.h"
 
 namespace Ui {
 class ChartTabView;
@@ -22,17 +20,14 @@ public:
     explicit ChartTabView(QWidget *parent = 0);
     virtual ~ChartTabView();
     void dataAvailable(TemperatureReading &temp);
-protected:
-    //void timerEvent(QTimerEvent *) override;
+    void dataAvailable(PowerSetAcknowledge &power);
 
 private slots:
-    void onInitChartClicked();
+    void on_initChartButton_clicked();
 
 private:
     Ui::ChartTabView *ui;
-    Chart *chart;
-    QChartView chartView;
-    QPushButton initChartButton{"Iniciar captura"};
+    ChartWidget *widget;
 };
 
 #endif // CHART_TAB_VIEW_H
