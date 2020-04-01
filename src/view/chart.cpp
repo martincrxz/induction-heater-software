@@ -103,3 +103,8 @@ void Chart::dataAvailable(double y, unsigned int id) {
     }
 }
 
+void Chart::stop() {
+    QMutexLocker lock(&this->mutex);
+    this->acceptData = false;
+}
+

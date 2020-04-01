@@ -35,6 +35,7 @@ public:
 
     virtual ~Chart();
     void init();
+    void stop();
     void dataAvailable(double y, unsigned int id = 1);
 
 private:

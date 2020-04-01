@@ -35,6 +35,7 @@ void ChartWidget::init() {
 
 void ChartWidget::closeEvent(QCloseEvent *event) {
 	Logger::info("cerrando");
+	this->chart->stop();
 	QWidget::closeEvent(event);
 }
 

@@ -30,4 +30,5 @@ void ChartTabView::dataAvailable(PowerSetAcknowledge &power) {
 
 void ChartTabView::on_initChartButton_clicked() {
     this->widget->show();
+    this->widget->init();
 }
