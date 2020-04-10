@@ -1,3 +1,5 @@
+#include "chart_conf.h"
+
 AxisConfiguration::AxisConfiguration(): name(nullptr), type(nullptr), min(0),
 		max(0) {}
 

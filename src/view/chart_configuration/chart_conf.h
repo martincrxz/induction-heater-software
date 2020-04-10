@@ -1,6 +1,8 @@
 #ifndef __CHART_CONF_H__
 #define __CHART_CONF_H__
 
+#include <cstdint>
+
 struct AxisConfiguration {
     const char         *name;
     const char         *type;

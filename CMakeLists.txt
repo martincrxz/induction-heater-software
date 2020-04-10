@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 3.1.0)
 project(TrabajoProfesional)
 # Cambiar esto a false cuando se haga el release
-set(DEBUG_MODE TRUE)
+if (DEBUG)
+	set(DEBUG_MODE TRUE)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG_INJECTION")
+	message(STATUS "[INFO] DEBUG MODE ENABLED")
+endif()
 
 if (NOT DEFINED QT_VER) 
 	# opción por default
@@ -31,6 +35,7 @@ else()
 		set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++11 -Wall -pedantic -pthread")
 	endif()
 endif()
+
 message(STATUS "[INFO] Setting flags = '${CMAKE_CXX_FLAGS}'")
 
 message(STATUS "[INFO] Including portable-endian project")

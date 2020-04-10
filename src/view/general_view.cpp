@@ -69,9 +69,12 @@ MainWindow::MainWindow(QWidget *parent) :
     /**
      * TEST de injección de datos
      */
+#ifdef DEBUG_INJECTION
      connect(this->testTimer, &QTimer::timeout, this, &MainWindow::injectData);
      this->testTimer->start(1/60.0f);
+#endif
 }
+
 #define PI 3.14159265358979323846f
 void MainWindow::injectData() {
     float x = chrono.tack();
