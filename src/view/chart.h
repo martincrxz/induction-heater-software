@@ -6,25 +6,18 @@
 #ifndef __CHART_H__
 #define __CHART_H__
 
+#include <chrono.h>
 #include <QtCharts/QChart>
 #include <QtCharts/QDateTimeAxis>
 #include <QtCharts/QValueAxis>
 #include <QtCharts/QSplineSeries>
 #include <QtCore/QDateTime>
 #include <QtCore/QMutex>
-#include <chrono.h>
-#include "../connection/protocol/temperature_reading.h"
+#include <cstdint>
 
+#include "../connection/protocol/temperature_reading.h"
+#include "chart_configuration/chart_conf.h"
 QT_CHARTS_USE_NAMESPACE
-struct ChartConfiguration {
-    const char* yAxisName1;
-    const char* yAxisType1;
-    const char* yAxisName2;
-    const char* yAxisType2;
-    const char* xAxisName;
-    const char* xAxisType;
-    const char* title;
-};
 
 class Chart :  public QChart {
     Q_OBJECT

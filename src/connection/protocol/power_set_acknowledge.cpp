@@ -17,6 +17,7 @@ float PowerSetAcknowledge::getPower() {
     return 100 * (MAXIMUM_TAP - data) / MAXIMUM_TAP;
 }
 
-PowerSetAcknowledge::PowerSetAcknowledge(std::uint8_t power): IncomingMessage(POWER_SET_ACKNOWLEDGE), data(power) {
-
+PowerSetAcknowledge::PowerSetAcknowledge(std::uint8_t power): 
+        IncomingMessage(POWER_SET_ACKNOWLEDGE) {
+    data = MAXIMUM_TAP * ( 1 -  power / 100.0f); 
 }

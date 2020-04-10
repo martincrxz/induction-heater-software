@@ -70,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent) :
      * TEST de injección de datos
      */
      connect(this->testTimer, &QTimer::timeout, this, &MainWindow::injectData);
-     this->testTimer->start(10);
+     this->testTimer->start(1/60.0f);
 }
 #define PI 3.14159265358979323846f
 void MainWindow::injectData() {

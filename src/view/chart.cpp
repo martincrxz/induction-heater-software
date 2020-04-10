@@ -8,7 +8,6 @@
 #include <logger/logger.h>
 #include <QtCharts/QAbstractAxis>
 #include <QtCore/QDateTime>
-#define TIME_CHART_MAX_RANGE 30
 #define TIME_REJECT_DATA 100
 
 Chart::Chart(ChartConfiguration *config, QGraphicsItem *parent, 
@@ -17,10 +16,13 @@ Chart::Chart(ChartConfiguration *config, QGraphicsItem *parent,
     this->setTitle(config->title);
 
     this->xAxis.setTickCount(10);
-    this->xAxis.setFormat(config->xAxisType);
-    this->xAxis.setTitleText(config->xAxisName);
+    this->xAxis.setFormat(config->xaxis.type);
+    this->xAxis.setTitleText(config->xaxis.name);
     this->addAxis(&this->xAxis, Qt::AlignBottom);
-    
+    QDateTime now = QDateTime::fromMSecsSinceEpoch(config->xaxis.min);
+    QDateTime max = QDateTime::fromMSecsSinceEpoch(config->xaxis.max);
+    this->xAxis.setRange(now, max);
+
     QPen pen(Qt::blue);
     pen.setWidth(3);
     this->series1.setPen(pen);
@@ -28,21 +30,17 @@ Chart::Chart(ChartConfiguration *config, QGraphicsItem *parent,
     this->addSeries(&this->series1);
     this->legend()->hide();
 
-    this->yAxis1.setLabelFormat(config->yAxisType1);
-    this->yAxis1.setTitleText(config->yAxisName1);
-
-    QDateTime now = QDateTime::currentDateTime();
-    this->xAxis.setRange(now, now.addSecs(TIME_CHART_MAX_RANGE) );
-    this->series1.attachAxis(&this->xAxis);
-
+    this->yAxis1.setLabelFormat(config->yaxis1.type);
+    this->yAxis1.setTitleText(config->yaxis1.name);
+    this->y1min = config->yaxis1.min;
+    this->y1max = config->yaxis1.max;
+    this->yAxis1.setRange(this->y1min, this->y1max);
     this->addAxis(&this->yAxis1, Qt::AlignLeft);
 
-    this->yAxis1.setRange(0, 5);
-    this->y1min = 0;
-    this->y1max = 5;
+    this->series1.attachAxis(&this->xAxis);
     this->series1.attachAxis(&this->yAxis1);
 
-    if (config->yAxisName2 != nullptr) {
+    if (config->yaxis2.name != nullptr) {
         this->secondCurveEnabled = true;    
         QPen pen2(Qt::green);
         pen2.setWidth(3);
@@ -51,11 +49,11 @@ Chart::Chart(ChartConfiguration *config, QGraphicsItem *parent,
         this->addSeries(&this->series2);
         this->legend()->hide();
 
-        this->yAxis2.setLabelFormat(config->yAxisType2);
-        this->yAxis2.setTitleText(config->yAxisName2);
-    
+        this->yAxis2.setLabelFormat(config->yaxis2.type);
+        this->yAxis2.setTitleText(config->yaxis2.name);
+        this->yAxis2.setRange(config->yaxis2.min,config->yaxis2.max);
+
         this->addAxis(&this->yAxis2, Qt::AlignRight);
-        this->yAxis2.setRange(0,100);
         this->series2.attachAxis(&this->yAxis2);
         this->series2.attachAxis(&this->xAxis);
 
@@ -72,7 +70,7 @@ Chart::~Chart() {
 
 void Chart::append(double x, double y, unsigned int id) {
     if (x > this->xAxis.max().toMSecsSinceEpoch()) {
-        this->scroll(25, 0);
+        this->scroll(10, 0);
     }
 
     if (id == 1) {
