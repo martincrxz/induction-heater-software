@@ -71,7 +71,7 @@ MainWindow::MainWindow(QWidget *parent) :
      */
 #ifdef DEBUG_INJECTION
      connect(this->testTimer, &QTimer::timeout, this, &MainWindow::injectData);
-     this->testTimer->start(1/60.0f);
+     this->testTimer->start(1/30.0f);
 #endif
 }
 
@@ -86,11 +86,10 @@ void MainWindow::injectData() {
     }
 
     if (x > temp_step) {
-        amplitude += 70;
+        amplitude += 50;
         temp_step += STEP_SIZE;
     }
     float temperature = amplitude * std::sin(x / 3000.0f * 2.0f * PI);
-    temperature = temperature;
     TemperatureReading temp(temperature);
     this->chartView->dataAvailable(temp);
 }

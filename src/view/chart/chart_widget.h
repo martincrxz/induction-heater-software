@@ -5,7 +5,8 @@
 #include <QtCharts/QChartView>
 
 #include "chart.h"
-#include "../connection/protocol/power_set_acknowledge.h"
+#include "chart_view.h"
+#include "../../connection/protocol/power_set_acknowledge.h"
 
 namespace Ui {
 class ChartWidget;
@@ -30,7 +31,7 @@ private:
 	void closeEvent(QCloseEvent *event) override;
     Ui::ChartWidget *ui;
     Chart *chart;
-    QChartView chartView;
+    ChartView *chartView;
 };
 
 #endif // CHART_WIDGET_H

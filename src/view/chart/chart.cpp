@@ -8,13 +8,17 @@
 #include <logger/logger.h>
 #include <QtCharts/QAbstractAxis>
 #include <QtCore/QDateTime>
+#include <QtWidgets/QGesture>
+#include <QtWidgets/QGraphicsScene>
+#include <QtWidgets/QGraphicsView>
+
 #define TIME_REJECT_DATA 100
 
 Chart::Chart(ChartConfiguration *config, QGraphicsItem *parent, 
             Qt::WindowFlags wFlags) :
         QChart(QChart::ChartTypeCartesian, parent, wFlags) {
     this->setTitle(config->title);
-
+    // x axis
     this->xAxis.setTickCount(10);
     this->xAxis.setFormat(config->xaxis.type);
     this->xAxis.setTitleText(config->xaxis.name);
@@ -37,8 +41,8 @@ Chart::Chart(ChartConfiguration *config, QGraphicsItem *parent,
     this->yAxis1.setRange(this->y1min, this->y1max);
     this->addAxis(&this->yAxis1, Qt::AlignLeft);
 
-    this->series1.attachAxis(&this->xAxis);
     this->series1.attachAxis(&this->yAxis1);
+    this->series1.attachAxis(&this->xAxis);
 
     if (config->yaxis2.name != nullptr) {
         this->secondCurveEnabled = true;    
@@ -61,6 +65,10 @@ Chart::Chart(ChartConfiguration *config, QGraphicsItem *parent,
         this->y2max = 100;
     }
 
+    // Seems that QGraphicsView (QChartView) does not grab gestures.
+    // They can only be grabbed here in the QGraphicsWidget (QChart).
+    grabGesture(Qt::PanGesture);
+    grabGesture(Qt::PinchGesture);
 
 }
 
@@ -69,29 +77,33 @@ Chart::~Chart() {
 }
 
 void Chart::append(double x, double y, unsigned int id) {
-    if (x > this->xAxis.max().toMSecsSinceEpoch()) {
+    if (this->auto_scroll_enabled && x > this->xAxis.max().toMSecsSinceEpoch()) {
         this->scroll(10, 0);
     }
 
     if (id == 1) {
         this->series1.append(x, y);
 
-        if (y > this->y1max) {
-            this->y1max = y+10;
+        if (y > this->yAxis1.max()) {
+            y1min = this->yAxis1.min();
+            y1max = y + 10;
             this->yAxis1.setRange(y1min, y1max);
-        } else if ( y < this->y1min) {
-            this->y1min = y-10;
+        } else if ( y < this->yAxis1.min()) {
+            y1min = y - 10;
+            y1max = this->yAxis1.max();
             this->yAxis1.setRange(y1min, y1max);
         }
     } else {
         if (this->secondCurveEnabled) {
             this->series2.append(x, y);
-    
-            if (y > this->y2max) {
-                this->y2max = y+10;
+
+            if (y > this->yAxis2.max()) {
+                y2min = this->yAxis2.min();
+                y2max = y + 10;
                 this->yAxis2.setRange(y2min, y2max);
-            } else if ( y < this->y2min) {
-                this->y2min = y-10;
+            } else if ( y < this->yAxis2.min()) {
+                y2min = y - 10;
+                y2max = this->yAxis2.max();
                 this->yAxis2.setRange(y2min, y2max);
             }
         }
@@ -100,6 +112,7 @@ void Chart::append(double x, double y, unsigned int id) {
 
 void Chart::init() {
     QMutexLocker lock(&this->mutex);
+    Logger::info("chart init");
     this->acceptData = true;
 }
 
@@ -112,6 +125,39 @@ void Chart::dataAvailable(double y, unsigned int id) {
 
 void Chart::stop() {
     QMutexLocker lock(&this->mutex);
+    Logger::info("chart stop");
     this->acceptData = false;
 }
 
+void Chart::stopFollow() {
+    QMutexLocker lock(&this->mutex);
+    this->auto_scroll_enabled = false;
+}
+
+void Chart::startFollow() {
+    QMutexLocker lock(&this->mutex);
+    this->auto_scroll_enabled = true;
+}
+
+bool Chart::sceneEvent(QEvent *event)
+{
+    if (event->type() == QEvent::Gesture)
+        return gestureEvent(static_cast<QGestureEvent *>(event));
+    return QChart::event(event);
+}
+
+bool Chart::gestureEvent(QGestureEvent *event)
+{
+    if (QGesture *gesture = event->gesture(Qt::PanGesture)) {
+        QPanGesture *pan = static_cast<QPanGesture *>(gesture);
+        QChart::scroll(-(pan->delta().x()), pan->delta().y());
+    }
+
+    if (QGesture *gesture = event->gesture(Qt::PinchGesture)) {
+        QPinchGesture *pinch = static_cast<QPinchGesture *>(gesture);
+        if (pinch->changeFlags() & QPinchGesture::ScaleFactorChanged)
+            QChart::zoom(pinch->scaleFactor());
+    }
+
+    return true;
+}

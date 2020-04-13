@@ -15,10 +15,14 @@
 #include <QtCore/QMutex>
 #include <cstdint>
 
-#include "../connection/protocol/temperature_reading.h"
-#include "chart_configuration/chart_conf.h"
-QT_CHARTS_USE_NAMESPACE
+#include "../../connection/protocol/temperature_reading.h"
+#include "chart_conf.h"
 
+QT_BEGIN_NAMESPACE
+class QGestureEvent;
+QT_END_NAMESPACE
+
+QT_CHARTS_USE_NAMESPACE
 class Chart :  public QChart {
     Q_OBJECT
 
@@ -30,8 +34,14 @@ public:
     void init();
     void stop();
     void dataAvailable(double y, unsigned int id = 1);
+    void stopFollow();
+    void startFollow();
+
+protected:
+    bool sceneEvent(QEvent *event);
 
 private:
+    bool gestureEvent(QGestureEvent *event);
     void append(double x, double y, unsigned int id = 1);
     bool secondCurveEnabled{false};
     double y1min{0};
@@ -48,6 +58,7 @@ private:
     QMutex mutex;
     bool acceptData;
     Chrono chrono;
+    bool auto_scroll_enabled{true};
 };
 
 

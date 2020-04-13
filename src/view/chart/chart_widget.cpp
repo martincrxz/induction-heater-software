@@ -1,10 +1,10 @@
 #include <logger/logger.h>
 
-#include "chart_configuration/chart_conf.h"
+#include "chart_conf.h"
 #include "chart_widget.h"
 #include "ui_chart_widget.h"
 
-#define TIME_CHART_MAX_RANGE 30000
+#define TIME_CHART_MAX_RANGE 3000
 
 ChartWidget::ChartWidget(QWidget *parent) :
 QWidget(parent),
@@ -18,16 +18,23 @@ ui(new Ui::ChartWidget)
         now + TIME_CHART_MAX_RANGE);
     ChartConfiguration config(timeAxis, tempAxis, powerAxis, 
         "Mediciones del horno");
+    
     chart = new Chart(&config);
-    this->ui->verticalLayout->addWidget(&this->chartView);
-    this->chartView.setChart(this->chart);
-    this->chartView.setRenderHint(QPainter::Antialiasing);
+    chartView = new ChartView(chart);
+
+    this->ui->verticalLayout->addWidget(this->chartView);
+    //chart->setAnimationOptions(QChart::SeriesAnimations);
+    this->chartView->setRenderHint(QPainter::Antialiasing);
+
+    this->grabGesture(Qt::PanGesture);
+    this->grabGesture(Qt::PinchGesture);
 }
 
 ChartWidget::~ChartWidget()
 {
     delete ui;
     delete this->chart;
+    delete this->chartView;
 }
 
 void ChartWidget::init() {

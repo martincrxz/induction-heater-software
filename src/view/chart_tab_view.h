@@ -4,7 +4,7 @@
 #include <QPushButton>
 #include <QWidget>
 
-#include "chart_widget.h"
+#include "chart/chart_widget.h"
 #include "../connection/protocol/temperature_reading.h"
 #include "../connection/protocol/power_set_acknowledge.h"
 
