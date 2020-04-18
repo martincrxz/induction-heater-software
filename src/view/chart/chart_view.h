@@ -11,8 +11,6 @@ QT_CHARTS_USE_NAMESPACE
 class ChartView : public QChartView {
 public:
     ChartView(Chart *chart, QWidget *parent = 0);
-    void stopFollow();
-    void startFollwo();
 protected:
     bool viewportEvent(QEvent *event);
     void mousePressEvent(QMouseEvent *event);

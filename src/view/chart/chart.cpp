@@ -141,13 +141,16 @@ void Chart::startFollow() {
 
 bool Chart::sceneEvent(QEvent *event)
 {
-    if (event->type() == QEvent::Gesture)
+    Logger::info("scene Event");
+    if (event->type() == QEvent::Gesture) {
         return gestureEvent(static_cast<QGestureEvent *>(event));
+    }
     return QChart::event(event);
 }
 
 bool Chart::gestureEvent(QGestureEvent *event)
 {
+    Logger::info("gestureEvent");   
     if (QGesture *gesture = event->gesture(Qt::PanGesture)) {
         QPanGesture *pan = static_cast<QPanGesture *>(gesture);
         QChart::scroll(-(pan->delta().x()), pan->delta().y());

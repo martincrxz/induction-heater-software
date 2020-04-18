@@ -1,4 +1,6 @@
 #include "chart_view.h"
+
+#include <logger/logger.h>
 #include <QtGui/QMouseEvent>
 
 ChartView::ChartView(Chart *chart, QWidget *parent) :
@@ -17,10 +19,6 @@ bool ChartView::viewportEvent(QEvent *event)
         // to handle touch events as gestures only. So we need this safeguard
         // to block mouse events that are actually generated from touch.
         m_isTouching = true;
-
-        // Turn off animations when handling gestures they
-        // will only slow us down.
-        //chart->setAnimationOptions(QChart::NoAnimation);
     }
     return QChartView::viewportEvent(event);
 }
@@ -44,15 +42,12 @@ void ChartView::mouseReleaseEvent(QMouseEvent *event)
     if (m_isTouching)
         m_isTouching = false;
 
-    // Because we disabled animations when touch event was detected
-    // we must put them back on.
-    //chart->setAnimationOptions(QChart::SeriesAnimations);
-
     QChartView::mouseReleaseEvent(event);
 }
 
 void ChartView::keyPressEvent(QKeyEvent *event)
 {
+    this->chart->stopFollow();
     switch (event->key()) {
     case Qt::Key_Plus:
         chart->zoomIn();
@@ -76,12 +71,4 @@ void ChartView::keyPressEvent(QKeyEvent *event)
         QGraphicsView::keyPressEvent(event);
         break;
     }
-}
-
-void ChartView::stopFollow() {
-    this->chart->stopFollow();
-}
-
-void ChartView::startFollwo() {
-    this->chart->startFollow();
 }
