@@ -23,6 +23,11 @@ public:
     void dataAvailable(PowerSetAcknowledge &power);
     void init();
 
+private slots:
+    void on_stopFollowButton_clicked();
+
+    void on_enableFollowButton_clicked();
+
 private:
 	/**
 	 * @brief Reimplementación del evento de cierre de ventana. Se agregará

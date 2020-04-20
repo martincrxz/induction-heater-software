@@ -36,6 +36,19 @@ public:
     void dataAvailable(double y, unsigned int id = 1);
     void stopFollow();
     void startFollow();
+    /**
+     * @brief       Debido a que en el eje X (eje temporal) no está bien
+     *              definido en QT la magnitud en la que se desplaza (no te
+     *              desplzás en micro segundos, un scroll(100, 0)
+     *              aproximadamente es de 1 segundo) sobreescribo el metodo
+     *              para hacer un desplazamiento mas especifico (aunque
+     *              pagando en copias de variables)
+     *              
+     * @param dx    Desplazamiento del tiempo (en milisegundos)
+     * @param dy    Desplazamiento absoluto en y
+     */
+    void scroll(qreal dx, qreal dy);
+
 
 protected:
     bool sceneEvent(QEvent *event);
@@ -48,8 +61,8 @@ private:
     double y1max{0};
     double y2min{0};
     double y2max{0};
-    double xmin{0};
-    double xmax{0};
+    std::uint64_t xmin{0};
+    std::uint64_t xmax{0};
     QSplineSeries series1;
     QSplineSeries series2;
     QDateTimeAxis xAxis;

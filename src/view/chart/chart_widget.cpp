@@ -4,7 +4,7 @@
 #include "chart_widget.h"
 #include "ui_chart_widget.h"
 
-#define TIME_CHART_MAX_RANGE 3000
+#define TIME_CHART_MAX_RANGE 10000
 
 ChartWidget::ChartWidget(QWidget *parent) :
 QWidget(parent),
@@ -23,7 +23,6 @@ ui(new Ui::ChartWidget)
     chartView = new ChartView(chart);
 
     this->ui->verticalLayout->addWidget(this->chartView);
-    //chart->setAnimationOptions(QChart::SeriesAnimations);
     this->chartView->setRenderHint(QPainter::Antialiasing);
 
     this->grabGesture(Qt::PanGesture);
@@ -54,4 +53,14 @@ void ChartWidget::dataAvailable(TemperatureReading &temp) {
 
 void ChartWidget::dataAvailable(PowerSetAcknowledge &power) {
     this->chart->dataAvailable(power.getPower(), 2);
+}
+
+void ChartWidget::on_stopFollowButton_clicked()
+{
+    this->chart->stopFollow();
+}
+
+void ChartWidget::on_enableFollowButton_clicked()
+{
+    this->chart->startFollow();
 }

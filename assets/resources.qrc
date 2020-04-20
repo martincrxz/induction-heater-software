@@ -4,5 +4,11 @@
         <file>tempCorte.png</file>
         <file>potenciaEstacionariaChica.png</file>
         <file>tempCorteChica.png</file>
+        <file>home.png</file>
+        <file>keep_follow.png</file>
+        <file>save.png</file>
+        <file>settings.png</file>
+        <file>stop.png</file>
+        <file>pan.png</file>
     </qresource>
 </RCC>

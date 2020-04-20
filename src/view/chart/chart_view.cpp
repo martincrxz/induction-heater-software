@@ -8,7 +8,8 @@ ChartView::ChartView(Chart *chart, QWidget *parent) :
     m_isTouching(false),
     chart(chart)
 {
-    setRubberBand(QChartView::RectangleRubberBand);
+    //this->setDragMode(QGraphicsView::ScrollHandDrag);
+    this->setRubberBand(QChartView::RectangleRubberBand);
 }
 
 bool ChartView::viewportEvent(QEvent *event)
@@ -47,7 +48,6 @@ void ChartView::mouseReleaseEvent(QMouseEvent *event)
 
 void ChartView::keyPressEvent(QKeyEvent *event)
 {
-    this->chart->stopFollow();
     switch (event->key()) {
     case Qt::Key_Plus:
         chart->zoomIn();
