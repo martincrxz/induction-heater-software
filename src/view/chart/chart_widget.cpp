@@ -64,3 +64,8 @@ void ChartWidget::on_enableFollowButton_clicked()
 {
     this->chart->startFollow();
 }
+
+void ChartWidget::on_fitViewButton_clicked()
+{
+    this->chart->adjustView();
+}

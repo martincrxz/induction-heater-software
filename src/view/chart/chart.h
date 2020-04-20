@@ -48,6 +48,7 @@ public:
      * @param dy    Desplazamiento absoluto en y
      */
     void scroll(qreal dx, qreal dy);
+    void adjustView();
 
 
 protected:
@@ -61,6 +62,7 @@ private:
     double y1max{0};
     double y2min{0};
     double y2max{0};
+    std::uint64_t xoriginal{0};
     std::uint64_t xmin{0};
     std::uint64_t xmax{0};
     QSplineSeries series1;

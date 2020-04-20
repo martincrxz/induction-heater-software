@@ -71,7 +71,7 @@ MainWindow::MainWindow(QWidget *parent) :
      */
 #ifdef DEBUG_INJECTION
      connect(this->testTimer, &QTimer::timeout, this, &MainWindow::injectData);
-     this->testTimer->start(1/30.0f);
+     this->testTimer->start(1/10.0f);
 #endif
 }
 

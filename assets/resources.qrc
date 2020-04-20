@@ -10,5 +10,6 @@
         <file>settings.png</file>
         <file>stop.png</file>
         <file>pan.png</file>
+        <file>adjust_size.png</file>
     </qresource>
 </RCC>

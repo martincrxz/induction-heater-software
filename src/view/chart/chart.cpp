@@ -24,6 +24,7 @@ Chart::Chart(ChartConfiguration *config, QGraphicsItem *parent,
     this->xAxis.setTitleText(config->xaxis.name);
     this->addAxis(&this->xAxis, Qt::AlignBottom);
     this->xmin = config->xaxis.min;
+    this->xoriginal = this->xmin;
     this->xmax = config->xaxis.max;
     QDateTime now = QDateTime::fromMSecsSinceEpoch(config->xaxis.min);
     QDateTime max = QDateTime::fromMSecsSinceEpoch(config->xaxis.max);
@@ -79,33 +80,33 @@ Chart::~Chart() {
 }
 
 void Chart::append(double x, double y, unsigned int id) {
-    if (this->auto_scroll_enabled && x > this->xAxis.max().toMSecsSinceEpoch()) {
+    if (x > this->xAxis.max().toMSecsSinceEpoch()) {
         this->scroll(x - this->xAxis.max().toMSecsSinceEpoch() + 1000, 0);
     }
 
     if (id == 1) {
         this->series1.append(x, y);
-        if (this->auto_scroll_enabled){
             if (y > this->yAxis1.max()) {
                 y1min = this->yAxis1.min();
-                y1max = y + 10;
-                this->yAxis1.setRange(y1min, y1max);
+                y1max = y + 50;
+                if (this->auto_scroll_enabled)
+                    this->yAxis1.setRange(y1min, y1max);
             } else if ( y < this->yAxis1.min()) {
-                y1min = y - 10;
+                y1min = y - 50;
                 y1max = this->yAxis1.max();
-                this->yAxis1.setRange(y1min, y1max);
+                if (this->auto_scroll_enabled)
+                    this->yAxis1.setRange(y1min, y1max);
             }
-        }
     } else {
         if (this->secondCurveEnabled) {
             this->series2.append(x, y);
             if (y > this->yAxis2.max()) {
                 y2min = this->yAxis2.min();
-                y2max = y + 10;
+                y2max = y + 50;
                 if (this->auto_scroll_enabled)
                     this->yAxis2.setRange(y2min, y2max);
             } else if ( y < this->yAxis2.min()) {
-                y2min = y - 10;
+                y2min = y - 50;
                 y2max = this->yAxis2.max();
                 if (this->auto_scroll_enabled)
                     this->yAxis2.setRange(y2min, y2max);
@@ -177,4 +178,12 @@ void Chart::scroll(qreal dx, qreal dy) {
         this->xAxis.setRange(now, max);
         QChart::scroll(0, dy);
     }
+}
+
+void Chart::adjustView() {
+    QDateTime now = QDateTime::fromMSecsSinceEpoch(this->xoriginal);
+    QDateTime max = QDateTime::fromMSecsSinceEpoch(this->xmax);
+    this->xAxis.setRange(now, max);
+    this->yAxis1.setRange(this->y1min, this->y1max);
+    this->yAxis2.setRange(this->y2min, this->y2max);
 }

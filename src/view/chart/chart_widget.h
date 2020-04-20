@@ -28,6 +28,8 @@ private slots:
 
     void on_enableFollowButton_clicked();
 
+    void on_fitViewButton_clicked();
+
 private:
 	/**
 	 * @brief Reimplementación del evento de cierre de ventana. Se agregará
