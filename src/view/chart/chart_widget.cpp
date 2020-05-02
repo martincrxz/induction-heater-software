@@ -69,3 +69,8 @@ void ChartWidget::on_fitViewButton_clicked()
 {
     this->chart->adjustView();
 }
+
+void ChartWidget::on_saveButton_clicked()
+{
+    this->chart->save();
+}

@@ -11,6 +11,7 @@
 #include <QtCharts/QDateTimeAxis>
 #include <QtCharts/QValueAxis>
 #include <QtCharts/QSplineSeries>
+//#include <QtCharts/QSplineSeries>
 #include <QtCore/QDateTime>
 #include <QtCore/QMutex>
 #include <cstdint>
@@ -36,6 +37,7 @@ public:
     void dataAvailable(double y, unsigned int id = 1);
     void stopFollow();
     void startFollow();
+    void save();
     /**
      * @brief       Debido a que en el eje X (eje temporal) no está bien
      *              definido en QT la magnitud en la que se desplaza (no te

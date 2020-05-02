@@ -5,6 +5,8 @@
 
 #include "chart.h"
 
+#include <fstream>
+#include <QtCore/QString>
 #include <logger/logger.h>
 #include <QtCharts/QAbstractAxis>
 #include <QtCore/QDateTime>
@@ -34,6 +36,7 @@ Chart::Chart(ChartConfiguration *config, QGraphicsItem *parent,
     pen.setWidth(3);
     this->series1.setPen(pen);
 
+    series1.setUseOpenGL(true);
     this->addSeries(&this->series1);
     this->legend()->hide();
 
@@ -53,6 +56,7 @@ Chart::Chart(ChartConfiguration *config, QGraphicsItem *parent,
         pen2.setWidth(3);
         this->series2.setPen(pen2);
 
+        series2.setUseOpenGL(true);
         this->addSeries(&this->series2);
         this->legend()->hide();
 
@@ -137,6 +141,21 @@ void Chart::stop() {
 void Chart::stopFollow() {
     QMutexLocker lock(&this->mutex);
     this->auto_scroll_enabled = false;
+}
+
+void Chart::save()
+{
+    QMutexLocker lock(&this->mutex);
+    std::fstream file("mediciones.csv", std::ios_base::out);
+    file << "Hora (HH:mm:ss),Temperatura (°C)";
+    if (this->secondCurveEnabled)
+            file << ",Potencia (W)";
+    file << std::endl;
+    for (int i = 0; i < this->series1.count(); ++i) {
+        QDateTime x = QDateTime::fromMSecsSinceEpoch(this->series1.at(i).x());
+        qreal y = this->series1.at(i).y();
+        file << x.toString("hh:ss:mm").toStdString() << "," << y << std::endl;
+    }
 }
 
 void Chart::startFollow() {
