@@ -2,6 +2,7 @@
 #include <sstream>
 #include <logger/logger.h>
 #include <QtCore/QDateTime>
+#include <cmath>
 
 #include "general_view.h"
 #include "ui_general_view.h"
@@ -27,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     autotunningView = new AutoTunningTabView(this, this->port);
     chartView = new ChartTabView(this);
     resetLabelTimer = new QTimer();
+    testTimer = new QTimer();
     port->findDevice();
 
     ui->setupUi(this);
@@ -64,6 +66,33 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this->autotunningView, &AutoTunningTabView::printMessage, this, &MainWindow::on_messagePrint);
     connect(this->automaticView, &AutomaticControlTabView::printMessage, this, &MainWindow::on_messagePrint);
     connect(this->manualPowerView, &ManualPowerControlView::printMessage, this, &MainWindow::on_messagePrint);
+    /**
+     * TEST de injección de datos
+     */
+#ifdef DEBUG_INJECTION
+     connect(this->testTimer, &QTimer::timeout, this, &MainWindow::injectData);
+     this->testTimer->start(1000/10.0f);
+#endif
+}
+
+#define PI 3.14159265358979323846f
+void MainWindow::injectData() {
+    float x = chrono.tack();
+    if (x > power_step) {
+        power_value = qrand() % 100;
+        power_step += POWER_STEP_SIZE;
+        PowerSetAcknowledge power(power_value);
+        this->chartView->dataAvailable(power);
+    }
+
+    if (x > temp_step) {
+        amplitude += 50;
+        temp_step += STEP_SIZE;
+    }
+
+    float temperature = amplitude * std::sin(x / 3000.0f * 2.0f * PI);
+    TemperatureReading temp(temperature);
+    this->chartView->dataAvailable(temp);
 }
 
 MainWindow::~MainWindow()
@@ -71,6 +100,7 @@ MainWindow::~MainWindow()
     this->resetLabelTimer->stop();
     delete this->resetLabelTimer;
     delete ui;
+    delete this->testTimer;
 }
 
 void MainWindow::on_shutdownButton_clicked()

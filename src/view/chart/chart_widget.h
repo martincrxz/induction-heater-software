@@ -5,7 +5,8 @@
 #include <QtCharts/QChartView>
 
 #include "chart.h"
-#include "../connection/protocol/power_set_acknowledge.h"
+#include "chart_view.h"
+#include "../../connection/protocol/power_set_acknowledge.h"
 
 namespace Ui {
 class ChartWidget;
@@ -22,6 +23,17 @@ public:
     void dataAvailable(PowerSetAcknowledge &power);
     void init();
 
+private slots:
+    void on_stopFollowButton_clicked();
+
+    void on_enableFollowButton_clicked();
+
+    void on_fitViewButton_clicked();
+
+    void on_saveButton_clicked();
+
+    void on_settingsButton_clicked();
+
 private:
 	/**
 	 * @brief Reimplementación del evento de cierre de ventana. Se agregará
@@ -30,7 +42,7 @@ private:
 	void closeEvent(QCloseEvent *event) override;
     Ui::ChartWidget *ui;
     Chart *chart;
-    QChartView chartView;
+    ChartView *chartView;
 };
 
 #endif // CHART_WIDGET_H

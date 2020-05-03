@@ -59,7 +59,6 @@ SOURCES += \
         src/view/equipment_status_view.cpp \
         src/view/general_view.cpp \
         src/view/manual_power_control_view.cpp \
-        src/view/chart.cpp \
         src/main.cpp \
     src/view/control_configuration/classic_control_view.cpp \
     src/view/control_configuration/fuzzy_control_view.cpp \
@@ -70,7 +69,11 @@ SOURCES += \
     libs/logger/message/logger_critical.cpp \
     src/control/file_control.cpp \
     src/control/zieglers_nichols.cpp \
-    src/view/chart_widget.cpp
+    src/view/chart/chart_widget.cpp \
+    src/view/chart/chart.cpp \
+    src/view/chart/chart_conf.cpp \
+    src/view/chart/chart_view.cpp \
+    src/view/chart/chart_config_dialog.cpp
 
 
 
@@ -106,11 +109,9 @@ HEADERS += \
         src/view/application.h \
         src/view/auto_tunning_tab_view.h \
         src/view/automatic_control_tab_view.h \
-        src/view/chart_tab_view.h \
         src/view/equipment_status_view.h \
         src/view/general_view.h \
         src/view/manual_power_control_view.h \
-        src/view/chart.h \
         libs/stream.h \
     src/view/control_configuration/classic_control_view.h \
     src/view/control_configuration/fuzzy_control_view.h \
@@ -121,7 +122,12 @@ HEADERS += \
     libs/logger/message/logger_critical.h \
     src/control/file_control.h \
     src/control/zieglers_nichols.h \
-    src/view/chart_widget.h
+    src/view/chart_tab_view.h \
+    src/view/chart/chart_widget.h \
+    src/view/chart/chart.h \
+    src/view/chart/chart_conf.h \
+    src/view/chart/chart_view.h \
+    src/view/chart/chart_config_dialog.h
 
 FORMS += \
 		src/view/auto_tunning_tab_view.ui \
@@ -133,6 +139,7 @@ FORMS += \
     src/view/control_configuration/classic_control_view.ui \
     src/view/control_configuration/fuzzy_control_view.ui \
     src/view/control_configuration/from_file_control_view.ui \ 
-    src/view/chart_widget.ui
+    src/view/chart/chart_widget.ui \
+    src/view/chart/chart_config_dialog.ui
 
 RESOURCES = assets/resources.qrc

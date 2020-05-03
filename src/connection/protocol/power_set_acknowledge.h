@@ -18,8 +18,22 @@ class PowerSetAcknowledge: public IncomingMessage {
 private:
     std::uint8_t data;
 public:
-    PowerSetAcknowledge(QByteArray &);
+	/**
+	 * @brief	Parsea los bytes que recibe del micro por puerto serie
+	 *        	para armar el DTO
+	 */
+    explicit PowerSetAcknowledge(QByteArray &);
+    /**
+     * @brief			Usado en modo testing, se pasa una potencia (entero
+     *          		del 1 al 100) para simular el mensaje del micro
+     * @param  power 	entero del 1 al 100
+     */
+    explicit PowerSetAcknowledge(std::uint8_t power);
     virtual ~PowerSetAcknowledge() = default;
+    /**
+     * @brief			Devuelve la potencia como un numero real del 1 al 100
+     * @return 
+     */
     float getPower();
 };
 

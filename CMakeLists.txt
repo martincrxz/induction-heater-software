@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 3.1.0)
 project(TrabajoProfesional)
 # Cambiar esto a false cuando se haga el release
-set(DEBUG_MODE TRUE)
+if (DEBUG)
+	set(DEBUG_MODE TRUE)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG_INJECTION")
+	message(STATUS "[INFO] DEBUG MODE ENABLED")
+endif()
 
 if (NOT DEFINED QT_VER) 
 	# opción por default
@@ -26,11 +30,12 @@ if(IS_WINDOWS)
 	message(STATUS "[INFO] Copying .dll files to the current directory")
 else()
 	if(DEBUG_MODE)
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -std=c++11 -ggdb3 -Wall -pedantic -pthread")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++11 -Wall -pedantic -pthread")
 	else()
 		set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++11 -Wall -pedantic -pthread")
 	endif()
 endif()
+
 message(STATUS "[INFO] Setting flags = '${CMAKE_CXX_FLAGS}'")
 
 message(STATUS "[INFO] Including portable-endian project")
@@ -59,7 +64,8 @@ qt5_wrap_ui(UIS_HEADERS
         src/view/control_configuration/classic_control_view.ui
         src/view/control_configuration/fuzzy_control_view.ui
 		src/view/control_configuration/from_file_control_view.ui
-		src/view/chart_widget.ui
+		src/view/chart/chart_widget.ui
+		src/view/chart/chart_config_dialog.ui
         )
 # Instruct CMake to run moc automatically when neededcd
 set(CMAKE_AUTOMOC ON)
