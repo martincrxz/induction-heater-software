@@ -63,7 +63,7 @@ private:
     // Testing
     QTimer *testTimer;
     Chrono chrono;
-    std::uint8_t power_value{50};
+    std::uint8_t power_value{0};
     std::uint64_t  temp_step{STEP_SIZE};
     std::uint64_t  power_step{POWER_STEP_SIZE};
     float amplitude{2};
