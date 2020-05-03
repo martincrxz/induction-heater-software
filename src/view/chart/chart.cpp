@@ -237,3 +237,23 @@ void Chart::adjustView() {
     this->yAxis1.setRange(this->y1min, this->y1max);
     this->yAxis2.setRange(this->y2min, this->y2max);
 }
+
+ChartLimits Chart::getLimits() const {
+    QDateTime min = QDateTime::fromMSecsSinceEpoch(this->xmin);
+    QDateTime max = QDateTime::fromMSecsSinceEpoch(this->xmax);
+    ChartLimits limits(min, max, y1min, y1max, y2min, y2max);
+    return std::move(limits);
+}
+
+void Chart::setLimits(const ChartLimits &limits) {
+    QMutexLocker lock(&this->mutex);
+    this->y1min = limits.y1_min;
+    this->y1max = limits.y1_max;
+    this->y2min = limits.y2_min;
+    this->y2max = limits.y2_max;
+    this->xmin = limits.time_min.toMSecsSinceEpoch();
+    this->xmax = limits.time_max.toMSecsSinceEpoch();
+    this->xAxis.setRange(limits.time_min, limits.time_max);
+    this->yAxis1.setRange(limits.y1_min, limits.y1_max);
+    this->yAxis2.setRange(limits.y2_min, limits.y2_max);
+}

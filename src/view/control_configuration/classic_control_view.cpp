@@ -28,6 +28,7 @@ ClassicControlView::~ClassicControlView()
 {
     delete ui;
     delete this->kValidator;
+    delete this->tempValidator;
 }
 
 bool ClassicControlView::validateInput()

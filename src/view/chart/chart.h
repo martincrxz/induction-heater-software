@@ -18,6 +18,7 @@
 
 #include "../../connection/protocol/temperature_reading.h"
 #include "chart_conf.h"
+#include "chart_limits.h"
 
 QT_BEGIN_NAMESPACE
 class QGestureEvent;
@@ -51,6 +52,8 @@ public:
      */
     void scroll(qreal dx, qreal dy);
     void adjustView();
+    ChartLimits getLimits() const;
+    void setLimits(const ChartLimits &limits);
 
 
 protected:

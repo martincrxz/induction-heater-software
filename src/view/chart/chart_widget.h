@@ -32,6 +32,8 @@ private slots:
 
     void on_saveButton_clicked();
 
+    void on_settingsButton_clicked();
+
 private:
 	/**
 	 * @brief Reimplementación del evento de cierre de ventana. Se agregará

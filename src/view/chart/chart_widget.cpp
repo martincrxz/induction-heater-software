@@ -1,6 +1,8 @@
+#include <QDialog>
 #include <logger/logger.h>
 
 #include "chart_conf.h"
+#include "chart_config_dialog.h"
 #include "chart_widget.h"
 #include "ui_chart_widget.h"
 
@@ -73,4 +75,11 @@ void ChartWidget::on_fitViewButton_clicked()
 void ChartWidget::on_saveButton_clicked()
 {
     this->chart->save();
+}
+
+void ChartWidget::on_settingsButton_clicked()
+{
+    QDialog *dialog = new ChartConfigDialog(this->chart->getLimits(), this->chart);
+    dialog->setWindowTitle("Ajuste de gráfico");
+    dialog->show();
 }

@@ -100,6 +100,7 @@ MainWindow::~MainWindow()
     this->resetLabelTimer->stop();
     delete this->resetLabelTimer;
     delete ui;
+    delete this->testTimer;
 }
 
 void MainWindow::on_shutdownButton_clicked()
