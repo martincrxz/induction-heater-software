@@ -144,7 +144,6 @@ void Chart::append(double x, double y, unsigned int id) {
 
 void Chart::init() {
     QMutexLocker lock(&this->mutex);
-    Logger::info("chart init");
     this->acceptData = true;
 }
 
@@ -157,8 +156,10 @@ void Chart::dataAvailable(double y, unsigned int id) {
 
 void Chart::stop() {
     QMutexLocker lock(&this->mutex);
-    Logger::info("chart stop");
     this->acceptData = false;
+    //TODO: preguntarle al usuario si desea guardar los datos antes de irse
+    this->series1.clear();
+    this->series2.clear();
 }
 
 void Chart::stopFollow() {
