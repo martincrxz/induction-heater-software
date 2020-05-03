@@ -10,7 +10,7 @@
 #include <QtCharts/QChart>
 #include <QtCharts/QDateTimeAxis>
 #include <QtCharts/QValueAxis>
-#include <QtCharts/QSplineSeries>
+#include <QtCharts/QLineSeries>
 //#include <QtCharts/QSplineSeries>
 #include <QtCore/QDateTime>
 #include <QtCore/QMutex>
@@ -67,11 +67,14 @@ private:
     std::uint64_t xoriginal{0};
     std::uint64_t xmin{0};
     std::uint64_t xmax{0};
-    QSplineSeries series1;
-    QSplineSeries series2;
+    QLineSeries series1;
+    QLineSeries series2;
     QDateTimeAxis xAxis;
     QValueAxis yAxis1;
     QValueAxis yAxis2;
+    const char * xAxisName;
+    const char * y1AxisName;
+    const char * y2AxisName;
     QMutex mutex;
     bool acceptData;
     Chrono chrono;

@@ -14,7 +14,7 @@ ui(new Ui::ChartWidget)
     std::uint64_t now = QDateTime::currentDateTime().toMSecsSinceEpoch();
     AxisConfiguration tempAxis("Temperatura (°C)", "%i", 0, 5);
     AxisConfiguration powerAxis("Potencia (W)", "%i", 0, 100);
-    AxisConfiguration timeAxis("Tiempo", "HH:mm:ss", now, 
+    AxisConfiguration timeAxis("Tiempo (HH:mm:ss)", "HH:mm:ss", now, 
         now + TIME_CHART_MAX_RANGE);
     ChartConfiguration config(timeAxis, tempAxis, powerAxis, 
         "Mediciones del horno");

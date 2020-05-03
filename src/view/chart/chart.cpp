@@ -24,6 +24,7 @@ Chart::Chart(ChartConfiguration *config, QGraphicsItem *parent,
     this->xAxis.setTickCount(10);
     this->xAxis.setFormat(config->xaxis.type);
     this->xAxis.setTitleText(config->xaxis.name);
+    this->xAxisName = config->xaxis.name;
     this->addAxis(&this->xAxis, Qt::AlignBottom);
     this->xmin = config->xaxis.min;
     this->xoriginal = this->xmin;
@@ -36,12 +37,13 @@ Chart::Chart(ChartConfiguration *config, QGraphicsItem *parent,
     pen.setWidth(3);
     this->series1.setPen(pen);
 
-    series1.setUseOpenGL(true);
+    //series1.setUseOpenGL(true);
     this->addSeries(&this->series1);
     this->legend()->hide();
 
     this->yAxis1.setLabelFormat(config->yaxis1.type);
     this->yAxis1.setTitleText(config->yaxis1.name);
+    this->y1AxisName = config->yaxis1.name;
     this->y1min = config->yaxis1.min;
     this->y1max = config->yaxis1.max;
     this->yAxis1.setRange(this->y1min, this->y1max);
@@ -55,13 +57,15 @@ Chart::Chart(ChartConfiguration *config, QGraphicsItem *parent,
         QPen pen2(Qt::green);
         pen2.setWidth(3);
         this->series2.setPen(pen2);
-
-        series2.setUseOpenGL(true);
+        // TODO: ver por qué se jode el grafico cuando habilito la renderizacion
+        // por openGL
+        //series2.setUseOpenGL(true);
         this->addSeries(&this->series2);
         this->legend()->hide();
 
         this->yAxis2.setLabelFormat(config->yaxis2.type);
         this->yAxis2.setTitleText(config->yaxis2.name);
+        this->y2AxisName = config->yaxis2.name;
         this->yAxis2.setRange(config->yaxis2.min,config->yaxis2.max);
 
         this->addAxis(&this->yAxis2, Qt::AlignRight);
@@ -82,7 +86,15 @@ Chart::Chart(ChartConfiguration *config, QGraphicsItem *parent,
 Chart::~Chart() {
     this->acceptData = false;
 }
-
+/**
+ *  Considerando que los puntos vienen de dos series distintas, y que
+ *  ambas ocurren de manera asincronica, siendo la primer serie la de mayor
+ *  predominancia (la mas frecuente), se repetirá el ultimo valor
+ *  de  la segunda serie para que ambas series posean el mismo tamaño.
+ *  
+ *  Para hacer esto, se insertará una repeticion del ultimo valor insertado
+ *  en la lista.
+ */
 void Chart::append(double x, double y, unsigned int id) {
     if (x > this->xAxis.max().toMSecsSinceEpoch()) {
         this->scroll(x - this->xAxis.max().toMSecsSinceEpoch() + 1000, 0);
@@ -90,17 +102,28 @@ void Chart::append(double x, double y, unsigned int id) {
 
     if (id == 1) {
         this->series1.append(x, y);
-            if (y > this->yAxis1.max()) {
-                y1min = this->yAxis1.min();
-                y1max = y + 50;
-                if (this->auto_scroll_enabled)
-                    this->yAxis1.setRange(y1min, y1max);
-            } else if ( y < this->yAxis1.min()) {
-                y1min = y - 50;
-                y1max = this->yAxis1.max();
-                if (this->auto_scroll_enabled)
-                    this->yAxis1.setRange(y1min, y1max);
+        if (y > this->yAxis1.max()) {
+            y1min = this->yAxis1.min();
+            y1max = y + 50;
+            if (this->auto_scroll_enabled)
+                this->yAxis1.setRange(y1min, y1max);
+        } else if ( y < this->yAxis1.min()) {
+            y1min = y - 50;
+            y1max = this->yAxis1.max();
+            if (this->auto_scroll_enabled)
+                this->yAxis1.setRange(y1min, y1max);
+        }
+        // agrego tantos puntos en la serie 2 como hagan falta para igualar
+        // los tamaños de la serie
+        if (this->secondCurveEnabled) {
+            if (this->series2.count() < this->series1.count()) {
+                double y2 = 0;
+                if (this->series2.count() > 0) {
+                   y2 = this->series2.at(this->series2.count() - 1).y();
+                }
+                append(x, y2, 2);
             }
+        }
     } else {
         if (this->secondCurveEnabled) {
             this->series2.append(x, y);
@@ -147,14 +170,22 @@ void Chart::save()
 {
     QMutexLocker lock(&this->mutex);
     std::fstream file("mediciones.csv", std::ios_base::out);
-    file << "Hora (HH:mm:ss),Temperatura (°C)";
+    file << this->xAxisName << "," << this->y1AxisName;
     if (this->secondCurveEnabled)
-            file << ",Potencia (W)";
+            file << "," << this->y2AxisName;
     file << std::endl;
-    for (int i = 0; i < this->series1.count(); ++i) {
+    for (int i = 0, j = 0; i < this->series1.count(); ++i) {
         QDateTime x = QDateTime::fromMSecsSinceEpoch(this->series1.at(i).x());
-        qreal y = this->series1.at(i).y();
-        file << x.toString("hh:ss:mm").toStdString() << "," << y << std::endl;
+        qreal y1 = this->series1.at(i).y();
+        file << x.toString("hh:ss:mm").toStdString() << "," << y1;
+        if (this->secondCurveEnabled) {
+            if (i < this->series2.count())
+                j = i;
+            qreal y2 = this->series2.at(j).y();
+            file << "," << y2 << std::endl;
+        } else {
+            file << std::endl;
+        }
     }
 }
 
