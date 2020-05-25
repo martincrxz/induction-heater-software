@@ -23,7 +23,6 @@ private:
      * los procesa de forma polimorfica (dependiendo de cada tipo de control)
      */
     void run() override;
-    virtual unsigned char process(std::shared_ptr<TemperatureReading> data) = 0;
 public slots:
 
     void receiveData(TemperatureReading &data);
@@ -40,6 +39,7 @@ public:
      * del hilo
      */
     void stop();
+    virtual unsigned char process(std::shared_ptr<TemperatureReading> data) = 0;
     /**
      * @brief Convierte la potencia (numero real entre 0 y 100) a vueltas 
      * del potenciometro.

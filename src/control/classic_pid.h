@@ -9,14 +9,13 @@
 #include "control_algorithm.h"
 #include <cstdint>
 
-class ClassicPID : public ControlAlgorithm{
-private:
-    float Kp = 0, Ki = 0, Kd = 0;
-    float previousErrorMean = 0;
-  	float derivativeError = 0;
-    float integralError = 0;
-
+class ClassicPID : public ControlAlgorithm {
 protected:
+    float Kp = 0, Ki = 0, Kd = 0;
+    float errorMean = 0;
+    float previousErrorMean = 0;
+    float derivativeError = 0;
+    float integralError = 0;
     //	ventana de tiempo para procesar las muestras
     std::vector<float> errorValues;
     //	contador para pisar el ultimo valor en formato round robin

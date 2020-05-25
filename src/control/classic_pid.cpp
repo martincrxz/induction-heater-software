@@ -9,7 +9,7 @@
 #include "logger/logger.h"
 
 //  TODO: se podría hacer configurable en runtime
-#define WINDOW_SIZE 4
+#define WINDOW_SIZE 1
 
 ClassicPID::ClassicPID(float kp, float ki, float kd, float targetTemp, SerialPort *sp):
         ControlAlgorithm(targetTemp, sp), Kp(kp), Ki(ki), Kd(kd),
@@ -28,16 +28,16 @@ unsigned char ClassicPID::process(std::shared_ptr<TemperatureReading> temp) {
 	 *	suceda, cada temperatura nueva reemplazará a la temperatura mas antigua,
 	 *	en formato round-robin.
 	 */
-	if (errorValues.size() < WINDOW_SIZE) 
+	if (errorValues.size() < WINDOW_SIZE)
 		errorValues.emplace_back(this->targetTemp - temp->getData());
 	else
 		this->errorValues[iteration % WINDOW_SIZE] = this->targetTemp - temp->getData();
 	iteration++;
 
-	float errorMean = std::accumulate(this->errorValues.begin(), 
+	errorMean = std::accumulate(this->errorValues.begin(),
 								this->errorValues.end(), 0);
 	errorMean /= this->errorValues.size();
-	
+
 	derivativeError = errorMean - previousErrorMean; 
 	previousErrorMean = errorMean;
 	integralError += errorMean;
@@ -46,5 +46,5 @@ unsigned char ClassicPID::process(std::shared_ptr<TemperatureReading> temp) {
 	 *	que se le debe aplicar al potenciometro (debería ser potencia). 
 	 */
 	float power = (Kp * errorMean + Kd * derivativeError + Ki * integralError);
-	return ControlAlgorithm::powerToTaps(power);	
+	return ControlAlgorithm::powerToTaps(power);
 }
