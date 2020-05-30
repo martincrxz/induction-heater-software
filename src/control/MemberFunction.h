@@ -16,6 +16,8 @@ private:
     float b;
     float c;
     float d;
+    // centro de masa (eje X)
+    float center{0};
     std::string tag;
 
 public:
@@ -29,6 +31,7 @@ public:
     //  * x > c => 0
     float calculate(float x);
     const std::string & getTag() const;
+    float getCenter() const;
 };
 
 

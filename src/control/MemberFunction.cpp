@@ -13,6 +13,9 @@ MemberFunction::MemberFunction(float a, float b, float c, float d, std::string t
         throw Exception("Se debe cumplir que a (%f) <= b (%f)"
                         "<= c (%f) <= d (%f)", a, b, c, d);
     }
+    // TODO: esta formual vale porque definimos las member functions simétricas.
+    // reveer esto.
+    this->center = (d - a) / 2;
 
 }
 
@@ -40,4 +43,8 @@ float MemberFunction::calculate(float x) {
 
 const std::string &MemberFunction::getTag() const {
     return this->tag;
+}
+
+float MemberFunction::getCenter() const {
+    return this->center;
 }

@@ -6,6 +6,10 @@
 #include <fstream>
 #include <sstream>
 #include "fuzzy_logic.h"
+#include "MemberCandidate.h"
+#include "OutputObject.h"
+
+#define MIN(x, y) (x) < (y) ? (x) : (y)
 
 FuzzyLogic::FuzzyLogic(float targetTemp, SerialPort *sp): ClassicPID(1, 0, 0, targetTemp, sp) {
     std::fstream file(RULES_FILEPATH, std::iostream::in );
@@ -21,15 +25,15 @@ FuzzyLogic::FuzzyLogic(float targetTemp, SerialPort *sp): ClassicPID(1, 0, 0, ta
         this->rules.push_back(std::move(row));
     }
     // TODO refactor this
-    input_member_func.emplace_back(-1, -1,-0.8,-0.6, "NB");
-    input_member_func.emplace_back(-0.7,-0.5,-0.4,-0.2, "NS");
-    input_member_func.emplace_back(-0.3,-0.1,0.1,0.3, "ZERO");
-    input_member_func.emplace_back(0.2,0.4,0.5,0.7, "PS");
-    input_member_func.emplace_back(0.6,0.8, 1, 1, "PB");
+    input_member_func.emplace_back(-2000,-2000, -200, -100, "NB");
+    input_member_func.emplace_back(-200,-100 , -10, 0, "NS");
+    input_member_func.emplace_back(-10, 0, 0, 10, "ZERO");
+    input_member_func.emplace_back(0, 10, 100, 200, "PS");
+    input_member_func.emplace_back(100, 200, 2000, 2000, "PB");
 
-    output_member_func.emplace_back(-15, -15, -10, -3, "NEGATIVE");
+    output_member_func.emplace_back(-22, -15, -10, -3, "NEGATIVE");
     output_member_func.emplace_back(-7, -3, 3, 7, "ZERO");
-    output_member_func.emplace_back(3, 10, 15, 15, "POSITIVE");
+    output_member_func.emplace_back(3, 10, 15, 22, "POSITIVE");
     
 }
 
@@ -43,8 +47,8 @@ unsigned char FuzzyLogic::process(std::shared_ptr<TemperatureReading> data) {
 }
 
 void FuzzyLogic::updateParameters(std::shared_ptr<TemperatureReading> data) {
-    std::vector<std::tuple<float, const std::string &>> errorCandidates;
-    std::vector<std::tuple<float, const std::string &>> derivativeErrorCandidates;
+    std::vector<MemberCandidate> errorCandidates;
+    std::vector<MemberCandidate> derivativeErrorCandidates;
 
     for (auto &member: this->input_member_func) {
         float errorDegree = member.calculate(errorMean);
@@ -54,17 +58,25 @@ void FuzzyLogic::updateParameters(std::shared_ptr<TemperatureReading> data) {
         if (derivativeErrorDegree != 0)
             derivativeErrorCandidates.emplace_back(derivativeErrorDegree, member.getTag());
     }
-    // TODO quitar esta tupla de mierda
+    std::uint32_t output_quantity = this->rules[1].size() - 2;
+    std::vector<OutputObject> outputs(output_quantity);
+
     for (auto &rule: this->rules) {
         for (auto &ec: errorCandidates){
             for (auto &dec: derivativeErrorCandidates) {
-                if (rule[0] == std::get<1>(ec) && rule[1] == std::get<1>(dec)) {
+                if (rule[0] == ec.tag && rule[1] == dec.tag) {
+                    float degree = MIN(ec.degree, dec.degree);
+                    for (int i = 2, j = 0; i < rules.size(); i++)
+                      outputs[j++].emplace(degree, rule[i]);
 
                 }
             }
         }
     }
 
+    this->Kp += outputs[0].calculate_delta(output_member_func);
+    this->Kd += outputs[1].calculate_delta(output_member_func);
+    this->Ki += outputs[2].calculate_delta(output_member_func);
 }
 
 
