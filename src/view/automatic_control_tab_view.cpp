@@ -4,8 +4,8 @@
 #include "control_configuration/classic_control_view.h"
 #include "control_configuration/fuzzy_control_view.h"
 #include "control_configuration/from_file_control_view.h"
-
-#define ERROR 1
+#include "message_modes.h"
+#include "logger/logger.h"
 
 AutomaticControlTabView::AutomaticControlTabView(QWidget *parent,
                                                  SerialPort *pPort) :
@@ -63,13 +63,17 @@ void AutomaticControlTabView::on_activateButton_clicked()
 
 void AutomaticControlTabView::on_deactivateButton_clicked()
 {
+    stop(true);
+}
+
+void AutomaticControlTabView::stop(bool printError) {
     std::lock_guard<std::recursive_mutex> lock(this->mutex);
     if (isControlActivated()){
         this->controlConfigViews[this->activatedControlAlgorithmIndex]->stop();
         activatedControlAlgorithmIndex = -1;
         emit printMessage("Proceso detenido correctamente", OK, true);
         emit controlAlgorithmDeactivated();
-    } else {
+    } else if (printError) {
         emit printMessage("No hay proceso que desactivar", ERROR, true);
     }
 }

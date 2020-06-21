@@ -55,7 +55,6 @@ void SerialPort::findDevice() {
             }
         }
     }
-    emit serialPortDisconnected();
     Logger::warning("Device not found.");
     reconectionTimer.start(RECONNECTION_TIMEOUT);
 }
@@ -69,6 +68,7 @@ void SerialPort::handleError(QSerialPort::SerialPortError error){
         this->close();
         this->connected = false;
     }
+    emit serialPortDisconnected();
     reconectionTimer.start(RECONNECTION_TIMEOUT);
 }
 

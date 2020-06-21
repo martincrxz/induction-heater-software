@@ -3,8 +3,7 @@
 #include "ui_auto_tunning_tab_view.h"
 #include "general_view.h"
 #include "../connection/protocol/set_power.h"
-
-#define ERROR 1
+#include "message_modes.h"
 
 AutoTunningTabView::AutoTunningTabView(QWidget *parent, SerialPort* port) :
     QWidget(parent),
@@ -41,17 +40,21 @@ void AutoTunningTabView::activate() {
 }
 
 void AutoTunningTabView::deactivate(bool finished) {
-    if (zn == nullptr){
-        emit printMessage("No hay proceso para desactivar", ERROR, true);
+    this->stop(finished, true);
+}
+
+void AutoTunningTabView::stop(bool finished, bool printError) {
+    if (zn == nullptr) {
+        if (printError)
+            emit printMessage("No hay proceso para desactivar", ERROR, true);
         return;
     }
 
     zn.reset(nullptr);
-    if (finished){
+    if (finished) {
         emit printMessage(ZN_SUCCESFULY_FINISHED, OK, true);
         Logger::info(ZN_SUCCESFULY_FINISHED);
     } else {
-
         emit printMessage(ZN_INTERRUPTED, ERROR, true);
         Logger::info(ZN_INTERRUPTED);
     }

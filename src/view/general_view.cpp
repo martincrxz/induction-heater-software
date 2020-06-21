@@ -40,7 +40,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->statusValue->setText("OK");
     onManualPowerSet();
-    //onAutomaticPowerSet();
+    usbOk = false;
+    onStatusChanged();
     /**
      * Conecto las distintas señales con los slots
      **/
@@ -165,11 +166,25 @@ void MainWindow::enableAutomaticControlButtons(bool enable) {
 void MainWindow::onSerialPortConnected() {
     usbOk = true;
     onStatusChanged();
+    resync_microcontroller();
+}
+
+void MainWindow::resync_microcontroller() {
+    this->thermocoupleChange(this->ui->thermocoupleTypeComboBox->currentIndex());
+    this->on_shutdownButton_clicked();
 }
 
 void MainWindow::onSerialPortDisconnected() {
     usbOk = false;
     onStatusChanged();
+    deactivateProcess();
+    on_messagePrint("Se perdió la conexión con el microcontrolador", ERROR, true);
+    this->equipmentView->insert(QString::number(0x01), "Microcontrolador desconectado");
+}
+
+void MainWindow::deactivateProcess() {
+    this->automaticView->stop(false);
+    this->autotunningView->stop(false, false);
 }
 
 void MainWindow::onStatusChanged(){

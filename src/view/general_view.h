@@ -48,6 +48,7 @@ public slots:
      * @param mode
      */
     void on_messagePrint(const char *str, unsigned char mode, bool reset);
+
 private:
     Ui::MainWindow *ui;
     SerialPort *port;
@@ -74,6 +75,8 @@ private:
      */
     void resetLabel();
     void enableAutomaticControlButtons(bool enable);
+    void resync_microcontroller();
+    void deactivateProcess();
 };
 
 #endif // MAINWINDOW_H

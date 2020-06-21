@@ -45,6 +45,7 @@ public:
      * @return
      */
     const char * getProcessName();
+    void stop(bool printError);
 
 signals:
     void controlAlgorithmDeactivated();

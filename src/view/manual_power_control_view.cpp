@@ -6,9 +6,7 @@
 #include "../control/control_algorithm.h"
 #include "manual_power_control_view.h"
 #include "ui_manual_power_control_view.h"
-
-#define ERROR 1
-#define OK 0
+#include "message_modes.h"
 
 #include <iostream>
 
