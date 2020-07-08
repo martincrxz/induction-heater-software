@@ -117,3 +117,8 @@ const char *AutomaticControlTabView::getProcessName()
     else
         return "-";
 }
+
+void AutomaticControlTabView::updateConfig(const AppConfig &conf) {
+  // CLassic control view
+  this->controlConfigViews[0]->updateConfig(conf);
+}

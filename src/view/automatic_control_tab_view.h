@@ -13,6 +13,7 @@
 #include "control_configuration/control_configuration.h"
 #include "../connection/protocol/temperature_reading.h"
 #include "../connection/serialport.h"
+#include "dialog/config.h"
 
 namespace Ui {
 class AutomaticControlTabView;
@@ -45,6 +46,7 @@ public:
      * @return
      */
     const char * getProcessName();
+    void updateConfig(const AppConfig &conf);
     void stop(bool printError);
 
 signals:

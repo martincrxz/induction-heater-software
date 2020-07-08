@@ -66,6 +66,7 @@ qt5_wrap_ui(UIS_HEADERS
 		src/view/control_configuration/from_file_control_view.ui
 		src/view/chart/chart_widget.ui
 		src/view/chart/chart_config_dialog.ui
+    src/view/dialog/general_config_dialog.ui
         )
 # Instruct CMake to run moc automatically when neededcd
 set(CMAKE_AUTOMOC ON)

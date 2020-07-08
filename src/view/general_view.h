@@ -10,6 +10,7 @@
 #include "chart_tab_view.h"
 #include "../connection/protocol/micro_message.h"
 #include "../connection/serialport.h"
+#include "dialog/general_config_dialog.h"
 
 typedef enum {MANUAL, AUTOMATIC} control_type_t;
 
@@ -49,6 +50,9 @@ public slots:
      */
     void on_messagePrint(const char *str, unsigned char mode, bool reset);
 
+private slots:
+    void on_actionConfiguration_triggered();
+
 private:
     Ui::MainWindow *ui;
     SerialPort *port;
@@ -68,6 +72,7 @@ private:
     std::uint64_t  temp_step{STEP_SIZE};
     std::uint64_t  power_step{POWER_STEP_SIZE};
     float amplitude{2};
+    GeneralConfigDialog confDialog;
     void injectData();
 
     /**
@@ -77,6 +82,7 @@ private:
     void enableAutomaticControlButtons(bool enable);
     void resync_microcontroller();
     void deactivateProcess();
+    void configChanged(AppConfig conf);
 };
 
 #endif // MAINWINDOW_H

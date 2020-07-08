@@ -11,6 +11,7 @@
 
 #include "../connection/protocol/temperature_reading.h"
 #include "../connection/serialport.h"
+#include "../view/dialog/config.h"
 
 class ControlAlgorithm : public QThread{
     Q_OBJECT
@@ -47,6 +48,7 @@ public:
      * @return cantidad de vueltas para el potenciómetro   
      */
     static unsigned char powerToTaps(float power);
+    virtual void updateConfig(const AppConfig &conf) {};
 };
 
 

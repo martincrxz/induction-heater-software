@@ -8,8 +8,6 @@
 #include "classic_pid.h"
 #include "logger/logger.h"
 
-//  TODO: se podría hacer configurable en runtime
-#define WINDOW_SIZE 1
 
 ClassicPID::ClassicPID(float kp, float ki, float kd, float targetTemp, SerialPort *sp):
         ControlAlgorithm(targetTemp, sp), Kp(kp), Ki(ki), Kd(kd),
@@ -28,10 +26,11 @@ unsigned char ClassicPID::process(std::shared_ptr<TemperatureReading> temp) {
 	 *	suceda, cada temperatura nueva reemplazará a la temperatura mas antigua,
 	 *	en formato round-robin.
 	 */
-	if (errorValues.size() < WINDOW_SIZE)
+  std::lock_guard<std::mutex> lock(this->m);
+	if (errorValues.size() < this->window_size)
 		errorValues.emplace_back(this->targetTemp - temp->getData());
 	else
-		this->errorValues[iteration % WINDOW_SIZE] = this->targetTemp - temp->getData();
+		this->errorValues[iteration % this->window_size] = this->targetTemp - temp->getData();
 	iteration++;
 
 	errorMean = std::accumulate(this->errorValues.begin(),
@@ -47,4 +46,11 @@ unsigned char ClassicPID::process(std::shared_ptr<TemperatureReading> temp) {
 	 */
 	float power = (Kp * errorMean + Kd * derivativeError + Ki * integralError);
 	return ControlAlgorithm::powerToTaps(power);
+}
+
+void ClassicPID::updateConfig(const AppConfig &conf) {
+    std::lock_guard<std::mutex> lock(this->m);
+    this->window_size = conf.window_size;
+    this->errorValues.clear();
+    iteration = 0;
 }

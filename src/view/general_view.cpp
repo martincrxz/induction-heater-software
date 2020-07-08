@@ -62,6 +62,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this->automaticView, &AutomaticControlTabView::controlAlgorithmDeactivated, this, &MainWindow::onControlTypeChanged);
     connect(this->automaticView, &AutomaticControlTabView::controlAlgorithmActivated, this, &MainWindow::onControlTypeChanged);
     connect(this->autotunningView, &AutoTunningTabView::ZNCalculated, this, &MainWindow::onZNCalculated);
+    connect(&this->confDialog, &GeneralConfigDialog::config_changed, this, &MainWindow::configChanged);
     // conecto signals relacionados a la ipmresion de mensajes de notificacion
     connect(this->resetLabelTimer, &QTimer::timeout, this, &MainWindow::resetLabel);
     connect(this->autotunningView, &AutoTunningTabView::printMessage, this, &MainWindow::on_messagePrint);
@@ -74,6 +75,8 @@ MainWindow::MainWindow(QWidget *parent) :
      connect(this->testTimer, &QTimer::timeout, this, &MainWindow::injectData);
      this->testTimer->start(1000/10.0f);
 #endif
+
+     this->confDialog.updateConfig();
 }
 
 #define PI 3.14159265358979323846f
@@ -260,4 +263,13 @@ void MainWindow::on_messagePrint(const char *str, unsigned char mode, bool reset
 
 void MainWindow::resetLabel() {
     ui->notificationLabel->setText("");
+}
+
+void MainWindow::on_actionConfiguration_triggered() {
+    confDialog.show();
+}
+
+void MainWindow::configChanged(AppConfig conf) {
+    Logger::logLevelChanged(conf.log_level_enabled);
+    this->automaticView->updateConfig(conf);
 }

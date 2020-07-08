@@ -73,7 +73,8 @@ SOURCES += \
     src/view/chart/chart.cpp \
     src/view/chart/chart_conf.cpp \
     src/view/chart/chart_view.cpp \
-    src/view/chart/chart_config_dialog.cpp
+    src/view/chart/chart_config_dialog.cpp \
+    src/view/dialog/general_config_dialog.cpp
 
 
 
@@ -127,7 +128,9 @@ HEADERS += \
     src/view/chart/chart.h \
     src/view/chart/chart_conf.h \
     src/view/chart/chart_view.h \
-    src/view/chart/chart_config_dialog.h
+    src/view/chart/chart_config_dialog.h \
+    src/view/dialog/general_config_dialog.h \
+    src/view/dialog/config.h
 
 FORMS += \
 		src/view/auto_tunning_tab_view.ui \
@@ -140,6 +143,7 @@ FORMS += \
     src/view/control_configuration/fuzzy_control_view.ui \
     src/view/control_configuration/from_file_control_view.ui \ 
     src/view/chart/chart_widget.ui \
-    src/view/chart/chart_config_dialog.ui
+    src/view/chart/chart_config_dialog.ui \
+    src/view/dialog/general_config_dialog.ui
 
 RESOURCES = assets/resources.qrc

@@ -59,7 +59,7 @@ public:
      * @brief Cambia el nivel de loggeo para agregar precisión al log.
      * @param level
      */
-    static void logLevelChanged(std::vector<LogLevel> &levels);
+    static void logLevelChanged(uint8_t newConf);
     /**
      * @brief Liberará los recursos del worker de forma ordenada
      */

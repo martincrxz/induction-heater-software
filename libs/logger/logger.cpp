@@ -116,12 +116,9 @@ void Logger::critical(const char * fmt, ...) {
     Logger::instance().worker.pushMessage(ptr);
 }
 
-void Logger::logLevelChanged(std::vector<LogLevel> &levels)
+void Logger::logLevelChanged(uint8_t newConf)
 {
-    unsigned char newConf = 0;
-    for (auto level: levels) {
-        newConf |= level;
-    }
+    Logger::info("Logger levels changed");
     current_level = newConf;
 }
 

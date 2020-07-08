@@ -8,6 +8,10 @@
 
 #include "control_algorithm.h"
 #include <cstdint>
+#include <mutex>
+
+//  TODO: se podría hacer configurable en runtime
+#define WINDOW_SIZE 1
 
 class ClassicPID : public ControlAlgorithm {
 protected:
@@ -18,6 +22,8 @@ protected:
     float integralError = 0;
     //	ventana de tiempo para procesar las muestras
     std::vector<float> errorValues;
+    uint8_t window_size{WINDOW_SIZE};
+    std::mutex m;
     //	contador para pisar el ultimo valor en formato round robin
     uint64_t iteration = 0;
 
@@ -34,6 +40,7 @@ public:
 	 *	aplicar. Esta transformación debe hacerla el micro.
 	 */
 	virtual unsigned char process(std::shared_ptr<TemperatureReading> data) override;
+  void updateConfig(const AppConfig &conf) override;
 };
 
 

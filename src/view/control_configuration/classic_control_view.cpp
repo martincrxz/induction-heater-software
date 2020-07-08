@@ -108,7 +108,14 @@ void ClassicControlView::instantiate() {
     this->controlAlgorithm->start();
 }
 
-const char *ClassicControlView::getName()
-{
+const char *ClassicControlView::getName() {
     return "Clásico";
+}
+
+void ClassicControlView::updateConfig(const AppConfig &conf) {
+    this->window_size = conf.window_size;
+    if (this->controlAlgorithm) {
+        this->controlAlgorithm->updateConfig(conf);
+    }
+
 }
