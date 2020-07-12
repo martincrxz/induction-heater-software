@@ -1,12 +1,8 @@
 #include <exception>
 #include <iostream>
-#include <fstream>
-#include <sstream>
 #include <QApplication>
 #include <logger/logger_worker.h>
 #include <logger/logger.h>
-#include <rapidjson/filereadstream.h>
-#include <rapidjson/document.h>
 
 #include "exception.h"
 #include "view/application.h"
