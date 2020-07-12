@@ -94,10 +94,10 @@ void FuzzyLogic::loadFunctions(std::vector<MemberFunction>& holder, rapidjson::D
         const std::string &functionType, const std::string &id){
     for(auto &obj : document["fuzzy3x2"][functionType.c_str()][id.c_str()].GetObject()){
         holder.emplace_back(
-                obj.value.GetArray()[0],
-                obj.value.GetArray()[1],
-                obj.value.GetArray()[2],
-                obj.value.GetArray()[3],
+                obj.value.GetArray()[0].GetFloat(),
+                obj.value.GetArray()[1].GetFloat(),
+                obj.value.GetArray()[2].GetFloat(),
+                obj.value.GetArray()[3].GetFloat(),
                 obj.name.GetString());
     }
 }
