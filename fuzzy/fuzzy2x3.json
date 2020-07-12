@@ -1,0 +1,66 @@
+{
+  "fuzzy2x3" : {
+    "inputs" : ["e", "de"],
+    "outputs" : ["dkp", "dki", "dkd"],
+    "rules" : [
+      ["ZERO","ZERO","ZERO","ZERO","ZERO"],
+      ["ZERO","PS","NEGATIVE","POSITIVE","NEGATIVE"],
+      ["ZERO","PB","NEGATIVE","POSITIVE","NEGATIVE"],
+      ["ZERO","NS","NEGATIVE","POSITIVE","NEGATIVE"],
+      ["ZERO","NB","NEGATIVE","NEGATIVE","NEGATIVE"],
+      ["PS","ZERO","POSITIVE","NEGATIVE","POSITIVE"],
+      ["PS","PS","ZERO","ZERO","ZERO"],
+      ["PS","PB","ZERO","POSITIVE","ZERO"],
+      ["PS","NS","ZERO","POSITIVE","ZERO"],
+      ["PS","NB","NEGATIVE","POSITIVE","NEGATIVE"],
+      ["PB","ZERO","POSITIVE","NEGATIVE","POSITIVE"],
+      ["PB","PS","POSITIVE","NEGATIVE","POSITIVE"],
+      ["PB","PB","POSITIVE","NEGATIVE","POSITIVE"],
+      ["PB","NS","POSITIVE","NEGATIVE","POSITIVE"],
+      ["PB","NB","POSITIVE","NEGATIVE","POSITIVE"],
+      ["NS","ZERO","POSITIVE","NEGATIVE","POSITIVE"],
+      ["NS","PS","ZERO","ZERO","ZERO"],
+      ["NS","PB","NEGATIVE","POSITIVE","NEGATIVE"],
+      ["NS","NS","ZERO","POSITIVE","NEGATIVE"],
+      ["NS","NB","NEGATIVE","POSITIVE","NEGATIVE"],
+      ["NB","ZERO","POSITIVE","NEGATIVE","POSITIVE"],
+      ["NB","PS","POSITIVE","NEGATIVE","POSITIVE"],
+      ["NB","PB","POSITIVE","NEGATIVE","POSITIVE"],
+      ["NB","NS","POSITIVE","NEGATIVE","POSITIVE"],
+      ["NB","NB","POSITIVE","NEGATIVE","POSITIVE"]
+    ],
+    "inputFunctions" : {
+      "e" : {
+        "NB" : [-2000, -2000, -200, -100],
+        "NS" : [-200, -100 , -10, 0],
+        "ZERO" : [-10, 0, 0, 10],
+        "PS" : [0, 10, 100, 200],
+        "PB" : [100, 200, 2000, 2000]
+      },
+      "de" : {
+        "NB" : [-2000, -2000, -200, -100],
+        "NS" : [-200, -100 , -10, 0],
+        "ZERO" : [-10, 0, 0, 10],
+        "PS" : [0, 10, 100, 200],
+        "PB" : [100, 200, 2000, 2000]
+      }
+    },
+    "outputFunctions" : {
+      "dkp" : {
+        "NEGATIVE" : [-22, -15, -10, -3],
+        "ZERO" : [-7, -3, 3, 7],
+        "POSITIVE" : [3, 10, 15, 22]
+      },
+      "dki" : {
+        "NEGATIVE" : [-22, -15, -10, -3],
+        "ZERO" : [-7, -3, 3, 7],
+        "POSITIVE" : [3, 10, 15, 22]
+      },
+      "dkd" : {
+        "NEGATIVE" : [-22, -15, -10, -3],
+        "ZERO" : [-7, -3, 3, 7],
+        "POSITIVE" : [3, 10, 15, 22]
+      }
+    }
+  }
+}

@@ -1,8 +1,12 @@
 #include <exception>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <QApplication>
 #include <logger/logger_worker.h>
 #include <logger/logger.h>
+#include <rapidjson/filereadstream.h>
+#include <rapidjson/document.h>
 
 #include "exception.h"
 #include "view/application.h"
@@ -16,6 +20,7 @@ int main(int argc, char *argv[])
         Logger::init();
     	MainWindow w;
         w.show();
+
         ret = a.exec();
 	} catch (std::exception &e) {
 		std::cerr << e.what() << std::endl;

@@ -7,14 +7,15 @@
 #ifndef __FUZZY_LOGIC_H__
 #define __FUZZY_LOGIC_H__
 
-#define RULES_FILEPATH "./fuzzy_rules.txt"
-
 #include <vector>
 #include <string>
+#include <rapidjson/document.h>
 
 #include "classic_pid.h"
 #include "MemberFunction.h"
 
+#define JSON_FILEPATH "fuzzy/fuzzy2x3.json"
+#define JSON_BUFFER_SIZE 4 * 1024
 
 class FuzzyLogic: public ClassicPID {
 public:
@@ -27,10 +28,16 @@ private:
      * Actualiza los parametros kp kd y ki en función del error derivativo
      * y el error de la medicion.
      */
+    void loadJson();
+    void loadFunctions(std::vector<MemberFunction>& holder, rapidjson::Document &document,
+            const std::string &functionType, const std::string &id);
     void updateParameters(std::shared_ptr<TemperatureReading> data);
     std::vector<std::vector<std::string>> rules;
-    std::vector<MemberFunction> input_member_func;
-    std::vector<MemberFunction> output_member_func;
+    std::vector<MemberFunction> errorMemberFunctions;
+    std::vector<MemberFunction> errorDerivativeMemberFunctions;
+    std::vector<MemberFunction> kpOutputFunctions;
+    std::vector<MemberFunction> kiOutputFunctions;
+    std::vector<MemberFunction> kdOutputFunctions;
 };
 
 

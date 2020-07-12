@@ -1,0 +1,59 @@
+{
+  "fuzzy3x1" : {
+    "inputs" : ["e", "de","ie"],
+    "outputs" : ["p"],
+    "rules" : [
+      ["ZERO","ZERO","ZERO","ZERO"],
+      ["ZERO","ZERO","POSITIVE","POSITIVE"],
+      ["ZERO","ZERO","NEGATIVE","NEGATIVE"],
+      ["ZERO","POSITIVE","ZERO","ZERO"],
+      ["ZERO","POSITIVE","POSITIVE","POSITIVE"],
+      ["ZERO","POSITIVE","NEGATIVE","POSITIVE"],
+      ["ZERO","NEGATIVE","ZERO","ZERO"],
+      ["ZERO","NEGATIVE","POSITIVE","POSITIVE"],
+      ["ZERO","NEGATIVE","NEGATIVE","POSITIVE"],
+      ["POSITIVE","ZERO","ZERO","ZERO"],
+      ["POSITIVE","ZERO","POSITIVE","POSITIVE"],
+      ["POSITIVE","ZERO","NEGATIVE","POSITIVE"],
+      ["POSITIVE","POSITIVE","ZERO","ZERO"],
+      ["POSITIVE","POSITIVE","POSITIVE","POSITIVE"],
+      ["POSITIVE","POSITIVE","NEGATIVE","POSITIVE"],
+      ["POSITIVE","NEGATIVE","ZERO","ZERO"],
+      ["POSITIVE","NEGATIVE","POSITIVE","POSITIVE"],
+      ["POSITIVE","NEGATIVE","NEGATIVE","POSITIVE"],
+      ["NEGATIVE","ZERO","ZERO","ZERO"],
+      ["NEGATIVE","ZERO","POSITIVE","POSITIVE"],
+      ["NEGATIVE","ZERO","NEGATIVE","POSITIVE"],
+      ["NEGATIVE","POSITIVE","ZERO","ZERO"],
+      ["NEGATIVE","POSITIVE","POSITIVE","POSITIVE"],
+      ["NEGATIVE","POSITIVE","NEGATIVE","POSITIVE"],
+      ["NEGATIVE","NEGATIVE","ZERO","ZERO"],
+      ["NEGATIVE","NEGATIVE","POSITIVE","POSITIVE"],
+      ["NEGATIVE","NEGATIVE","NEGATIVE","POSITIVE"]
+    ],
+    "inputFunctions" : {
+      "e" : {
+        "NEGATIVE" : [-200, -100 , -10, 0],
+        "ZERO" : [-10, 0, 0, 10],
+        "POSITIVE" : [0, 10, 100, 200]
+      },
+      "de" : {
+        "NEGATIVE" : [-200, -100 , -10, 0],
+        "ZERO" : [-10, 0, 0, 10],
+        "POSITIVE" : [0, 10, 100, 200]
+      },
+      "ie" : {
+        "NEGATIVE" : [-200, -100 , -10, 0],
+        "ZERO" : [-10, 0, 0, 10],
+        "POSITIVE" : [0, 10, 100, 200]
+      }
+    },
+    "outputFunctions" : {
+      "p" : {
+        "NEGATIVE" : [-22, -15, -10, -3],
+        "ZERO" : [-7, -3, 3, 7],
+        "POSITIVE" : [3, 10, 15, 22]
+      }
+    }
+  }
+}
