@@ -12,9 +12,10 @@
 #define MINIMUM_TAP 0   // potencia maxima (100%)
 #define MAXIMUM_TAP 127 // potencia minima (0%) 
 
-ControlAlgorithm::ControlAlgorithm(float targetTemp, SerialPort *sp):
+ControlAlgorithm::ControlAlgorithm(float targetTemp, SerialPort *sp, uint8_t window_size):
                         serialPort(sp),
-                        targetTemp(targetTemp) {}
+                        targetTemp(targetTemp),
+                        window_size(window_size) {}
 
 void ControlAlgorithm::receiveData(TemperatureReading &data) {
     std::shared_ptr<TemperatureReading> temp(new TemperatureReading(data));
@@ -65,4 +66,11 @@ unsigned char ControlAlgorithm::powerToTaps(float power) {
     //  transformacion debería hacerla el código del micro).
     float taps = (100 - power) * MAXIMUM_TAP / 100;
     return (unsigned char) std::floor(taps);
+}
+
+void ControlAlgorithm::updateConfig(const AppConfig &conf) {
+    std::lock_guard<std::mutex> lock(this->m);
+    this->window_size = conf.window_size;
+    this->errorValues.clear();
+    iteration = 0;
 }

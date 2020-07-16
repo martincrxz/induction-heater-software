@@ -20,8 +20,8 @@
 #define POWER_POSITION 2
 
 FileControl::FileControl(float kp, float ki, float kd,
-                         ControlSteps &controlDirectives, SerialPort *sp):
-		ClassicPID(kp, ki, kd, 0.0f, sp),
+                         ControlSteps &controlDirectives, SerialPort *sp, uint8_t window_size):
+		ClassicPID(kp, ki, kd, 0.0f, sp, window_size),
 		steps(controlDirectives) {
 }
 

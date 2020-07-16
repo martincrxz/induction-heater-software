@@ -8,10 +8,14 @@
 #include <QtCore/QThread>
 #include <memory>
 #include <stream.h>
+#include <mutex>
 
 #include "../connection/protocol/temperature_reading.h"
 #include "../connection/serialport.h"
 #include "../view/dialog/config.h"
+
+//  TODO: se podría hacer configurable en runtime
+#define WINDOW_SIZE 1
 
 class ControlAlgorithm : public QThread{
     Q_OBJECT
@@ -31,9 +35,15 @@ public slots:
 protected:
     bool keep_processing{true};
     float targetTemp = 0;
+    uint8_t window_size{WINDOW_SIZE};
+    //  ventana de tiempo para procesar las muestras
+    std::vector<float> errorValues;
+    //  contador para pisar el ultimo valor en formato round robin
+    uint64_t iteration = 0;
+    std::mutex m;
 
 public:
-	ControlAlgorithm(float targetTemp, SerialPort *sp);
+	ControlAlgorithm(float targetTemp, SerialPort *sp, uint8_t window_size);
 	virtual ~ControlAlgorithm();
 	/**
      * @brief Se encarga de terminar la ejecución ordenada
@@ -48,7 +58,7 @@ public:
      * @return cantidad de vueltas para el potenciómetro   
      */
     static unsigned char powerToTaps(float power);
-    virtual void updateConfig(const AppConfig &conf) {};
+    virtual void updateConfig(const AppConfig &conf);
 };
 
 

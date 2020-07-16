@@ -119,6 +119,7 @@ const char *AutomaticControlTabView::getProcessName()
 }
 
 void AutomaticControlTabView::updateConfig(const AppConfig &conf) {
-  // CLassic control view
-  this->controlConfigViews[0]->updateConfig(conf);
+  for (auto controlView : this->controlConfigViews) {
+    controlView->updateConfig(conf);
+  }
 }

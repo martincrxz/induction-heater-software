@@ -43,3 +43,11 @@ void ControlConfiguration::saveConstantsInFile(float kp, float ki, float kd, std
     Logger::info("Data saved in file: %s", filename.c_str());
 
 }
+
+void ControlConfiguration::updateConfig(const AppConfig &conf) {
+    this->window_size = conf.window_size;
+    if (this->controlAlgorithm) {
+        Logger::debug("Control %s updated", this->getName());
+        this->controlAlgorithm->updateConfig(conf);
+    }
+}

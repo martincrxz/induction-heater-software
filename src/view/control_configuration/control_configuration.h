@@ -52,12 +52,13 @@ public:
      * de control (para aquellas vistas que tengan configuración de kp, kd y ki)
      * en algun futuro usar algo mejor.
      */
-     static void saveConstantsInFile(float, float, float, std::string);
-     virtual void loadControlValues(std::string filepath = FILE_PATH) = 0;
-     virtual void updateConfig(const AppConfig &conf) {};
+    static void saveConstantsInFile(float, float, float, std::string);
+    virtual void loadControlValues(std::string filepath = FILE_PATH) = 0;   
+    virtual void updateConfig(const AppConfig &conf);
 protected:
     SerialPort *sp;
     std::unique_ptr<ControlAlgorithm> controlAlgorithm;
+    uint8_t     window_size{1};
 
 signals:
     void message(const char *str, unsigned char mode, bool reset);

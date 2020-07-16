@@ -104,18 +104,10 @@ void ClassicControlView::instantiate() {
     float kp = this->ui->kp_value->text().toFloat();
     float kd = this->ui->kd_value->text().toFloat();
     float ki = this->ui->ki_value->text().toFloat();
-    this->controlAlgorithm.reset(new ClassicPID(kp, ki, kd, targetTemp, this->sp));
+    this->controlAlgorithm.reset(new ClassicPID(kp, ki, kd, targetTemp, this->sp, this->window_size));
     this->controlAlgorithm->start();
 }
 
 const char *ClassicControlView::getName() {
     return "Clásico";
-}
-
-void ClassicControlView::updateConfig(const AppConfig &conf) {
-    this->window_size = conf.window_size;
-    if (this->controlAlgorithm) {
-        this->controlAlgorithm->updateConfig(conf);
-    }
-
 }

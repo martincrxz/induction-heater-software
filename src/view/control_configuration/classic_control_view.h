@@ -27,7 +27,6 @@ public:
     void instantiate() override;
     const char * getName() override;
     void loadControlValues(std::string filepath = FILE_PATH) override;
-    void updateConfig(const AppConfig &conf) override;
 
 private slots:
 
@@ -48,7 +47,6 @@ private:
     Ui::ClassicControlView *ui;
     QDoubleValidator *kValidator;
     QDoubleValidator *tempValidator;
-    uint8_t           window_size{1};
 };
 
 #endif // CLASSIC_CONTROL_VIEW_H

@@ -18,7 +18,7 @@
 
 class FuzzyLogic: public ClassicPID {
 public:
-    FuzzyLogic(float targetTemp, SerialPort *sp);
+    FuzzyLogic(float targetTemp, SerialPort *sp, uint8_t window_size);
     virtual ~FuzzyLogic() override;
     virtual unsigned char process(std::shared_ptr<TemperatureReading> data) override;
 

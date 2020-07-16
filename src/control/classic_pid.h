@@ -10,9 +10,6 @@
 #include <cstdint>
 #include <mutex>
 
-//  TODO: se podría hacer configurable en runtime
-#define WINDOW_SIZE 1
-
 class ClassicPID : public ControlAlgorithm {
 protected:
     float Kp = 0, Ki = 0, Kd = 0;
@@ -20,15 +17,9 @@ protected:
     float previousErrorMean = 0;
     float derivativeError = 0;
     float integralError = 0;
-    //	ventana de tiempo para procesar las muestras
-    std::vector<float> errorValues;
-    uint8_t window_size{WINDOW_SIZE};
-    std::mutex m;
-    //	contador para pisar el ultimo valor en formato round robin
-    uint64_t iteration = 0;
 
 public:
-	ClassicPID(float kp, float ki, float kd, float targetTemp, SerialPort *sp);
+	ClassicPID(float kp, float ki, float kd, float targetTemp, SerialPort *sp, uint8_t window_size);
 	virtual ~ClassicPID() = default;
 	/**
 	 *	Dado una temperatura nueva, calcula por medio del control clásico
@@ -40,7 +31,6 @@ public:
 	 *	aplicar. Esta transformación debe hacerla el micro.
 	 */
 	virtual unsigned char process(std::shared_ptr<TemperatureReading> data) override;
-  void updateConfig(const AppConfig &conf) override;
 };
 
 

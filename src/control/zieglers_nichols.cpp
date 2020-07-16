@@ -7,7 +7,7 @@
 #include "../view/auto_tunning_tab_view.h"
 
 
-ZieglerNichols::ZieglerNichols(AutoTunningTabView *view, SerialPort *port) : ControlAlgorithm(0, port) {
+ZieglerNichols::ZieglerNichols(AutoTunningTabView *view, SerialPort *port) : ControlAlgorithm(0, port, 0) {
 
     autoTunningView = view;
     std::shared_ptr<MicroMessage> msg(new SetPower(powerToTaps(10)));

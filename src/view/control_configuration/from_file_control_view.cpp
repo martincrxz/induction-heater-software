@@ -49,7 +49,7 @@ void FromFileControlView::instantiate() {
     float kp = this->ui->kpLineEdit->text().toFloat();
     float kd = this->ui->kdLineEdit->text().toFloat();
     float ki = this->ui->kiLineEdit->text().toFloat();
-    this->controlAlgorithm.reset(new FileControl(kp, ki, kd, controlDirectives, this->sp));
+    this->controlAlgorithm.reset(new FileControl(kp, ki, kd, controlDirectives, this->sp, this->window_size));
     this->controlAlgorithm->start();
 }
 

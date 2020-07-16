@@ -19,7 +19,7 @@ class FileControl: public ClassicPID
 {
 public:
 	FileControl(float kp, float ki, float kd, ControlSteps &controlDirectives,
-                SerialPort *sp);
+                SerialPort *sp, uint8_t window_size);
 	~FileControl();
     /**
      *	Dado una temperatura nueva, se deja calentar a lazo abierto hasta que

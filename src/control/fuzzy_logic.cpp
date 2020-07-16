@@ -11,7 +11,8 @@
 
 #define MIN(x, y) (x) < (y) ? (x) : (y)
 
-FuzzyLogic::FuzzyLogic(float targetTemp, SerialPort *sp): ClassicPID(1, 0, 0, targetTemp, sp) {
+FuzzyLogic::FuzzyLogic(float targetTemp, SerialPort *sp, uint8_t window_size): 
+      ClassicPID(1, 0, 0, targetTemp, sp, window_size) {
     std::fstream file(RULES_FILEPATH, std::iostream::in );
     std::string line;
     // parseo el archivo, el csv debe ser una matriz de  Nx5 elementos

@@ -9,9 +9,8 @@
 #include "logger/logger.h"
 
 
-ClassicPID::ClassicPID(float kp, float ki, float kd, float targetTemp, SerialPort *sp):
-        ControlAlgorithm(targetTemp, sp), Kp(kp), Ki(ki), Kd(kd),
-        errorValues() {
+ClassicPID::ClassicPID(float kp, float ki, float kd, float targetTemp, SerialPort *sp, uint8_t window_size):
+        ControlAlgorithm(targetTemp, sp, window_size), Kp(kp), Ki(ki), Kd(kd) {
 	Logger::debug("ClassicPID constructor ( kp= %.2f, kd= %.2f, ki= %.2f). Target temperature: %.0f °C",
 		kp, kd, ki, targetTemp);		
 }
@@ -46,11 +45,4 @@ unsigned char ClassicPID::process(std::shared_ptr<TemperatureReading> temp) {
 	 */
 	float power = (Kp * errorMean + Kd * derivativeError + Ki * integralError);
 	return ControlAlgorithm::powerToTaps(power);
-}
-
-void ClassicPID::updateConfig(const AppConfig &conf) {
-    std::lock_guard<std::mutex> lock(this->m);
-    this->window_size = conf.window_size;
-    this->errorValues.clear();
-    iteration = 0;
 }
