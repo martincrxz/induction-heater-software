@@ -30,7 +30,7 @@ private:
      */
     void loadJson();
     void loadFunctions(std::vector<MemberFunction>& holder, rapidjson::Document &document,
-            const std::string &functionType, const std::string &id);
+            const std::string functionType, const std::string id);
     void updateParameters(std::shared_ptr<TemperatureReading> data);
     std::vector<std::vector<std::string>> rules;
     std::vector<MemberFunction> errorMemberFunctions;

@@ -15,15 +15,15 @@ int main(int argc, char *argv[])
     	Application a(argc, argv);
         Logger::init();
     	MainWindow w;
-        w.show();
+		w.show();
 
-        ret = a.exec();
+		ret = a.exec();
 	} catch (std::exception &e) {
-		std::cerr << e.what() << std::endl;
+		Logger::critical(e.what());
 		return 1;
 	} catch (...) {
-		std::cerr << "Unknown error on main thread." << std::endl;
+		Logger::critical("Unknown error on main thread.");
 		return 1;
 	}
-    return ret;
+	return ret;
 }

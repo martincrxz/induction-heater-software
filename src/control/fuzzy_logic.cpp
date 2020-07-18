@@ -8,7 +8,7 @@
 #include "fuzzy_logic.h"
 #include "MemberCandidate.h"
 #include "OutputObject.h"
-#include <rapidjson/filereadstream.h>
+#include <rapidjson/istreamwrapper.h>
 #include <rapidjson/document.h>
 
 #define MIN(x, y) (x) < (y) ? (x) : (y)
@@ -64,19 +64,17 @@ void FuzzyLogic::updateParameters(std::shared_ptr<TemperatureReading> data) {
 }
 
 void FuzzyLogic::loadJson() {
-    FILE *fp = fopen(JSON_FILEPATH, "rb" );
-    if(fp == NULL){
-        Logger::warning("Could not correctly initialize fuzzy logic controller, input file error");
-        return;
+    std::fstream file(JSON_FILEPATH);
+    Logger::debug("loading json %s", JSON_FILEPATH);
+    if(!file.is_open()) {
+        throw Exception("Couldn't load json file %s", JSON_FILEPATH);
     }
-    char readBuffer[JSON_BUFFER_SIZE];
-
-    rapidjson::FileReadStream frs(fp, readBuffer, sizeof(readBuffer));
+    rapidjson::IStreamWrapper isw(file);
 
     rapidjson::Document document;
-    document.ParseStream(frs);
+    document.ParseStream(isw);
 
-    for(auto &rule : document["fuzzy3x2"]["rules"].GetArray()){
+    for(auto &rule : document["fuzzy2x3"]["rules"].GetArray()){
         std::vector<std::string> row;
         for(auto &value : rule.GetArray()){
             row.push_back(value.GetString());
@@ -91,8 +89,8 @@ void FuzzyLogic::loadJson() {
 }
 
 void FuzzyLogic::loadFunctions(std::vector<MemberFunction>& holder, rapidjson::Document &document,
-        const std::string &functionType, const std::string &id){
-    for(auto &obj : document["fuzzy3x2"][functionType.c_str()][id.c_str()].GetObject()){
+        const std::string functionType, const std::string id){
+    for(auto &obj : document["fuzzy2x3"][functionType.c_str()][id.c_str()].GetObject()){
         holder.emplace_back(
                 obj.value.GetArray()[0].GetFloat(),
                 obj.value.GetArray()[1].GetFloat(),

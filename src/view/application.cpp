@@ -1,4 +1,5 @@
 #include <iostream>
+#include <logger/logger.h>
 
 #include "application.h"
 #include "exception.h"
@@ -8,17 +9,10 @@ bool Application::notify(QObject* receiver, QEvent* event)
     try {
         return QApplication::notify(receiver, event);
     } catch (std::exception &e) {
-         Exception e1("Error: %s.\nSending event %s to object %s (%s)",
-            e.what(), typeid(*event).name(), 
-            qPrintable(receiver->objectName()), 
-            typeid(*receiver).name());
-         std::cerr << e1.what() << std::endl;
+         Logger::critical(e.what());
          this->exit(1);
     } catch (...) {
-		 Exception e("Unknown error sending event %s to object %s (%s)", 
-            typeid(*event).name(), qPrintable(receiver->objectName()),
-            typeid(*receiver).name());
-         std::cerr << e.what() << std::endl;
+         Logger::critical("Unknown error in Application");
          this->exit(1);
     }        
     return false;

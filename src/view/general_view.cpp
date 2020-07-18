@@ -41,7 +41,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->statusValue->setText("OK");
     onManualPowerSet();
     usbOk = false;
-    onStatusChanged();
+    //onStatusChanged();
+    onAutomaticPowerSet();
     /**
      * Conecto las distintas señales con los slots
      **/
