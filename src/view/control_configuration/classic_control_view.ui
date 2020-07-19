@@ -23,19 +23,18 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
-       <item>
-        <widget class="QLineEdit" name="targetTemperatureTextEdit"/>
-       </item>
-       <item>
-        <widget class="QLabel" name="targetTemperatureUnitLabel">
-         <property name="text">
-          <string>°C</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Kd:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="2">
+      <widget class="QLineEdit" name="ki_value"/>
+     </item>
+     <item row="1" column="2">
+      <widget class="QLineEdit" name="kp_value"/>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="targetTemperatureLabel">
@@ -44,21 +43,8 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="2">
-      <widget class="QLineEdit" name="ki_value"/>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Kd:</string>
-       </property>
-      </widget>
-     </item>
      <item row="2" column="2">
       <widget class="QLineEdit" name="kd_value"/>
-     </item>
-     <item row="1" column="2">
-      <widget class="QLineEdit" name="kp_value"/>
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="label_3">
@@ -118,6 +104,16 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLabel" name="targetTemperatureUnitLabel">
+       <property name="text">
+        <string>°C</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLineEdit" name="targetTemperatureTextEdit"/>
      </item>
     </layout>
    </item>

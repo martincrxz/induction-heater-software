@@ -74,9 +74,11 @@ SOURCES += \
     src/view/chart/chart_conf.cpp \
     src/view/chart/chart_view.cpp \
     src/view/chart/chart_config_dialog.cpp \
-    src/view/dialog/general_config_dialog.cpp
-
-
+    src/view/dialog/general_config_dialog.cpp \
+    src/control/fuzzy_logic.cpp \
+    src/control/MemberCandidate.cpp \
+    src/control/MemberFunction.cpp \
+    src/control/OutputObject.cpp
 
 HEADERS += \
         libs/logger/message/logger_debug.h \
@@ -130,7 +132,11 @@ HEADERS += \
     src/view/chart/chart_view.h \
     src/view/chart/chart_config_dialog.h \
     src/view/dialog/general_config_dialog.h \
-    src/view/dialog/config.h
+    src/view/dialog/config.h \
+    src/control/fuzzy_logic.h \
+    src/control/MemberCandidate.h \
+    src/control/MemberFunction.h \
+    src/control/OutputObject.h
 
 FORMS += \
 		src/view/auto_tunning_tab_view.ui \

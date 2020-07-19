@@ -21,6 +21,9 @@ public:
     const char * getName() override;
     void loadControlValues(std::string filepath = FILE_PATH) override;
     
+private slots:
+    void on_operationModeCombo_currentIndexChanged(int index);
+
 private:
     Ui::FuzzyControlView *ui;
 };
