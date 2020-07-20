@@ -94,7 +94,7 @@ else()
 
 endif()
 # Install phase (commented until necessary)
-#file(COPY assets DESTINATION ./)
+file(COPY fuzzy DESTINATION ./)
 #file(COPY serverConfig.yaml DESTINATION ./)
 #file(COPY defaultWeapons.yaml DESTINATION ./)
 #file(COPY res DESTINATION ./)

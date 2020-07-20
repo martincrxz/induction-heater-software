@@ -26,6 +26,10 @@ private slots:
 
 private:
     Ui::FuzzyControlView *ui;
+    QDoubleValidator *kValidator;
+    QDoubleValidator *tempValidator;
+    uint8_t current_index = 0;
+    bool validateInput(bool check_temp, bool pid_mode);
 };
 
 #endif // FUZZY_CONTROL_VIEW_H
