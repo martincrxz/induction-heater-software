@@ -3,7 +3,7 @@
 #include "fuzzy_control_view.h"
 #include "ui_fuzzy_control_view.h"
 
-#include "../../control/fuzzy_logic.h"
+#include "../../control/fuzzy2x3.h"
 
 #define MODE_2x3 0
 #define MODE_3x1 1
@@ -87,7 +87,7 @@ bool FuzzyControlView::validateInput(bool check_temp, bool pid_mode)
 void FuzzyControlView::instantiate() {
     float targetTemp = this->ui->targetTempLineEdit->text().toFloat();
     std::string filepath = this->ui->filenameLabel->text().toStdString();
-    this->controlAlgorithm.reset(new FuzzyLogic(targetTemp, this->sp, filepath, this->window_size));
+    this->controlAlgorithm.reset(new Fuzzy2x3(targetTemp, this->sp, filepath, this->window_size));
 }
 
 const char *FuzzyControlView::getName()
