@@ -5,6 +5,9 @@
  */
 
 #include <exception.h>
+#include <sstream>
+
+#include "logger/logger.h"
 #include "MemberFunction.h"
 
 MemberFunction::MemberFunction(float a, float b, float c, float d, std::string tag):
@@ -47,4 +50,11 @@ const std::string &MemberFunction::getTag() const {
 
 float MemberFunction::getCenter() const {
     return this->center;
+}
+
+void MemberFunction::print() const {
+    std::ostringstream oss;
+    oss << this->tag << ": [" << a << ", " << b << ", " << c << ", " << d 
+        << "]";
+    Logger::debug(oss.str().c_str());
 }

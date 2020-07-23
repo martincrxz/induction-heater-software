@@ -89,9 +89,9 @@ add_executable(application ${SOURCES} ${UIS_HEADERS} ${RESOURCES} src/control/zi
 message(STATUS "[INFO] Add Qt components to the target link libraries")
 if(IS_WINDOWS)
 	message(STATUS "[INFO] Adding ws2_32 to the target link libraries")
-	target_link_libraries(application ws2_32 Qt5::Core Qt5::Widgets Qt5::Charts Qt5::SerialPort nlohmann_json::nlohmann_json)
+	target_link_libraries(application ws2_32 Qt5::Core Qt5::Widgets Qt5::Charts Qt5::SerialPort)
 else()
-	target_link_libraries(application Qt5::Core Qt5::Widgets Qt5::Charts Qt5::SerialPort nlohmann_json::nlohmann_json)
+	target_link_libraries(application Qt5::Core Qt5::Widgets Qt5::Charts Qt5::SerialPort)
 
 endif()
 # Install phase (commented until necessary)

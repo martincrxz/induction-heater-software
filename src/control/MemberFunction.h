@@ -32,6 +32,7 @@ public:
     float calculate(float x);
     const std::string & getTag() const;
     float getCenter() const;
+    void print() const;
 };
 
 

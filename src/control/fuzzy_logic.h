@@ -31,6 +31,10 @@ private:
     void loadFunctions(std::vector<MemberFunction>& holder, QJsonObject &document,
             const std::string functionType, const std::string id);
     void updateParameters(std::shared_ptr<TemperatureReading> data);
+    /**
+     * @brief  Imprime la configuración del control (loggeando en debug)
+     */
+    void printConf() const;
     std::vector<std::vector<std::string>> rules;
     std::vector<MemberFunction> errorMemberFunctions;
     std::vector<MemberFunction> errorDerivativeMemberFunctions;

@@ -15,6 +15,7 @@ FuzzyLogic::FuzzyLogic(float targetTemp, SerialPort *sp,
         const std::string &filepath, uint8_t window_size): 
 	ClassicPID(1, 0, 0, targetTemp, sp, window_size) {
     loadJson(filepath);
+    printConf();
 }
 
 FuzzyLogic::~FuzzyLogic() {
@@ -50,7 +51,7 @@ void FuzzyLogic::updateParameters(std::shared_ptr<TemperatureReading> data) {
             for (auto &dec: derivativeErrorCandidates) {
                 if (rule[0] == ec.tag && rule[1] == dec.tag) {
                     float degree = MIN(ec.degree, dec.degree);
-                    for (int i = 2, j = 0; i < rules.size(); i++)
+                    for (unsigned int i = 2, j = 0; i < rules.size(); i++)
                       outputs[j++].emplace(degree, rule[i]);
                 }
             }
@@ -103,6 +104,7 @@ void FuzzyLogic::loadJson(const std::string &filepath) {
                 throw Exception("Element %s/rules/%i/%i is not a string", "fuzzy2x3", i, j);
             row.push_back(values[j].toString().toStdString());
         }
+        this->rules.emplace_back(row);
     }
 
     loadFunctions(errorMemberFunctions, document, "inputFunctions", "e");
@@ -135,4 +137,38 @@ void FuzzyLogic::loadFunctions(std::vector<MemberFunction>& holder, QJsonObject 
     }
 }
 
+void FuzzyLogic::printConf() const {
+    Logger::debug("FuzzyLogic configuration");
+    Logger::debug("Rules:");
+    Logger::debug("[e,   de,   dkp,   dki,   dkd]");
+    for (auto &row: this->rules) {
+        std::ostringstream oss;
+        oss << "[";
+        for (unsigned int i = 0; i < row.size();) {
+            oss << row[i];
+            if (++i < row.size())
+                oss << ", ";
+        }
+        oss << "]";
+        Logger::debug(oss.str().c_str());
+    }
+    Logger::debug("Error member functions configuration");
+    for (auto &function: errorMemberFunctions)
+        function.print();
 
+    Logger::debug("Derivative error member functions configuration");
+    for (auto &function: errorDerivativeMemberFunctions)
+        function.print();
+
+    Logger::debug("Kp output functions configuration");
+    for (auto &function: kpOutputFunctions)
+        function.print();
+
+    Logger::debug("Kd output functions configuration");
+    for (auto &function: kdOutputFunctions)
+        function.print();
+
+    Logger::debug("Ki output functions configuration");
+    for (auto &function: kiOutputFunctions)
+        function.print();
+}
