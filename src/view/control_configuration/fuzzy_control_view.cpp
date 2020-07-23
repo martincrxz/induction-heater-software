@@ -87,7 +87,7 @@ bool FuzzyControlView::validateInput(bool check_temp, bool pid_mode)
 void FuzzyControlView::instantiate() {
     float targetTemp = this->ui->targetTempLineEdit->text().toFloat();
     std::string filepath = this->ui->filenameLabel->text().toStdString();
-    this->controlAlgorithm.reset(new FuzzyLogic(targetTemp, this->sp, filepath));
+    this->controlAlgorithm.reset(new FuzzyLogic(targetTemp, this->sp, filepath, this->window_size));
 }
 
 const char *FuzzyControlView::getName()
