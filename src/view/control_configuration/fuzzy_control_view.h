@@ -24,6 +24,8 @@ public:
 private slots:
     void on_operationModeCombo_currentIndexChanged(int index);
 
+    void on_openFile_clicked();
+
 private:
     Ui::FuzzyControlView *ui;
     QDoubleValidator *kValidator;

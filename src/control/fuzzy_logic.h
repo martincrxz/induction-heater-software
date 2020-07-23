@@ -9,7 +9,6 @@
 
 #include <vector>
 #include <string>
-#include <rapidjson/document.h>
 
 #include "classic_pid.h"
 #include "MemberFunction.h"
@@ -19,7 +18,7 @@
 
 class FuzzyLogic: public ClassicPID {
 public:
-    FuzzyLogic(float targetTemp, SerialPort *sp, uint8_t window_size);
+    FuzzyLogic(float targetTemp, SerialPort *sp, const std::string &filepath, uint8_t window_size);
     virtual ~FuzzyLogic() override;
     virtual unsigned char process(std::shared_ptr<TemperatureReading> data) override;
 
@@ -28,8 +27,8 @@ private:
      * Actualiza los parametros kp kd y ki en función del error derivativo
      * y el error de la medicion.
      */
-    void loadJson();
-    void loadFunctions(std::vector<MemberFunction>& holder, rapidjson::Document &document,
+    void loadJson(const std::string &filepath);
+    void loadFunctions(std::vector<MemberFunction>& holder, QJsonObject &document,
             const std::string functionType, const std::string id);
     void updateParameters(std::shared_ptr<TemperatureReading> data);
     std::vector<std::vector<std::string>> rules;

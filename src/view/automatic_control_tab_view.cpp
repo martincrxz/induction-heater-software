@@ -46,18 +46,23 @@ void AutomaticControlTabView::on_controlTypeCombo_currentIndexChanged(int index)
 void AutomaticControlTabView::on_activateButton_clicked()
 {
     std::lock_guard<std::recursive_mutex> lock(this->mutex);
-    if (!isControlActivated()) {
+    try {
+        if (!isControlActivated()) {
         bool isGood = this->controlConfigViews[this->current]->validateInput();
         if ( !isGood ) {
             emit printMessage("Hay un error en los parámetros de control.", ERROR, true);
             return;
         }
-        this->controlConfigViews[this->current]->start();
-        activatedControlAlgorithmIndex = this->current;
-        emit printMessage("Se activó el proceso de control correctamente", OK, true);
-        emit controlAlgorithmActivated();
-    } else {
-        emit printMessage("Hay un proceso activo.", ERROR, true);
+            this->controlConfigViews[this->current]->start();
+            activatedControlAlgorithmIndex = this->current;
+            emit printMessage("Se activó el proceso de control correctamente", OK, true);
+            emit controlAlgorithmActivated();
+        } else {
+            emit printMessage("Hay un proceso activo.", ERROR, true);
+        }
+    } catch (std::exception &e) {
+        Logger::warning(e.what());
+        emit printMessage(e.what(), ERROR, true);
     }
 }
 

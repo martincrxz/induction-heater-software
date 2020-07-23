@@ -1,3 +1,5 @@
+#include <QFileDialog>
+
 #include "fuzzy_control_view.h"
 #include "ui_fuzzy_control_view.h"
 
@@ -42,6 +44,11 @@ bool FuzzyControlView::validateInput()
 
 bool FuzzyControlView::validateInput(bool check_temp, bool pid_mode)
 {
+    if (this->ui->filenameLabel->text().toStdString() == "") {
+        Logger::debug("Config file not selected");
+        return false;
+    }
+
     QString kd = ui->kdLineEdit->text();
     QString ki = ui->kILineEdit->text();
     QString kp = ui->kpLineEdit->text();
@@ -79,7 +86,8 @@ bool FuzzyControlView::validateInput(bool check_temp, bool pid_mode)
 
 void FuzzyControlView::instantiate() {
     float targetTemp = this->ui->targetTempLineEdit->text().toFloat();
-    this->controlAlgorithm.reset(new FuzzyLogic(targetTemp, this->sp));
+    std::string filepath = this->ui->filenameLabel->text().toStdString();
+    this->controlAlgorithm.reset(new FuzzyLogic(targetTemp, this->sp, filepath));
 }
 
 const char *FuzzyControlView::getName()
@@ -88,7 +96,7 @@ const char *FuzzyControlView::getName()
 }
 
 void FuzzyControlView::loadControlValues(std::string filepath) {
-
+    // TODO, refactor
 }
 
 void FuzzyControlView::on_operationModeCombo_currentIndexChanged(int index)
@@ -112,4 +120,10 @@ void FuzzyControlView::on_operationModeCombo_currentIndexChanged(int index)
         this->ui->kpLineEdit->show();
         this->ui->kILineEdit->show();
     }
+}
+
+void FuzzyControlView::on_openFile_clicked()
+{
+    QString filename = QFileDialog::getOpenFileName(this, "Seleccione archivo de control", "", "*.json");
+    this->ui->filenameLabel->setText(filename);
 }
