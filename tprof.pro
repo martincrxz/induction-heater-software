@@ -80,7 +80,8 @@ SOURCES += \
     src/control/fuzzy3x1.cpp \
     src/control/MemberCandidate.cpp \
     src/control/MemberFunction.cpp \
-    src/control/OutputObject.cpp
+    src/control/OutputObject.cpp \
+    src/configuration/app_config.cpp
 
 HEADERS += \
         libs/logger/message/logger_debug.h \
@@ -140,7 +141,8 @@ HEADERS += \
     src/control/fuzzy3x1.h \
     src/control/MemberCandidate.h \
     src/control/MemberFunction.h \
-    src/control/OutputObject.h
+    src/control/OutputObject.h \
+    src/configuration/app_config.h
 
 FORMS += \
 		src/view/auto_tunning_tab_view.ui \

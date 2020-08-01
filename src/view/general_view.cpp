@@ -16,11 +16,13 @@
 #include "../connection/protocol/set_automatic_control.h"
 #include "../connection/protocol/automatic_control_acknowledge.h"
 #include "control_configuration/classic_control_view.h"
+#include "../configuration/app_config.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+	ApplicationConfig::instance();
     port = new SerialPort(this);
     equipmentView = new EquipmentStatusView(this, this->port);
     automaticView = new AutomaticControlTabView(this, this->port);
