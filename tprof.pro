@@ -76,6 +76,8 @@ SOURCES += \
     src/view/chart/chart_config_dialog.cpp \
     src/view/dialog/general_config_dialog.cpp \
     src/control/fuzzy_logic.cpp \
+    src/control/fuzzy2x3.cpp \
+    src/control/fuzzy3x1.cpp \
     src/control/MemberCandidate.cpp \
     src/control/MemberFunction.cpp \
     src/control/OutputObject.cpp
@@ -134,6 +136,8 @@ HEADERS += \
     src/view/dialog/general_config_dialog.h \
     src/view/dialog/config.h \
     src/control/fuzzy_logic.h \
+    src/control/fuzzy2x3.h \
+    src/control/fuzzy3x1.h \
     src/control/MemberCandidate.h \
     src/control/MemberFunction.h \
     src/control/OutputObject.h

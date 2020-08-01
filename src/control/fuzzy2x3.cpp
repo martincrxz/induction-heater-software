@@ -11,7 +11,8 @@
 
 Fuzzy2x3::Fuzzy2x3(float targetTemp, SerialPort *sp,
                 const std::string &filepath, uint8_t window_size): 
-            FuzzyLogic(targetTemp, sp, filepath, window_size, "fuzzy2x3") {
+            FuzzyLogic(targetTemp, sp, window_size, "fuzzy2x3") {
+    loadJson(filepath);
     printConf();
 }
 

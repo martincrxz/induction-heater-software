@@ -18,11 +18,9 @@
 #include "OutputObject.h"
 
 FuzzyLogic::FuzzyLogic(float targetTemp, SerialPort *sp,
-        const std::string &filepath, uint8_t window_size, std::string name): 
+        uint8_t window_size, std::string name): 
        ClassicPID(1, 0, 0, targetTemp, sp, window_size),
-       mode(name) {
-    loadJson(filepath);
-}
+       mode(name) {}
 
 FuzzyLogic::~FuzzyLogic() {
 
