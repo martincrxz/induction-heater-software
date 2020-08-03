@@ -14,9 +14,7 @@ ApplicationConfig &ApplicationConfig::instance() {
     return instance;
 }
 
-ApplicationConfig::~ApplicationConfig() {
-    this->automaticUpdateTimer.stop();
-}
+ApplicationConfig::~ApplicationConfig() {}
 
 ApplicationConfig::ApplicationConfig(std::string filepath): filepath(filepath) {
     levelName2value["debug"]    = DEBUG;
@@ -48,9 +46,6 @@ ApplicationConfig::ApplicationConfig(std::string filepath): filepath(filepath) {
     QJsonArray log = json["general"].toObject()["log_level"].toArray();
     this->log_level_enabled = array2LogLevel(log);
     Logger::info("Configuration loaded");
-
-    connect(&this->automaticUpdateTimer, &QTimer::timeout, this, &ApplicationConfig::backupConfiguration);
-    this->automaticUpdateTimer.start(60000); // backups cada 1 minuto
 }
 
 uint8_t ApplicationConfig::getWindowSize() const {
@@ -126,5 +121,6 @@ void ApplicationConfig::updateConfig(const GeneralConfig &conf) {
     obj.insert("log_level", loglevel2array(conf.log_level_enabled));
     this->log_level_enabled = conf.log_level_enabled;
     this->json.insert("general", obj);
+    this->backupConfiguration();
     emit configChanged();
 }

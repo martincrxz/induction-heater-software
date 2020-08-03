@@ -17,7 +17,6 @@ class ApplicationConfig: public QObject {
 private:
     std::string filepath;
     QJsonObject json;
-    QTimer automaticUpdateTimer;
     std::map<QString, uint8_t> levelName2value;
     uint8_t log_level_enabled;
 
