@@ -5,7 +5,7 @@
 
 #include <logger/logger.h>
 
-struct AppConfig {
+struct GeneralConfig {
     uint8_t window_size;
     uint8_t log_level_enabled;
 };

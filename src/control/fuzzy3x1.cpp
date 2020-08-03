@@ -6,6 +6,7 @@
 #include "logger/logger.h"
 #include "MemberCandidate.h"
 #include "OutputObject.h"
+#include "../configuration/app_config.h"
 
 #define MIN(x, y, z) (x) < (y) ? (((x) < (z)) ? (x) : (z)): (((y) < (z)) ? (y) : (z))
 

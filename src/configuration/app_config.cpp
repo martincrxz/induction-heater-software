@@ -2,17 +2,29 @@
 #include <QByteArray>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <cstdint>
 
 #include "logger/logger.h"
 #include "app_config.h"
+#include "general_config.h"
 #include "exception.h"
 
-const ApplicationConfig &ApplicationConfig::instance() {
+ApplicationConfig &ApplicationConfig::instance() {
     static ApplicationConfig instance(APP_CONFIG_FILEPATH);
     return instance;
 }
 
+ApplicationConfig::~ApplicationConfig() {
+    this->automaticUpdateTimer.stop();
+}
+
 ApplicationConfig::ApplicationConfig(std::string filepath): filepath(filepath) {
+    levelName2value["debug"]    = DEBUG;
+    levelName2value["info"]     = INFO;
+    levelName2value["warning"]  = WARNING;
+    levelName2value["critical"] = CRITICAL;
+    levelName2value["fatal"]    = FATAL;
+
     bool fileExists = true;
     QFile jsonFile(filepath.c_str());
     if (!jsonFile.open(QIODevice::ReadOnly)) {
@@ -32,9 +44,21 @@ ApplicationConfig::ApplicationConfig(std::string filepath): filepath(filepath) {
     } else {
         loadDefaultValues();
     }
+
+    QJsonArray log = json["general"].toObject()["log_level"].toArray();
+    this->log_level_enabled = array2LogLevel(log);
     Logger::info("Configuration loaded");
+
     connect(&this->automaticUpdateTimer, &QTimer::timeout, this, &ApplicationConfig::backupConfiguration);
     this->automaticUpdateTimer.start(60000); // backups cada 1 minuto
+}
+
+uint8_t ApplicationConfig::getWindowSize() const {
+    return json["general"].toObject()["window_size"].toInt();
+}
+
+uint8_t ApplicationConfig::getLogLevel() const {
+    return log_level_enabled;
 }
 
 void ApplicationConfig::loadDefaultValues() {
@@ -79,7 +103,28 @@ void ApplicationConfig::backupConfiguration() {
     Logger::debug("Json config file updated");
 }
 
-ApplicationConfig::~ApplicationConfig()
-{
+QJsonArray ApplicationConfig::loglevel2array(uint8_t log_level) {
+    QJsonArray ret;
+    for (auto &pair: this->levelName2value) {
+        if (log_level & pair.second)
+            ret.push_back(pair.first);
+    }
+    return ret;
+}
 
+uint8_t ApplicationConfig::array2LogLevel(const QJsonArray &array) {
+    uint8_t ret = 0;
+    for (auto value: array) {
+        ret |= levelName2value.at(value.toString());
+    }
+    return ret;
+}
+
+void ApplicationConfig::updateConfig(const GeneralConfig &conf) {
+    QJsonObject obj = this->json["general"].toObject();
+    obj.insert("window_size", conf.window_size);
+    obj.insert("log_level", loglevel2array(conf.log_level_enabled));
+    this->log_level_enabled = conf.log_level_enabled;
+    this->json.insert("general", obj);
+    emit configChanged();
 }

@@ -3,6 +3,7 @@
  * on 08/02/2020
  */
 #include "file_control.h"
+#include "../configuration/app_config.h"
 
 #include <logger/logger.h>
 #include <sstream>

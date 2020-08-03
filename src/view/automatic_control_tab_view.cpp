@@ -123,8 +123,8 @@ const char *AutomaticControlTabView::getProcessName()
         return "-";
 }
 
-void AutomaticControlTabView::updateConfig(const AppConfig &conf) {
+void AutomaticControlTabView::updateConfig() {
   for (auto controlView : this->controlConfigViews) {
-    controlView->updateConfig(conf);
+    controlView->updateConfig();
   }
 }

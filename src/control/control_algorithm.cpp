@@ -8,6 +8,7 @@
 #include "../connection/protocol/set_power.h"
 #include "control_algorithm.h"
 #include "logger/logger.h"
+#include "../configuration/app_config.h"
 
 #define MINIMUM_TAP 0   // potencia maxima (100%)
 #define MAXIMUM_TAP 127 // potencia minima (0%) 
@@ -68,9 +69,9 @@ unsigned char ControlAlgorithm::powerToTaps(float power) {
     return (unsigned char) std::floor(taps);
 }
 
-void ControlAlgorithm::updateConfig(const AppConfig &conf) {
+void ControlAlgorithm::updateConfig() {
     std::lock_guard<std::mutex> lock(this->m);
-    this->window_size = conf.window_size;
+    this->window_size = ApplicationConfig::instance().getWindowSize();
     this->errorValues.clear();
     iteration = 0;
 }

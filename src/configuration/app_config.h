@@ -6,6 +6,9 @@
 #include <QFile>
 #include <QTimer>
 #include <string>
+#include <map>
+
+#include "general_config.h"
 
 #define APP_CONFIG_FILEPATH "app_configuration.json"
 
@@ -15,14 +18,24 @@ private:
     std::string filepath;
     QJsonObject json;
     QTimer automaticUpdateTimer;
+    std::map<QString, uint8_t> levelName2value;
+    uint8_t log_level_enabled;
 
     ApplicationConfig(std::string filepath);
     void loadDefaultValues();
     void checkConsistency();
     void backupConfiguration();
+    QJsonArray loglevel2array(uint8_t log_level);
+    uint8_t array2LogLevel(const QJsonArray &array);
 public:
     ~ApplicationConfig();
-    static const ApplicationConfig  &instance();
+    static ApplicationConfig  &instance();
+    uint8_t getWindowSize() const;
+    uint8_t getLogLevel() const;
+    void updateConfig(const GeneralConfig &conf);
+
+signals:
+    void configChanged();
 };
 
 #endif

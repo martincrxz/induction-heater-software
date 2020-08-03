@@ -54,7 +54,7 @@ public:
      */
     static void saveConstantsInFile(float, float, float, std::string);
     virtual void loadControlValues(std::string filepath = FILE_PATH) = 0;   
-    virtual void updateConfig(const AppConfig &conf);
+    virtual void updateConfig();
 protected:
     SerialPort *sp;
     std::unique_ptr<ControlAlgorithm> controlAlgorithm;

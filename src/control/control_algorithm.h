@@ -12,7 +12,6 @@
 
 #include "../connection/protocol/temperature_reading.h"
 #include "../connection/serialport.h"
-#include "../view/dialog/config.h"
 
 //  TODO: se podría hacer configurable en runtime
 #define WINDOW_SIZE 1
@@ -58,7 +57,7 @@ public:
      * @return cantidad de vueltas para el potenciómetro   
      */
     static unsigned char powerToTaps(float power);
-    virtual void updateConfig(const AppConfig &conf);
+    virtual void updateConfig();
 };
 
 

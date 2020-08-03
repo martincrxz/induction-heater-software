@@ -16,6 +16,7 @@
 #include "fuzzy_logic.h"
 #include "MemberCandidate.h"
 #include "OutputObject.h"
+#include "../configuration/app_config.h"
 
 FuzzyLogic::FuzzyLogic(float targetTemp, SerialPort *sp,
         uint8_t window_size, std::string name): 

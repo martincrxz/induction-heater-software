@@ -1,6 +1,7 @@
 #include <fstream>
 #include "control_configuration.h"
 #include "logger/logger.h"
+#include "../../configuration/app_config.h"
 
 
 ControlConfiguration::ControlConfiguration(QWidget *parent, SerialPort *sp) :
@@ -44,10 +45,11 @@ void ControlConfiguration::saveConstantsInFile(float kp, float ki, float kd, std
 
 }
 
-void ControlConfiguration::updateConfig(const AppConfig &conf) {
-    this->window_size = conf.window_size;
+void ControlConfiguration::updateConfig() {
+    this->window_size = ApplicationConfig::instance().getWindowSize();
     if (this->controlAlgorithm) {
-        Logger::debug("Control %s updated", this->getName());
-        this->controlAlgorithm->updateConfig(conf);
+        Logger::debug("Control %s updated (window_size: %i)", this->getName(),
+                        this->window_size);
+        this->controlAlgorithm->updateConfig();
     }
 }

@@ -7,6 +7,7 @@
 
 #include "classic_pid.h"
 #include "logger/logger.h"
+#include "../configuration/app_config.h"
 
 
 ClassicPID::ClassicPID(float kp, float ki, float kd, float targetTemp, SerialPort *sp, uint8_t window_size):

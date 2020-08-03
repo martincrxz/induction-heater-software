@@ -2,7 +2,7 @@
 
 #include "fuzzy_control_view.h"
 #include "ui_fuzzy_control_view.h"
-
+#include "logger/logger.h"
 #include "../../control/fuzzy2x3.h"
 #include "../../control/fuzzy3x1.h"
 

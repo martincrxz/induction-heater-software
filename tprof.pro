@@ -135,7 +135,7 @@ HEADERS += \
     src/view/chart/chart_view.h \
     src/view/chart/chart_config_dialog.h \
     src/view/dialog/general_config_dialog.h \
-    src/view/dialog/config.h \
+    src/configuration/general_config.h \
     src/control/fuzzy_logic.h \
     src/control/fuzzy2x3.h \
     src/control/fuzzy3x1.h \

@@ -82,7 +82,8 @@ private:
     void enableAutomaticControlButtons(bool enable);
     void resync_microcontroller();
     void deactivateProcess();
-    void configChanged(AppConfig conf);
+public slots:
+    void configChanged();
 };
 
 #endif // MAINWINDOW_H
