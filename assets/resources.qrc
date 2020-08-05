@@ -1,9 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>potenciaEstacionaria.png</file>
-        <file>tempCorte.png</file>
-        <file>potenciaEstacionariaChica.png</file>
-        <file>tempCorteChica.png</file>
         <file>home.png</file>
         <file>keep_follow.png</file>
         <file>save.png</file>
@@ -11,5 +7,11 @@
         <file>stop.png</file>
         <file>pan.png</file>
         <file>adjust_size.png</file>
+        <file>temperaturaCorteChica.png</file>
+        <file>temperaturaCorte.png</file>
+        <file>potenciaMinima.png</file>
+        <file>potenciaEstacionariaChica.png</file>
+        <file>potenciaEstacionaria.png</file>
+        <file>potenciaMinimaChica.png</file>
     </qresource>
 </RCC>
