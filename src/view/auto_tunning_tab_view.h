@@ -7,6 +7,9 @@
 #define ZN_INTERRUPTED "Se interrumpe el proceso"
 
 #include <QWidget>
+#include <QIntValidator>
+#include <QDoubleValidator>
+
 #include "../connection/serialport.h"
 #include "../control/zieglers_nichols.h"
 
@@ -43,10 +46,13 @@ public slots:
     void deactivate(bool finished = false);
 
 private:
+    bool validateInput();
     Ui::AutoTunningTabView *ui;
     MainWindow* mainWindow;
     SerialPort *port;
     std::unique_ptr<ZieglerNichols> zn;
+    QIntValidator *powerValidator;
+    QDoubleValidator *tempValidator;
 };
 
 #endif // AUTO_TUNNING_TAB_VIEW_H

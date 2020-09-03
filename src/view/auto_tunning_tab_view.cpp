@@ -12,28 +12,66 @@ AutoTunningTabView::AutoTunningTabView(QWidget *parent, SerialPort* port) :
     port(port)
 {
     ui->setupUi(this);
+    this->powerValidator = new QIntValidator(0, 100);
+    this->tempValidator = new QDoubleValidator(-99999, 99999, 2);
+    this->ui->cutoff_temperature->setValidator(this->tempValidator);
+    this->ui->initial_power->setValidator(this->powerValidator);
+    this->ui->stationary_power->setValidator(this->powerValidator);
     connect(ui->activateButton, &QPushButton::clicked, this, &AutoTunningTabView::activate);
     connect(ui->deactivateButton, &QPushButton::clicked, this, &AutoTunningTabView::deactivate);
 }
 
 AutoTunningTabView::~AutoTunningTabView()
 {
+    delete this->powerValidator;
+    delete this->tempValidator;
     delete ui;
 }
 
+bool AutoTunningTabView::validateInput() {
+    QString initial_power = this->ui->initial_power->text();
+    QString stationary_power = this->ui->stationary_power->text();
+    QString cutoff_temp = this->ui->cutoff_temperature->text();
+    if (initial_power == "" || stationary_power == "" || cutoff_temp == "")
+        return false;
+
+    int d = 0;
+    auto ipower_state = this->powerValidator->validate(initial_power, d);
+    auto spower_state = this->powerValidator->validate(stationary_power, d);
+    auto ctemp_state = this->tempValidator->validate(cutoff_temp, d);
+
+    if ( ipower_state != QValidator::Acceptable ||
+         spower_state != QValidator::Acceptable ||
+         ctemp_state != QValidator::Acceptable )
+        return false;
+
+    if (initial_power.toInt() >= stationary_power.toInt())
+        return false;
+
+    return true;
+}
+
 void AutoTunningTabView::enableButtons(bool enable) {
-	this->ui->activateButton->setEnabled(enable);
+    this->ui->activateButton->setEnabled(enable);
 	this->ui->deactivateButton->setEnabled(enable);
 }
 
 void AutoTunningTabView::activate() {
     if(!mainWindow->isControlActivated() && zn == nullptr) {
+        if (!validateInput()) {
+            emit printMessage("Error en los parámetros.", ERROR, true);
+            Logger::info("Bad arguments");
+            return;
+        }
         emit printMessage("Calculando...", 2, false);
         Logger::info(ZN_ACTIVATED_MSG);
+        int initial_power = this->ui->initial_power->text().toInt();
+        int stationary_power = this->ui->stationary_power->text().toInt();
+        float cutoff_temp = this->ui->cutoff_temperature->text().toFloat();
+        Logger::info("ipower: %i, spower: %i, ctemp, %f", initial_power, stationary_power, cutoff_temp);
         zn.reset(new ZieglerNichols(this, port));
         zn->start();
-    }
-    else{
+    } else{
         emit printMessage(ZN_CANT_BE_ACTIVATED_MSG, ERROR, true);
         Logger::info(ZN_CANT_BE_ACTIVATED_MSG);
     }

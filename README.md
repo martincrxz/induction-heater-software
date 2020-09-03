@@ -31,7 +31,7 @@ La instalación de todos estos componentes es trivial
 
 ```
 sudo apt-get install cmake qtcreator qt5-default qtdeclarative5-dev
-sudo apt-get install libqt5charts5-dev
+sudo apt-get install libqt5charts5-dev libqt5serialport5-dev
 ```
 
 ##### meld (opcional)
