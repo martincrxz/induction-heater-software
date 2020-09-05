@@ -7,8 +7,12 @@
 #include "../view/auto_tunning_tab_view.h"
 
 
-ZieglerNichols::ZieglerNichols(AutoTunningTabView *view, SerialPort *port) : ControlAlgorithm(0, port, 0) {
-
+ZieglerNichols::ZieglerNichols(AutoTunningTabView *view, int initial_power,
+                            int stationary_power, double cutoff_temp,
+                            SerialPort *port) : ControlAlgorithm(0, port, 0),
+                            min_power(initial_power),
+                            max_power(stationary_power),
+                            cutoff_temp(cutoff_temp) {
     autoTunningView = view;
     std::shared_ptr<MicroMessage> msg(new SetPower(powerToTaps(10)));
     port->send(msg);
@@ -22,6 +26,11 @@ unsigned char ZieglerNichols::process(std::shared_ptr<TemperatureReading> data) 
     else
         tempBuffer[buffCounter % ZN_WINDOW_SIZE] = data->getData();
     buffCounter++;
+    if (data->getData() > cutoff_temp) {
+        this->keep_processing = false;
+        this->autoTunningView->autotunningFailed("Error en el proceso: se llegó a la temperatura de corte");
+        return powerToTaps(10);
+    }
 
     if(tempBuffer.size() >= ZN_WINDOW_SIZE)
         if(isTemperatureStable())
@@ -30,7 +39,7 @@ unsigned char ZieglerNichols::process(std::shared_ptr<TemperatureReading> data) 
     if(powerLevel == POWER_AT_20)
         stepResponse.emplace_back(data);
 
-    float power = (powerLevel == POWER_AT_10) ? 10 : 20;
+    float power = (powerLevel == POWER_AT_10) ? min_power : max_power;
 
     return powerToTaps(power);
 }

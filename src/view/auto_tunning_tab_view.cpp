@@ -69,7 +69,7 @@ void AutoTunningTabView::activate() {
         int stationary_power = this->ui->stationary_power->text().toInt();
         float cutoff_temp = this->ui->cutoff_temperature->text().toFloat();
         Logger::info("ipower: %i, spower: %i, ctemp, %f", initial_power, stationary_power, cutoff_temp);
-        zn.reset(new ZieglerNichols(this, port));
+        zn.reset(new ZieglerNichols(this, initial_power, stationary_power, cutoff_temp, port));
         zn->start();
     } else{
         emit printMessage(ZN_CANT_BE_ACTIVATED_MSG, ERROR, true);
@@ -96,6 +96,10 @@ void AutoTunningTabView::stop(bool finished, bool printError) {
         emit printMessage(ZN_INTERRUPTED, ERROR, true);
         Logger::info(ZN_INTERRUPTED);
     }
+}
+
+void AutoTunningTabView::autotunningFailed(const char *msg) {
+    emit printMessage(msg, ERROR, true);
 }
 
 void AutoTunningTabView::calculateParameters(

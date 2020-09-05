@@ -19,13 +19,17 @@ class AutoTunningTabView;
 class ZieglerNichols : public ControlAlgorithm {
 
 public:
-    explicit ZieglerNichols(AutoTunningTabView *, SerialPort *);
+    explicit ZieglerNichols(AutoTunningTabView *, int initial_power,
+                            int stationary_power, double cutoff_temp,
+                            SerialPort *sp);
 
 private:
     unsigned char process(std::shared_ptr<TemperatureReading> data) override;
     bool isTemperatureStable();
     void nextState();
-
+    int min_power;
+    int max_power;
+    double cutoff_temp;
     power_level_t powerLevel = UNDEFINED;
     std::vector<float> tempBuffer;
     std::vector<std::shared_ptr<TemperatureReading>> stepResponse;
