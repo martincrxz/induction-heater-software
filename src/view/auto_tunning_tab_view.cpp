@@ -56,6 +56,12 @@ void AutoTunningTabView::enableButtons(bool enable) {
 	this->ui->deactivateButton->setEnabled(enable);
 }
 
+void AutoTunningTabView::dataAvailable(TemperatureReading &temp) {
+    if (zn != nullptr) {
+        zn->receiveData(temp);
+    }
+}
+
 void AutoTunningTabView::activate() {
     if(!mainWindow->isControlActivated() && zn == nullptr) {
         if (!validateInput()) {
@@ -68,7 +74,6 @@ void AutoTunningTabView::activate() {
         int initial_power = this->ui->initial_power->text().toInt();
         int stationary_power = this->ui->stationary_power->text().toInt();
         float cutoff_temp = this->ui->cutoff_temperature->text().toFloat();
-        Logger::info("ipower: %i, spower: %i, ctemp, %f", initial_power, stationary_power, cutoff_temp);
         zn.reset(new ZieglerNichols(this, initial_power, stationary_power, cutoff_temp, port));
         zn->start();
     } else{

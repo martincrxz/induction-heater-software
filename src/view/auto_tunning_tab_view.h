@@ -37,6 +37,7 @@ public:
             std::vector<std::shared_ptr<TemperatureReading>> &stepResponse);
     void stop(bool finished, bool printError);
     void autotunningFailed(const char *reason);
+    void dataAvailable(TemperatureReading &temp);
 
 signals:
     void ZNCalculated(float kp, float ki, float kd);

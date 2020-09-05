@@ -6,7 +6,6 @@
 #include "../connection/protocol/set_power.h"
 #include "../view/auto_tunning_tab_view.h"
 
-
 ZieglerNichols::ZieglerNichols(AutoTunningTabView *view, int initial_power,
                             int stationary_power, double cutoff_temp,
                             SerialPort *port) : ControlAlgorithm(0, port, 0),

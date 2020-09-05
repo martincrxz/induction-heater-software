@@ -87,8 +87,8 @@ void MainWindow::injectData() {
     if (x > power_step) {
         power_value = qrand() % 100;
         power_step += POWER_STEP_SIZE;
-        PowerSetAcknowledge power(power_value);
-        this->chartView->dataAvailable(power);
+        std::shared_ptr<PowerSetAcknowledge> power(new PowerSetAcknowledge(power_value));
+        emit this->port->powerSetAcknowledge(power);
     }
 
     if (x > temp_step) {
@@ -97,8 +97,9 @@ void MainWindow::injectData() {
     }
 
     float temperature = amplitude * std::sin(x / 3000.0f * 2.0f * PI);
-    TemperatureReading temp(temperature);
-    this->chartView->dataAvailable(temp);
+    std::shared_ptr<TemperatureReading> temp(new TemperatureReading(temperature));
+//    TemperatureReading temp(temperature);
+    emit this->port->temperatureArrived(temp);
 }
 
 MainWindow::~MainWindow()
@@ -121,11 +122,15 @@ void MainWindow::onTemperatureDataArrived(std::shared_ptr<MicroMessage> msg) {
             toString("dd/MM/yyyy HH:mm:ss");
     ui->lastTimestampValue->setText(currentDatetime);
     ui->thermocoupleTempValue->setText(QString::number(temp.getData()));
-    Logger::info("Temperatura recibida: %.2f °C", temp.getData());
+    ui->dut_temp_value->setText(QString::number(temp.getData()));
+    Logger::debug("Temperatura recibida: %.2f °C", temp.getData());
     // TODO: debo actualizar el gráfico, como el hilo de control
+    // TODO 2: esto quedó horrible, debería haberse llamado a connect
+    // en cada proceso que le interesa este mensaje, y que sea autocontenido.
+    // acá tengo logica mezclada
     this->chartView->dataAvailable(temp);
     this->automaticView->dataAvailable(temp);
-    ui->dut_temp_value->setText(QString::number(temp.getData()));
+    this->autotunningView->dataAvailable(temp);
 }
 
 void MainWindow::onColdJunctionDataArrived(std::shared_ptr<MicroMessage> msg) {
