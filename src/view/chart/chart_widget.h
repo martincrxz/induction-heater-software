@@ -41,7 +41,7 @@ private:
 	 */
 	void closeEvent(QCloseEvent *event) override;
     Ui::ChartWidget *ui;
-    Chart *chart;
+    Chart *temp_power_chart;
     ChartView *chartView;
 };
 

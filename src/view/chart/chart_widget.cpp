@@ -21,8 +21,8 @@ ui(new Ui::ChartWidget)
     ChartConfiguration config(timeAxis, tempAxis, powerAxis, 
         "Mediciones del horno");
     
-    chart = new Chart(&config);
-    chartView = new ChartView(chart);
+    temp_power_chart = new Chart(&config);
+    chartView = new ChartView(temp_power_chart);
 
     this->ui->verticalLayout->addWidget(this->chartView);
     this->chartView->setRenderHint(QPainter::Antialiasing);
@@ -34,51 +34,51 @@ ui(new Ui::ChartWidget)
 ChartWidget::~ChartWidget()
 {
     delete ui;
-    delete this->chart;
+    delete this->temp_power_chart;
     delete this->chartView;
 }
 
 void ChartWidget::init() {
-    this->chart->init();
+    this->temp_power_chart->init();
 }
 
 void ChartWidget::closeEvent(QCloseEvent *event) {
-    this->chart->stop();
+    this->temp_power_chart->stop();
     QWidget::closeEvent(event);
 }
 
 
 void ChartWidget::dataAvailable(TemperatureReading &temp) {
-    this->chart->dataAvailable(temp.getData(), 1);
+    this->temp_power_chart->dataAvailable(temp.getData(), 1);
 }
 
 void ChartWidget::dataAvailable(PowerSetAcknowledge &power) {
-    this->chart->dataAvailable(power.getPower(), 2);
+    this->temp_power_chart->dataAvailable(power.getPower(), 2);
 }
 
 void ChartWidget::on_stopFollowButton_clicked()
 {
-    this->chart->stopFollow();
+    this->temp_power_chart->stopFollow();
 }
 
 void ChartWidget::on_enableFollowButton_clicked()
 {
-    this->chart->startFollow();
+    this->temp_power_chart->startFollow();
 }
 
 void ChartWidget::on_fitViewButton_clicked()
 {
-    this->chart->adjustView();
+    this->temp_power_chart->adjustView();
 }
 
 void ChartWidget::on_saveButton_clicked()
 {
-    this->chart->save();
+    this->temp_power_chart->save();
 }
 
 void ChartWidget::on_settingsButton_clicked()
 {
-    QDialog *dialog = new ChartConfigDialog(this->chart->getLimits(), this->chart);
+    QDialog *dialog = new ChartConfigDialog(this->temp_power_chart->getLimits(), this->temp_power_chart);
     dialog->setWindowTitle("Ajuste de gráfico");
     dialog->show();
 }
