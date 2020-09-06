@@ -139,6 +139,12 @@ void SerialPort::processMessage(QByteArray buff){
                         "Automatic control set");
                 Logger::info("Automatic control activated message.");
                 break;
+            case CURRENT_FREQUENCY_READING:
+                emit currentFrequencyArrived(msg);
+                break;
+            case CURRENT_RMS_READING:
+                emit currentRMSArrived(msg);
+                break;
             default:
                 Logger::warning("Unknown message");
                 break;

@@ -56,6 +56,8 @@ signals:
     void automaticControlAcknowledge(QString code, QString desc);
     void serialPortConnected();
     void serialPortDisconnected();
+    void currentFrequencyArrived(std::shared_ptr<MicroMessage> msg);
+    void currentRMSArrived(std::shared_ptr<MicroMessage> msg);
 };
 
 

@@ -32,6 +32,8 @@ public slots:
     void on_shutdownButton_clicked();
     void onTemperatureDataArrived(std::shared_ptr<MicroMessage> msg);
     void onColdJunctionDataArrived(std::shared_ptr<MicroMessage> msg);
+    void onCurrentFrequencyArrived(std::shared_ptr<MicroMessage> msg);
+    void onCurrentRMSArrived(std::shared_ptr<MicroMessage> msg);
     void thermocoupleChange(int);
     void onPowerSetAckArrived(std::shared_ptr<MicroMessage> msg);
     void onSetManualControl(int index);

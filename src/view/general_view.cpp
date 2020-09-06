@@ -17,6 +17,8 @@
 #include "../connection/protocol/automatic_control_acknowledge.h"
 #include "control_configuration/classic_control_view.h"
 #include "../configuration/app_config.h"
+#include "../connection/protocol/current_frequency_reading.h"
+#include "../connection/protocol/current_RMS_reading.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -137,6 +139,16 @@ void MainWindow::onColdJunctionDataArrived(std::shared_ptr<MicroMessage> msg) {
     auto &temp = (ColdJunctionReading &) *msg;
     ui->coldJointTempValue->setText(QString::number(temp.getData()));
     Logger::info("Temperatura de juntura fría: %.2f °C", temp.getData());
+}
+
+void MainWindow::onCurrentFrequencyArrived(std::shared_ptr<MicroMessage> msg) {
+    auto &freq = (CurrentFrequencyReading &) *msg;
+    // TODO: pasarselo al grafico
+}
+
+void MainWindow::onCurrentRMSArrived(std::shared_ptr<MicroMessage> msg) {
+    auto &rms = (CurrentRMSReading &) *msg;
+    // TODO: pasarselo al grafico
 }
 
 void MainWindow::thermocoupleChange(int index){
