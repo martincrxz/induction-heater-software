@@ -146,9 +146,9 @@ void MainWindow::thermocoupleChange(int index){
 }
 
 void MainWindow::onPowerSetAckArrived(std::shared_ptr<MicroMessage> msg) {
-    auto &temp = (PowerSetAcknowledge &) *msg;
-    this->chartView->dataAvailable(temp);
-    ui->powerValue->setText(QString::number(temp.getPower()) + " %");
+    auto &pwr = (PowerSetAcknowledge &) *msg;
+    this->chartView->dataAvailable(pwr);
+    ui->powerValue->setText(QString::number(pwr.getPower()) + " %");
 }
 
 void MainWindow::onSetManualControl(int index){

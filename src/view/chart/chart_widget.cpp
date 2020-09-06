@@ -19,14 +19,24 @@ ui(new Ui::ChartWidget)
     AxisConfiguration timeAxis("Tiempo (HH:mm:ss)", "HH:mm:ss", now, 
         now + TIME_CHART_MAX_RANGE);
     ChartConfiguration config(timeAxis, tempAxis, powerAxis, 
-        "Mediciones del horno");
+        "Mediciones de temperatura y potencia");
     
     temp_power_chart = new Chart(&config);
-    chartView = new ChartView(temp_power_chart);
+    temp_chart_view = new ChartView(temp_power_chart);
 
-    this->ui->verticalLayout->addWidget(this->chartView);
-    this->chartView->setRenderHint(QPainter::Antialiasing);
+    this->ui->verticalLayout->addWidget(this->temp_chart_view);
+    this->temp_chart_view->setRenderHint(QPainter::Antialiasing);
 
+    AxisConfiguration currentAxis("Corriente (A)", "%i", 0, 50);
+    AxisConfiguration frequencyAxis("Frecuencia (kHz)", "%i", 0, 50);
+    ChartConfiguration current_config(timeAxis, currentAxis, frequencyAxis, 
+        "Mediciones de corriente");
+    current_chart = new Chart(&current_config);
+    current_chart_view = new ChartView(current_chart);
+
+    this->ui->verticalLayout->addWidget(this->current_chart_view);
+    this->current_chart_view->setRenderHint(QPainter::Antialiasing);
+    
     this->grabGesture(Qt::PanGesture);
     this->grabGesture(Qt::PinchGesture);
 }
@@ -35,7 +45,9 @@ ChartWidget::~ChartWidget()
 {
     delete ui;
     delete this->temp_power_chart;
-    delete this->chartView;
+    delete this->temp_chart_view;
+    delete this->current_chart;
+    delete this->current_chart_view;
 }
 
 void ChartWidget::init() {

@@ -42,7 +42,9 @@ private:
 	void closeEvent(QCloseEvent *event) override;
     Ui::ChartWidget *ui;
     Chart *temp_power_chart;
-    ChartView *chartView;
+    Chart *current_chart;
+    ChartView *temp_chart_view;
+    ChartView *current_chart_view;
 };
 
 #endif // CHART_WIDGET_H
