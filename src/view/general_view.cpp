@@ -56,6 +56,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(port, SIGNAL(thermocoupleFault(QString,QString)), equipmentView, SLOT(insert(QString,QString)));
     connect(port, &SerialPort::configurationAcknowledge, equipmentView, &EquipmentStatusView::insert);
     connect(port, &SerialPort::temperatureArrived, this, &MainWindow::onTemperatureDataArrived);
+    connect(port, &SerialPort::currentFrequencyArrived, this, &MainWindow::onCurrentFrequencyArrived);
+    connect(port, &SerialPort::currentRMSArrived, this, &MainWindow::onCurrentRMSArrived);
     connect(port, &SerialPort::coldJunctionArrived, this, &MainWindow::onColdJunctionDataArrived);
     connect(port, SIGNAL(manualControlAcknowledge()), this, SLOT(onManualPowerSet()));
     connect(port, SIGNAL(manualControlAcknowledge(QString,QString)), equipmentView, SLOT(insert(QString,QString)));
@@ -91,6 +93,26 @@ void MainWindow::injectData() {
         power_step += POWER_STEP_SIZE;
         std::shared_ptr<PowerSetAcknowledge> power(new PowerSetAcknowledge(power_value));
         emit this->port->powerSetAcknowledge(power);
+    }
+
+    if (x > freq_step) {
+        freq_step += FREQ_STEP_SIZE;
+        float delta = qrand() % 5000;
+        if (qrand() % 2)
+            delta *= -1;
+        // La frecuencia mockeada va a ser 20kHz +- x con 
+        // -5kHz < x < 5kHz
+        std::shared_ptr<CurrentFrequencyReading> frequency(
+                new CurrentFrequencyReading(freq_value + delta));
+        emit this->port->currentFrequencyArrived(frequency);
+
+    }
+
+    if (x > current_step) {
+        current_step += CURRENT_STEP_SIZE;
+        float current = amplitude * std::sin(x / 3000.0f * 2.0f * PI);
+        std::shared_ptr<CurrentRMSReading> curr_msg(new CurrentRMSReading(current));
+        emit this->port->currentRMSArrived(curr_msg);
     }
 
     if (x > temp_step) {
@@ -143,12 +165,14 @@ void MainWindow::onColdJunctionDataArrived(std::shared_ptr<MicroMessage> msg) {
 
 void MainWindow::onCurrentFrequencyArrived(std::shared_ptr<MicroMessage> msg) {
     auto &freq = (CurrentFrequencyReading &) *msg;
-    // TODO: pasarselo al grafico
+    Logger::debug("Frecuencia recibida: %.2f Hz", freq.getData());
+    this->chartView->dataAvailable(freq);
 }
 
 void MainWindow::onCurrentRMSArrived(std::shared_ptr<MicroMessage> msg) {
     auto &rms = (CurrentRMSReading &) *msg;
-    // TODO: pasarselo al grafico
+    Logger::debug("Corriente recibida: %.2f A", rms.getData());
+    this->chartView->dataAvailable(rms);
 }
 
 void MainWindow::thermocoupleChange(int index){

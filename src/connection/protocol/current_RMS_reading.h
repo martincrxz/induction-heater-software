@@ -10,9 +10,10 @@
 
 class CurrentRMSReading : public IncomingMessage{
 private:
-    float data;
+    float current;
 public:
     CurrentRMSReading(QByteArray&);
+    CurrentRMSReading(float current);
     ~CurrentRMSReading() = default;
     float getData();
 };

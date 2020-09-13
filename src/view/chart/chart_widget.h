@@ -7,6 +7,8 @@
 #include "chart.h"
 #include "chart_view.h"
 #include "../../connection/protocol/power_set_acknowledge.h"
+#include "../../connection/protocol/current_frequency_reading.h"
+#include "../../connection/protocol/current_RMS_reading.h"
 
 namespace Ui {
 class ChartWidget;
@@ -21,6 +23,8 @@ public:
     ~ChartWidget();
     void dataAvailable(TemperatureReading &temp);
     void dataAvailable(PowerSetAcknowledge &power);
+    void dataAvailable(CurrentFrequencyReading &freq);
+    void dataAvailable(CurrentRMSReading &current);
     void init();
 
 private slots:

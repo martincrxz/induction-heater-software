@@ -52,10 +52,12 @@ ChartWidget::~ChartWidget()
 
 void ChartWidget::init() {
     this->temp_power_chart->init();
+    this->current_chart->init();
 }
 
 void ChartWidget::closeEvent(QCloseEvent *event) {
     this->temp_power_chart->stop();
+    this->current_chart->stop();
     QWidget::closeEvent(event);
 }
 
@@ -68,24 +70,36 @@ void ChartWidget::dataAvailable(PowerSetAcknowledge &power) {
     this->temp_power_chart->dataAvailable(power.getPower(), 2);
 }
 
+void ChartWidget::dataAvailable(CurrentFrequencyReading &freq) {
+    this->current_chart->dataAvailable(freq.getData(), 2);
+}
+
+void ChartWidget::dataAvailable(CurrentRMSReading &current) {
+    this->current_chart->dataAvailable(current.getData(), 1);
+}
+
 void ChartWidget::on_stopFollowButton_clicked()
 {
     this->temp_power_chart->stopFollow();
+    this->current_chart->stopFollow();
 }
 
 void ChartWidget::on_enableFollowButton_clicked()
 {
     this->temp_power_chart->startFollow();
+    this->current_chart->startFollow();
 }
 
 void ChartWidget::on_fitViewButton_clicked()
 {
     this->temp_power_chart->adjustView();
+    this->current_chart->adjustView();
 }
 
 void ChartWidget::on_saveButton_clicked()
 {
     this->temp_power_chart->save();
+    this->current_chart->save();
 }
 
 void ChartWidget::on_settingsButton_clicked()

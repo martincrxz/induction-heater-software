@@ -28,6 +28,14 @@ void ChartTabView::dataAvailable(PowerSetAcknowledge &power) {
     this->widget->dataAvailable(power);
 }
 
+void ChartTabView::dataAvailable(CurrentFrequencyReading &freq) {
+    this->widget->dataAvailable(freq);
+}
+
+void ChartTabView::dataAvailable(CurrentRMSReading &current) {
+    this->widget->dataAvailable(current);
+}
+
 void ChartTabView::on_initChartButton_clicked() {
     this->widget->show();
     this->widget->init();

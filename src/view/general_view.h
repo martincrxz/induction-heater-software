@@ -19,6 +19,9 @@ class MainWindow;
 }
 #define STEP_SIZE 1000
 #define POWER_STEP_SIZE 500
+#define FREQ_STEP_SIZE  250
+#define CURRENT_STEP_SIZE 50
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -71,6 +74,10 @@ private:
     QTimer *testTimer;
     Chrono chrono;
     std::uint8_t power_value{0};
+    float freq_value{20000};
+    std::uint64_t  freq_step{FREQ_STEP_SIZE};
+    float current_value{0};
+    std::uint64_t  current_step{CURRENT_STEP_SIZE};
     std::uint64_t  temp_step{STEP_SIZE};
     std::uint64_t  power_step{POWER_STEP_SIZE};
     float amplitude{2};
