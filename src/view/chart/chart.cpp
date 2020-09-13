@@ -16,6 +16,18 @@
 
 #define TIME_REJECT_DATA 100
 
+QColor Chart::getNextColor() {
+    static std::uint8_t idx = 0;
+    static std::vector<QColor> availableColors;
+    if (availableColors.size() == 0) {
+        availableColors.emplace_back(Qt::blue);
+        availableColors.emplace_back(Qt::green);
+        availableColors.emplace_back(Qt::black);
+        availableColors.emplace_back(Qt::red);
+    }
+    return availableColors[++idx % availableColors.size()];
+}
+
 Chart::Chart(ChartConfiguration *config, QGraphicsItem *parent, 
             Qt::WindowFlags wFlags) :
         QChart(QChart::ChartTypeCartesian, parent, wFlags) {
@@ -33,7 +45,7 @@ Chart::Chart(ChartConfiguration *config, QGraphicsItem *parent,
     QDateTime max = QDateTime::fromMSecsSinceEpoch(config->xaxis.max);
     this->xAxis.setRange(now, max);
 
-    QPen pen(Qt::blue);
+    QPen pen(Chart::getNextColor());
     pen.setWidth(3);
     this->series1.setPen(pen);
 
@@ -54,7 +66,7 @@ Chart::Chart(ChartConfiguration *config, QGraphicsItem *parent,
 
     if (config->yaxis2.name != nullptr) {
         this->secondCurveEnabled = true;    
-        QPen pen2(Qt::green);
+        QPen pen2(Chart::getNextColor());
         pen2.setWidth(3);
         this->series2.setPen(pen2);
         // TODO: ver por qué se jode el grafico cuando habilito la renderizacion

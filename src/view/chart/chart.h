@@ -14,6 +14,7 @@
 //#include <QtCharts/QSplineSeries>
 #include <QtCore/QDateTime>
 #include <QtCore/QMutex>
+#include <QColor>
 #include <cstdint>
 
 #include "../../connection/protocol/temperature_reading.h"
@@ -62,6 +63,7 @@ protected:
 private:
     bool gestureEvent(QGestureEvent *event);
     void append(double x, double y, unsigned int id = 1);
+    static QColor getNextColor();
     bool secondCurveEnabled{false};
     double y1min{0};
     double y1max{0};
