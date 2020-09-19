@@ -172,14 +172,15 @@ void Chart::stopFollow() {
 }
 
 void Chart::writeSeriesToFile(QLineSeries &series, std::string seriesName) {
-    std::string filename("medicion-");
-    filename += seriesName + ".csv";
+    std::string filename(seriesName);
+    QDateTime firstTs = QDateTime::fromMSecsSinceEpoch(series.at(0).x());
+    filename += "-" + firstTs.toString("yyyy-MM-dd-hh:mm:ss").toStdString() + ".csv";
     std::fstream file(filename, std::ios_base::out);
     file << this->xAxisName << "," << seriesName << std::endl;
     for (int i = 0, j = 0; i < series.count(); ++i) {
         QDateTime x = QDateTime::fromMSecsSinceEpoch(series.at(i).x());
         qreal y1 = series.at(i).y();
-        file << x.toString("hh:ss:mm").toStdString() << "," << y1 << std::endl;
+        file << x.toString("hh:mm:ss").toStdString() << "," << y1 << std::endl;
     }
 }
 
