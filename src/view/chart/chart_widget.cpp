@@ -111,7 +111,13 @@ void ChartWidget::on_saveButton_clicked()
 
 void ChartWidget::on_settingsButton_clicked()
 {
-    QDialog *dialog = new ChartConfigDialog(this->temp_power_chart->getLimits(), this->temp_power_chart);
+    ChartLimits limits = this->temp_power_chart->getLimits();
+    ChartLimits current_limits = this->current_chart->getLimits();
+    limits.y3_min = current_limits.y1_min;
+    limits.y3_max = current_limits.y1_max;
+    limits.y4_min = current_limits.y2_min;
+    limits.y4_max = current_limits.y2_max;
+    QDialog *dialog = new ChartConfigDialog(limits, this->temp_power_chart, this->current_chart);
     dialog->setWindowTitle("Ajuste de gráfico");
     dialog->show();
 }

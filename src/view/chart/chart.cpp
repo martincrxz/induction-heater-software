@@ -256,7 +256,7 @@ void Chart::adjustView() {
 ChartLimits Chart::getLimits() const {
     QDateTime min = QDateTime::fromMSecsSinceEpoch(this->xmin);
     QDateTime max = QDateTime::fromMSecsSinceEpoch(this->xmax);
-    ChartLimits limits(min, max, y1min, y1max, y2min, y2max);
+    ChartLimits limits(min, max, y1min, y1max, y2min, y2max, 0, 0, 0, 0);
     return std::move(limits);
 }
 

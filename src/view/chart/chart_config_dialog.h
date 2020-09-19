@@ -15,7 +15,7 @@ class ChartConfigDialog : public QDialog
     Q_OBJECT
 
 public:
-    ChartConfigDialog(ChartLimits l, Chart *chart, QWidget *parent = 0);
+    ChartConfigDialog(ChartLimits &l, Chart *temp_chart, Chart *current_chart, QWidget *parent = 0);
     ~ChartConfigDialog();
 
 private slots:
@@ -23,7 +23,8 @@ private slots:
 
 private:
     Ui::ChartConfigDialog *ui;
-    Chart *chart;
+    Chart *temp_chart;
+    Chart *current_chart;
 };
 
 #endif // CHART_CONFIG_DIALOG_H
