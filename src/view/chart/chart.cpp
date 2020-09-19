@@ -109,15 +109,7 @@ Chart::Chart(ChartConfiguration *config, QGraphicsItem *parent,
 Chart::~Chart() {
     this->acceptData = false;
 }
-/**
- *  Considerando que los puntos vienen de dos series distintas, y que
- *  ambas ocurren de manera asincronica, siendo la primer serie la de mayor
- *  predominancia (la mas frecuente), se repetirá el ultimo valor
- *  de  la segunda serie para que ambas series posean el mismo tamaño.
- *  
- *  Para hacer esto, se insertará una repeticion del ultimo valor insertado
- *  en la lista.
- */
+
 void Chart::append(double x, double y, unsigned int id) {
     if (x > this->xAxis.max().toMSecsSinceEpoch()) {
         this->scroll(x - this->xAxis.max().toMSecsSinceEpoch() + 1000, 0);
@@ -135,17 +127,6 @@ void Chart::append(double x, double y, unsigned int id) {
             y1max = this->yAxis1.max();
             if (this->auto_scroll_enabled)
                 this->yAxis1.setRange(y1min, y1max);
-        }
-        // agrego tantos puntos en la serie 2 como hagan falta para igualar
-        // los tamaños de la serie
-        if (this->secondCurveEnabled) {
-            if (this->series2.count() < this->series1.count()) {
-                double y2 = 0;
-                if (this->series2.count() > 0) {
-                   y2 = this->series2.at(this->series2.count() - 1).y();
-                }
-                append(x, y2, 2);
-            }
         }
     } else {
         if (this->secondCurveEnabled) {
