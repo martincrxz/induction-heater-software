@@ -3,8 +3,8 @@
 AxisConfiguration::AxisConfiguration(): name(nullptr), type(nullptr), min(0),
 		max(0) {}
 
-AxisConfiguration::AxisConfiguration(const char *name, const char *type, 
-		std::uint64_t min, std::uint64_t max): name(name), type(type), min(min),
+AxisConfiguration::AxisConfiguration(const char *name, const char *unit, const char *type, 
+		std::uint64_t min, std::uint64_t max): name(name), unit(unit), type(type), min(min),
 			max(max) {}
 
 ChartConfiguration::ChartConfiguration(AxisConfiguration &xaxis,

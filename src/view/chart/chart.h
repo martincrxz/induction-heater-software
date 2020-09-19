@@ -63,6 +63,7 @@ protected:
 private:
     bool gestureEvent(QGestureEvent *event);
     void append(double x, double y, unsigned int id = 1);
+    void writeSeriesToFile(QLineSeries &series, std::string seriesName);
     static QColor getNextColor();
     bool secondCurveEnabled{false};
     double y1min{0};

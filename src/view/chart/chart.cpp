@@ -35,7 +35,10 @@ Chart::Chart(ChartConfiguration *config, QGraphicsItem *parent,
     // x axis
     this->xAxis.setTickCount(10);
     this->xAxis.setFormat(config->xaxis.type);
-    this->xAxis.setTitleText(config->xaxis.name);
+    std::string axisName(config->xaxis.name);
+    axisName += " ";
+    axisName += config->xaxis.unit;
+    this->xAxis.setTitleText(axisName.c_str());
     this->xAxisName = config->xaxis.name;
     this->addAxis(&this->xAxis, Qt::AlignBottom);
     this->xmin = config->xaxis.min;
@@ -55,7 +58,10 @@ Chart::Chart(ChartConfiguration *config, QGraphicsItem *parent,
     this->legend()->hide();
 
     this->yAxis1.setLabelFormat(config->yaxis1.type);
-    this->yAxis1.setTitleText(config->yaxis1.name);
+    axisName = config->yaxis1.name;
+    axisName += " ";
+    axisName += config->yaxis1.unit;
+    this->yAxis1.setTitleText(axisName.c_str());
     this->y1AxisName = config->yaxis1.name;
     this->y1min = config->yaxis1.min;
     this->y1max = config->yaxis1.max;
@@ -78,7 +84,10 @@ Chart::Chart(ChartConfiguration *config, QGraphicsItem *parent,
         this->legend()->hide();
 
         this->yAxis2.setLabelFormat(config->yaxis2.type);
-        this->yAxis2.setTitleText(config->yaxis2.name);
+        axisName = config->yaxis2.name;
+        axisName += " ";
+        axisName += config->yaxis2.unit;
+        this->yAxis2.setTitleText(axisName.c_str());
         this->y2AxisName = config->yaxis2.name;
         this->yAxis2.setRange(config->yaxis2.min,config->yaxis2.max);
 
@@ -181,27 +190,23 @@ void Chart::stopFollow() {
     this->auto_scroll_enabled = false;
 }
 
+void Chart::writeSeriesToFile(QLineSeries &series, std::string seriesName) {
+    std::string filename("medicion-");
+    filename += seriesName + ".csv";
+    std::fstream file(filename, std::ios_base::out);
+    file << this->xAxisName << "," << seriesName << std::endl;
+    for (int i = 0, j = 0; i < series.count(); ++i) {
+        QDateTime x = QDateTime::fromMSecsSinceEpoch(series.at(i).x());
+        qreal y1 = series.at(i).y();
+        file << x.toString("hh:ss:mm").toStdString() << "," << y1 << std::endl;
+    }
+}
+
 void Chart::save()
 {
     QMutexLocker lock(&this->mutex);
-    std::fstream file("mediciones.csv", std::ios_base::out);
-    file << this->xAxisName << "," << this->y1AxisName;
-    if (this->secondCurveEnabled)
-            file << "," << this->y2AxisName;
-    file << std::endl;
-    for (int i = 0, j = 0; i < this->series1.count(); ++i) {
-        QDateTime x = QDateTime::fromMSecsSinceEpoch(this->series1.at(i).x());
-        qreal y1 = this->series1.at(i).y();
-        file << x.toString("hh:ss:mm").toStdString() << "," << y1;
-        if (this->secondCurveEnabled) {
-            if (i < this->series2.count())
-                j = i;
-            qreal y2 = this->series2.at(j).y();
-            file << "," << y2 << std::endl;
-        } else {
-            file << std::endl;
-        }
-    }
+    writeSeriesToFile(this->series1, this->y1AxisName);
+    writeSeriesToFile(this->series2, this->y2AxisName);
 }
 
 void Chart::startFollow() {

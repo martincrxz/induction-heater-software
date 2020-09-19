@@ -14,9 +14,9 @@ ui(new Ui::ChartWidget)
 {
     ui->setupUi(this);
     std::uint64_t now = QDateTime::currentDateTime().toMSecsSinceEpoch();
-    AxisConfiguration tempAxis("Temperatura (°C)", "%i", 0, 5);
-    AxisConfiguration powerAxis("Potencia (W)", "%i", 0, 100);
-    AxisConfiguration timeAxis("Tiempo (HH:mm:ss)", "HH:mm:ss", now, 
+    AxisConfiguration tempAxis("Temperatura", "(°C)", "%i", 0, 5);
+    AxisConfiguration powerAxis("Potencia", "(W)", "%i", 0, 100);
+    AxisConfiguration timeAxis("Tiempo", "(HH:mm:ss)", "HH:mm:ss", now, 
         now + TIME_CHART_MAX_RANGE);
     ChartConfiguration config(timeAxis, tempAxis, powerAxis, 
         "Mediciones de temperatura y potencia");
@@ -27,8 +27,8 @@ ui(new Ui::ChartWidget)
     this->ui->verticalLayout->addWidget(this->temp_chart_view);
     this->temp_chart_view->setRenderHint(QPainter::Antialiasing);
 
-    AxisConfiguration currentAxis("Corriente (A)", "%i", 0, 50);
-    AxisConfiguration frequencyAxis("Frecuencia (kHz)", "%i", 0, 50);
+    AxisConfiguration currentAxis("Corriente", "(A)", "%i", 0, 50);
+    AxisConfiguration frequencyAxis("Frecuencia", "(kHz)", "%i", 0, 50);
     ChartConfiguration current_config(timeAxis, currentAxis, frequencyAxis, 
         "Mediciones de corriente");
     current_chart = new Chart(&current_config);

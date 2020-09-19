@@ -5,12 +5,13 @@
 
 struct AxisConfiguration {
     const char         *name;
+    const char         *unit;
     const char         *type;
     const std::uint64_t min;
     const std::uint64_t max;
 
     AxisConfiguration();
-    AxisConfiguration(const char *name, const char *type, std::uint64_t min,
+    AxisConfiguration(const char *name, const char *unit, const char *type, std::uint64_t min,
         std::uint64_t max);
     ~AxisConfiguration() = default;
 };
