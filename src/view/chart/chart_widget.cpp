@@ -35,6 +35,13 @@ ui(new Ui::ChartWidget)
     current_chart_view = new ChartView(current_chart);
 
     this->ui->verticalLayout->addWidget(this->current_chart_view);
+
+    //Activo las leyendas
+    current_chart->legend()->setVisible(true);
+    current_chart->legend()->setAlignment(Qt::AlignBottom);
+    temp_power_chart->legend()->setVisible(true);
+    temp_power_chart->legend()->setAlignment(Qt::AlignBottom);
+
     this->current_chart_view->setRenderHint(QPainter::Antialiasing);
     
     this->grabGesture(Qt::PanGesture);

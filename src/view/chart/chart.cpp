@@ -48,6 +48,7 @@ Chart::Chart(ChartConfiguration *config, QGraphicsItem *parent,
     QPen pen(Chart::getNextColor());
     pen.setWidth(3);
     this->series1.setPen(pen);
+    this->series1.setName(config->yaxis1.name);
 
     //series1.setUseOpenGL(true);
     this->addSeries(&this->series1);
@@ -69,6 +70,7 @@ Chart::Chart(ChartConfiguration *config, QGraphicsItem *parent,
         QPen pen2(Chart::getNextColor());
         pen2.setWidth(3);
         this->series2.setPen(pen2);
+        this->series2.setName(config->yaxis2.name);
         // TODO: ver por qué se jode el grafico cuando habilito la renderizacion
         // por openGL
         //series2.setUseOpenGL(true);
