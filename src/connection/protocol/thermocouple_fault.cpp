@@ -8,7 +8,7 @@
 
 #include "thermocouple_fault.h"
 
-const char *faultMessages[] = {
+static const char *faultMessages[] = {
         "Cold junction temperature out of range.",
         "Temperature out of range.",
         "Cold junction temperature over high limit.",
