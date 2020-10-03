@@ -7,6 +7,7 @@
 #define __CHART_H__
 
 #include <chrono.h>
+#include <QString>
 #include <QtCharts/QChart>
 #include <QtCharts/QDateTimeAxis>
 #include <QtCharts/QValueAxis>
@@ -39,7 +40,7 @@ public:
     void dataAvailable(double y, unsigned int id = 1);
     void stopFollow();
     void startFollow();
-    void save();
+    void save(QString &directory);
     /**
      * @brief       Debido a que en el eje X (eje temporal) no está bien
      *              definido en QT la magnitud en la que se desplaza (no te
@@ -63,7 +64,7 @@ protected:
 private:
     bool gestureEvent(QGestureEvent *event);
     void append(double x, double y, unsigned int id = 1);
-    void writeSeriesToFile(QLineSeries &series, std::string seriesName);
+    void writeSeriesToFile(QLineSeries &series, std::string seriesName, std::string dir);
     static QColor getNextColor();
     bool secondCurveEnabled{false};
     double y1min{0};

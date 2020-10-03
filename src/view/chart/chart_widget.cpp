@@ -1,4 +1,6 @@
 #include <QDialog>
+#include <QFileDialog>
+#include <QString>
 #include <logger/logger.h>
 
 #include "chart_conf.h"
@@ -105,8 +107,12 @@ void ChartWidget::on_fitViewButton_clicked()
 
 void ChartWidget::on_saveButton_clicked()
 {
-    this->temp_power_chart->save();
-    this->current_chart->save();
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Seleccione carpeta donde guardar los archivos"),
+                                                ".",
+                                                QFileDialog::ShowDirsOnly
+                                                | QFileDialog::DontResolveSymlinks);
+    this->temp_power_chart->save(dir);
+    this->current_chart->save(dir);
 }
 
 void ChartWidget::on_settingsButton_clicked()

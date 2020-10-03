@@ -171,10 +171,12 @@ void Chart::stopFollow() {
     this->auto_scroll_enabled = false;
 }
 
-void Chart::writeSeriesToFile(QLineSeries &series, std::string seriesName) {
-    std::string filename(seriesName);
+void Chart::writeSeriesToFile(QLineSeries &series, std::string seriesName, std::string dir) {
+    std::string filename(dir);
+    filename += "/" + seriesName;
     QDateTime firstTs = QDateTime::fromMSecsSinceEpoch(series.at(0).x());
     filename += "-" + firstTs.toString("yyyy-MM-dd-hh:mm:ss").toStdString() + ".csv";
+    Logger::info("Guardando archivo %s", filename.c_str());
     std::fstream file(filename, std::ios_base::out);
     file << this->xAxisName << "," << seriesName << std::endl;
     for (int i = 0, j = 0; i < series.count(); ++i) {
@@ -184,11 +186,11 @@ void Chart::writeSeriesToFile(QLineSeries &series, std::string seriesName) {
     }
 }
 
-void Chart::save()
+void Chart::save(QString &dir)
 {
     QMutexLocker lock(&this->mutex);
-    writeSeriesToFile(this->series1, this->y1AxisName);
-    writeSeriesToFile(this->series2, this->y2AxisName);
+    writeSeriesToFile(this->series1, this->y1AxisName, dir.toStdString());
+    writeSeriesToFile(this->series2, this->y2AxisName, dir.toStdString());
 }
 
 void Chart::startFollow() {
