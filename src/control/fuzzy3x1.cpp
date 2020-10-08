@@ -1,6 +1,7 @@
 #include <iostream>
 #include <QJsonObject>
 #include <sstream>
+#include <messages.h>
 
 #include "fuzzy3x1.h"
 #include "logger/logger.h"
@@ -77,9 +78,8 @@ void Fuzzy3x1::loadMemberFunctions(QJsonObject& document) {
 }
 
 void Fuzzy3x1::printConf() const {
-    Logger::debug("FuzzyLogic configuration");
-    Logger::debug("Rules:");
-    Logger::debug("[e,   de,   ie,   dp]");
+    Logger::debug(FUZZY_CONFIG_HEADER_MSG);
+    Logger::debug(FUZZY_3X1_RULES_CONF_HEADER_MSG);
     for (auto &row: this->rules) {
         std::ostringstream oss;
         oss << "[";
@@ -91,19 +91,19 @@ void Fuzzy3x1::printConf() const {
         oss << "]";
         Logger::debug(oss.str().c_str());
     }
-    Logger::debug("Error member functions configuration");
+    Logger::debug(FUZZY_ERROR_MEMBER_FUNCT_HEADER_MSG);
     for (auto &function: errorMemberFunctions)
         function.print();
 
-    Logger::debug("Derivative error member functions configuration");
+    Logger::debug(FUZZY_DERIVATIVE_ERROR_HEADER_MSG);
     for (auto &function: errorDerivativeMemberFunctions)
         function.print();
 
-    Logger::debug("Integral error member functions configuration");
+    Logger::debug(FUZZY_INTEGRA_ERROR_MEMBER_FUNCT_HEADER_MSG);
     for (auto &function: errorIntegralMemberFunctions)
         function.print();
 
-    Logger::debug("Power output functions configuration");
+    Logger::debug(FUZZY_OUTPUT_POWER_HEADER_MSG);
     for (auto &function: powerOutputFunctions)
         function.print();
 

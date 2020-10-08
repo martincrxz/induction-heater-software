@@ -1,11 +1,6 @@
 #ifndef AUTO_TUNNING_TAB_VIEW_H
 #define AUTO_TUNNING_TAB_VIEW_H
 
-#define ZN_ACTIVATED_MSG "Se activo el proceso de Ziegler-Nichols"
-#define ZN_CANT_BE_ACTIVATED_MSG "Se quiere activar el ZN pero hay un control activo"
-#define ZN_SUCCESFULY_FINISHED "Se calcularon los parámetros exitosamente"
-#define ZN_INTERRUPTED "Se interrumpe el proceso"
-
 #include <QWidget>
 #include <QIntValidator>
 #include <QDoubleValidator>

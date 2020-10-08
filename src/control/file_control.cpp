@@ -7,6 +7,7 @@
 
 #include <logger/logger.h>
 #include <sstream>
+#include <messages.h>
 /**
  * La matriz steps se conforma de la siguiente forma
  * [
@@ -52,7 +53,7 @@ FileControl::~FileControl() {
  */
 unsigned char FileControl::process(std::shared_ptr<TemperatureReading> data) {
     if (this->step_count >= this->steps.size() ) {
-        Logger::debug("Process finished");
+        Logger::debug(FILE_CONTROL_PROCESS_FINISHED_MSG);
         return ControlAlgorithm::powerToTaps(this->current_power);
     }
     if (this->state == OPEN_LOOP) {
@@ -63,11 +64,11 @@ unsigned char FileControl::process(std::shared_ptr<TemperatureReading> data) {
          */
         if (data->getData() >= this->steps[this->step_count][TEMP_POSITION]) {
             this->state = CLOSED_LOOP;
-            Logger::debug("Changing to closed loop");
+            Logger::debug(FILE_CONTROL_START_CLOSE_LOOP_MSG);
             this->reset(this->steps[this->step_count][TEMP_POSITION]);
             return ClassicPID::process(data);
         } else {
-            Logger::debug("Open loop. Current power: %0.2f %%", this->current_power);
+            Logger::debug(FILE_CONTROL_OPEN_LOOP_MSG, this->current_power);
             return ControlAlgorithm::powerToTaps(this->current_power);
         }
     } else {
@@ -77,13 +78,13 @@ unsigned char FileControl::process(std::shared_ptr<TemperatureReading> data) {
          */
         if (chrono.tack() >= this->steps[this->step_count][TIME_POSITION]) {
             this->state = OPEN_LOOP;
-            Logger::debug("Changing to open loop");
+            Logger::debug(FILE_CONTROL_START_OPEN_LOOP_MSG);
             this->current_power = this->steps[this->step_count][POWER_POSITION];
             this->step_count++;
             return ControlAlgorithm::powerToTaps(this->current_power);
         } else {
             auto taps = ClassicPID::process(data);
-            Logger::debug("Closed loop. taps: %i", (int) taps);
+            Logger::debug(FILE_CONTROL_CLOSED_LOOP_MSG, (int) taps);
             return taps;
         }
     }

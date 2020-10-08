@@ -1,3 +1,4 @@
+#include <messages.h>
 #include "automatic_control_tab_view.h"
 #include "general_view.h"
 #include "ui_automatic_control_tab_view.h"
@@ -50,15 +51,15 @@ void AutomaticControlTabView::on_activateButton_clicked()
         if (!isControlActivated()) {
         bool isGood = this->controlConfigViews[this->current]->validateInput();
         if ( !isGood ) {
-            emit printMessage("Hay un error en los parámetros de control.", ERROR, true);
+            emit printMessage(AUTOMATIC_CONTROL_VIEW_BAD_ARGUMENTS_ERROR_MSG, ERROR, true);
             return;
         }
             this->controlConfigViews[this->current]->start();
             activatedControlAlgorithmIndex = this->current;
-            emit printMessage("Se activó el proceso de control correctamente", OK, true);
+            emit printMessage(AUTOMATIC_CONTROL_VIEW_PROCESS_ACTIVATED_MSG, OK, true);
             emit controlAlgorithmActivated();
         } else {
-            emit printMessage("Hay un proceso activo.", ERROR, true);
+            emit printMessage(AUTOMATIC_CONTROL_VIEW_PROCESS_ACTIVE_ERROR_MSG, ERROR, true);
         }
     } catch (std::exception &e) {
         Logger::warning(e.what());
@@ -76,10 +77,10 @@ void AutomaticControlTabView::stop(bool printError) {
     if (isControlActivated()){
         this->controlConfigViews[this->activatedControlAlgorithmIndex]->stop();
         activatedControlAlgorithmIndex = -1;
-        emit printMessage("Proceso detenido correctamente", OK, true);
+        emit printMessage(AUTOMATIC_CONTROL_PROCESS_DEACTIVATED_MSG, OK, true);
         emit controlAlgorithmDeactivated();
     } else if (printError) {
-        emit printMessage("No hay proceso que desactivar", ERROR, true);
+        emit printMessage(AUTOMATIC_CONTROL_VIEW_NO_PROCESS_ACTIVE_MSG, ERROR, true);
     }
 }
 

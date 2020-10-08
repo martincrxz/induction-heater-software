@@ -4,6 +4,7 @@
 #include <QJsonDocument>
 #include <cstdint>
 
+#include <messages.h>
 #include "logger/logger.h"
 #include "app_config.h"
 #include "general_config.h"
@@ -26,14 +27,14 @@ ApplicationConfig::ApplicationConfig(std::string filepath): filepath(filepath) {
     bool fileExists = true;
     QFile jsonFile(filepath.c_str());
     if (!jsonFile.open(QIODevice::ReadOnly)) {
-        Logger::debug("Configuration file doesn't exist, creating it");
+        Logger::debug(APP_CONFIG_CONF_FILE_MISSING_MSG);
         fileExists = false;
     }
 
     jsonFile.close();
 
     if (!jsonFile.open(QIODevice::ReadWrite))
-        throw Exception("Couldn't create/load json file %s", filepath.c_str());
+        throw Exception(APP_CONFIG_CONFIG_FILE_CREATE_ERROR_MSG, filepath.c_str());
 
     if (fileExists) {
         QByteArray saveData = jsonFile.readAll();
@@ -45,7 +46,7 @@ ApplicationConfig::ApplicationConfig(std::string filepath): filepath(filepath) {
 
     QJsonArray log = json["general"].toObject()["log_level"].toArray();
     this->log_level_enabled = array2LogLevel(log);
-    Logger::info("Configuration loaded");
+    Logger::info(APP_CONFIG_CONF_FILE_LOADED_MSG);
 }
 
 uint8_t ApplicationConfig::getWindowSize() const {
@@ -83,19 +84,19 @@ void ApplicationConfig::checkConsistency() {
     // Debe tener si o si la configuración general,
     // sino, fallo
     if (!json.contains("general") || !json["general"].isObject())
-        throw Exception("There is no general configuration");
+        throw Exception(APP_CONFIG_GENERAL_CONF_MISSING_ERROR_MSG);
     QJsonObject generalConfig = json["general"].toObject();
     if (!generalConfig.contains("log_level") || !generalConfig["log_level"].isArray())
-        throw Exception("Bad config format, general/log_level is not an array");
+        throw Exception(APP_CONFIG_BAD_FORMAT_MSG);
     if (!generalConfig.contains("window_size") || !generalConfig["window_size"].isDouble())
-        throw Exception("Bad config format, general/window_size must be a number");
+        throw Exception(APP_CONFIG_BAD_FORMAT_WINDOW_SIZE_MUST_BE_NUMBER_MSG);
 }
 
 void ApplicationConfig::backupConfiguration() {
     QFile jsonFile(this->filepath.c_str());
     jsonFile.open(QIODevice::Truncate | QIODevice::ReadWrite);
     jsonFile.write(QJsonDocument(this->json).toJson());
-    Logger::debug("Json config file updated");
+    Logger::debug(APP_CONFIG_CONFIG_FILE_UPDATED_MSG);
 }
 
 QJsonArray ApplicationConfig::loglevel2array(uint8_t log_level) {

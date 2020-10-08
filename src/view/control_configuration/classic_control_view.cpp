@@ -1,6 +1,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <messages.h>
 
 #include "logger/logger.h"
 #include "exception.h"
@@ -70,9 +71,9 @@ void ClassicControlView::on_saveButton_clicked()
         float ki = this->ui->ki_value->text().toFloat();
         float kd = this->ui->kd_value->text().toFloat();
         ClassicControlView::saveConstantsInFile(kp, ki, kd, FILE_PATH);
-        emit message("Datos guardados.", OK, true);
+        emit message(CLASSIC_CONTROL_VIEW_DATA_SAVED_MSG, OK, true);
     } else {
-        emit message("No se pudo guardar los datos. Revisar formato", ERROR, true);
+        emit message(CLASSIC_CONTROL_SAVE_DATA_FAILED_MSG, ERROR, true);
     }
 }
 
@@ -94,7 +95,7 @@ void ClassicControlView::loadControlValues(std::string filepath)
         } else if (key == "ki") {
             this->ui->ki_value->setText(QString(value.c_str()));
         } else {
-            throw Exception("Invalid format of classic control parameters file");
+            throw Exception(CLASSIC_CONTROL_ERROR_BAD_FORMAT_MSG);
         }
     }
 }

@@ -46,6 +46,7 @@ message(STATUS "[INFO] Adding '${CMAKE_BINARY_DIR}/libs/portable-endian' as incl
 
 message(STATUS "[INFO] Adding '${CMAKE_SOURCE_DIR}/libs' as include directory")
 include_directories(${CMAKE_SOURCE_DIR}/libs)
+include_directories(${CMAKE_SOURCE_DIR}/src)
 
 message(STATUS "[INFO] Loading sources")
 file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/*.cpp" "src/*.h" "libs/*.h" "libs/*.cpp")
@@ -84,7 +85,7 @@ file(GLOB RESOURCES ${CMAKE_SOURCE_DIR}
         "assets/resources.qrc")
 
 # Tell CMake to create the helloworld executable
-add_executable(application ${SOURCES} ${UIS_HEADERS} ${RESOURCES} src/control/zieglers_nichols.cpp src/control/zieglers_nichols.h src/connection/protocol/current_frequency_reading.cpp src/connection/protocol/current_frequency_reading.h src/connection/protocol/current_RMS_reading.cpp src/connection/protocol/current_RMS_reading.h)
+add_executable(application ${SOURCES} ${UIS_HEADERS} ${RESOURCES})
 
 message(STATUS "[INFO] Add Qt components to the target link libraries")
 if(IS_WINDOWS)

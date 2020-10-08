@@ -6,6 +6,7 @@
 
 #include <exception.h>
 #include <sstream>
+#include <messages.h>
 
 #include "logger/logger.h"
 #include "MemberFunction.h"
@@ -13,8 +14,7 @@
 MemberFunction::MemberFunction(float a, float b, float c, float d, std::string tag):
     a(a), b(b), c(c), d(d), tag(tag) {
     if (a > b || b > c || c > d) {
-        throw Exception("Se debe cumplir que a (%f) <= b (%f)"
-                        "<= c (%f) <= d (%f)", a, b, c, d);
+        throw Exception(MEMBER_FUNCTIONS_BAD_FORMAT_MSG, a, b, c, d);
     }
     // TODO: esta formual vale porque definimos las member functions simétricas.
     // reveer esto.

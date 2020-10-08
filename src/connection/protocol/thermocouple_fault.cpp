@@ -5,18 +5,18 @@
  */
 
 #include <QString>
-
+#include <messages.h>
 #include "thermocouple_fault.h"
 
 static const char *faultMessages[] = {
-        "Cold junction temperature out of range.",
-        "Temperature out of range.",
-        "Cold junction temperature over high limit.",
-        "Cold junction temperature under low limit.",
-        "Temperature over high limit.",
-        "Temperature under low limit.",
-        "Over voltage",
-        "Open thermocouple."
+        THERMOCOUPLE_ERR_MSG_CJ_TEMP_OUT_OF_RANGE,
+        THERMOCOUPLE_ERR_MSG_TEMP_OUT_OF_RANGE,
+        THERMOCOUPLE_ERR_MSG_CJ_TMP_OVER_LIMIT,
+        THERMOCOUPLE_ERR_MSG_CJ_TMP_UNDER_LIMIT,
+        THERMOCOUPLE_ERR_MSG_TMP_OVER_LIMIT,
+        THERMOCOUPLE_ERR_MSG_TMP_UNDER_LIMIT,
+        THERMOCOUPLE_ERR_MSG_OVER_VOLTAGE,
+        THERMOCOUPLE_ERR_MSG_OPEN_CIRCUIT
 };
 
 ThermocoupleFault::ThermocoupleFault(QByteArray buff):
@@ -43,6 +43,6 @@ QString ThermocoupleFault::error() {
         case OPEN_FAULT:
             return QString(faultMessages[7]);
         default:
-            return QString("Non-supported thermocouple error");
+            return QString(THERMOCOUPLE_ERR_MSG_THERMOCOUPLE_TYPE_NOT_SUPPORTED);
     }
 }

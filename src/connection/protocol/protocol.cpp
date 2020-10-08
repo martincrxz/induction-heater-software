@@ -5,6 +5,8 @@
 
 #include <iostream>
 #include <logger/logger.h>
+#include <messages.h>
+
 #include "protocol.h"
 #include "shutdown_ack.h"
 #include "temperature_reading.h"
@@ -40,7 +42,7 @@ std::shared_ptr<MicroMessage> Protocol::translate(QByteArray &buff) {
         case AUTOMATIC_CONTROL_ACKNOWLEDGE:
             return std::shared_ptr<MicroMessage>(new AutomaticControlAcknowledge());
         default:
-            Logger::warning("Invalid message");
+            Logger::warning(PROTOCOL_INVALID_MSG_ERROR_MSG);
             break;
     }
     return std::shared_ptr<MicroMessage>();

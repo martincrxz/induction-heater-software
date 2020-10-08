@@ -3,6 +3,7 @@
 //
 
 #include <sstream>
+#include <messages.h>
 #include <numeric>
 
 #include "classic_pid.h"
@@ -12,8 +13,7 @@
 
 ClassicPID::ClassicPID(float kp, float ki, float kd, float targetTemp, SerialPort *sp, uint8_t window_size):
         ControlAlgorithm(targetTemp, sp, window_size), Kp(kp), Ki(ki), Kd(kd) {
-	Logger::debug("ClassicPID constructor ( kp= %.2f, kd= %.2f, ki= %.2f). Target temperature: %.0f °C",
-		kp, kd, ki, targetTemp);		
+	Logger::debug(CLASSIC_PID_CONSTRUCTOR_MSG, kp, kd, ki, targetTemp);
 }
 
 unsigned char ClassicPID::process(std::shared_ptr<TemperatureReading> temp) {

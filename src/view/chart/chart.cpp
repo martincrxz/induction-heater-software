@@ -13,6 +13,7 @@
 #include <QtWidgets/QGesture>
 #include <QtWidgets/QGraphicsScene>
 #include <QtWidgets/QGraphicsView>
+#include <messages.h>
 
 #define TIME_REJECT_DATA 100
 
@@ -176,7 +177,7 @@ void Chart::writeSeriesToFile(QLineSeries &series, std::string seriesName, std::
     filename += "/" + seriesName;
     QDateTime firstTs = QDateTime::fromMSecsSinceEpoch(series.at(0).x());
     filename += "-" + firstTs.toString("yyyy-MM-dd-hh:mm:ss").toStdString() + ".csv";
-    Logger::info("Guardando archivo %s", filename.c_str());
+    Logger::info(FILE_SAVED_MSG, filename.c_str());
     std::fstream file(filename, std::ios_base::out);
     file << this->xAxisName << "," << seriesName << std::endl;
     for (int i = 0, j = 0; i < series.count(); ++i) {

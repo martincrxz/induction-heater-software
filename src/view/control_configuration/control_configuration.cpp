@@ -1,4 +1,6 @@
 #include <fstream>
+#include <messages.h>
+
 #include "control_configuration.h"
 #include "logger/logger.h"
 #include "../../configuration/app_config.h"
@@ -12,19 +14,19 @@ ControlConfiguration::ControlConfiguration(QWidget *parent, SerialPort *sp) :
 }
 
 ControlConfiguration::~ControlConfiguration() {
-    Logger::debug("Destroying ControlConfiguration");
+    Logger::debug(CONTORL_CONFIGURATION_DESTRUCTOR_MSG);
 }
 
 void ControlConfiguration::start()
 {
-    Logger::info("Initiating control algorithm");
+    Logger::info(CONTORL_CONFIGURATION_INIT_MSG);
     if (this->controlAlgorithm == nullptr) {
         this->instantiate();
     }
 }
 
 void ControlConfiguration::stop() {
-    Logger::info("Stopping control algorithm");
+    Logger::info(CONTROL_CONFIGURATION_STOP_MSG);
     this->controlAlgorithm.reset(nullptr);
 }
 void ControlConfiguration::dataAvailable(TemperatureReading &temp) {
@@ -41,14 +43,14 @@ void ControlConfiguration::saveConstantsInFile(float kp, float ki, float kd, std
     file << "ki " << ki << std::endl;
     file << "kd " << kd << std::endl;
 
-    Logger::info("Data saved in file: %s", filename.c_str());
+    Logger::info(CONTROL_CONFIGURATION_DATA_SAVED_MSG, filename.c_str());
 
 }
 
 void ControlConfiguration::updateConfig() {
     this->window_size = ApplicationConfig::instance().getWindowSize();
     if (this->controlAlgorithm) {
-        Logger::debug("Control %s updated (window_size: %i)", this->getName(),
+        Logger::debug(CONTORL_CONFIGURATION_VARIABLE_UPDATED_MSG, this->getName(),
                         this->window_size);
         this->controlAlgorithm->updateConfig();
     }

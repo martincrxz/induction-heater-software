@@ -1,5 +1,6 @@
 #include <iostream>
 #include <logger/logger.h>
+#include <messages.h>
 
 #include "application.h"
 #include "exception.h"
@@ -12,7 +13,7 @@ bool Application::notify(QObject* receiver, QEvent* event)
          Logger::critical(e.what());
          this->exit(1);
     } catch (...) {
-         Logger::critical("Unknown error in Application");
+         Logger::critical(UNKNOWN_ERROR_MSG, "Application");
          this->exit(1);
     }        
     return false;

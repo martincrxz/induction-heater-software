@@ -1,6 +1,7 @@
 #include <iostream>
 #include <QJsonObject>
 #include <sstream>
+#include <messages.h>
 
 #include "fuzzy2x3.h"
 #include "logger/logger.h"
@@ -70,9 +71,8 @@ void Fuzzy2x3::loadMemberFunctions(QJsonObject& document) {
 }
 
 void Fuzzy2x3::printConf() const {
-    Logger::debug("FuzzyLogic configuration");
-    Logger::debug("Rules:");
-    Logger::debug("[e,   de,   dkp,   dki,   dkd]");
+    Logger::debug(FUZZY_CONFIG_HEADER_MSG);
+    Logger::debug(FUZZY_2X3_CONFIG_RULES_HEADERS_MSG);
     for (auto &row: this->rules) {
         std::ostringstream oss;
         oss << "[";
@@ -84,23 +84,23 @@ void Fuzzy2x3::printConf() const {
         oss << "]";
         Logger::debug(oss.str().c_str());
     }
-    Logger::debug("Error member functions configuration");
+    Logger::debug(FUZZY_ERROR_MEMBER_FUNCT_HEADER_MSG);
     for (auto &function: errorMemberFunctions)
         function.print();
 
-    Logger::debug("Derivative error member functions configuration");
+    Logger::debug(FUZZY_DERIVATIVE_ERROR_HEADER_MSG);
     for (auto &function: errorDerivativeMemberFunctions)
         function.print();
 
-    Logger::debug("Kp output functions configuration");
+    Logger::debug(FUZZY_2X3_KP_FUNCTION_MSG);
     for (auto &function: kpOutputFunctions)
         function.print();
 
-    Logger::debug("Kd output functions configuration");
+    Logger::debug(FUZZY_2X3_KD_OUT_FUNCT_MSG);
     for (auto &function: kdOutputFunctions)
         function.print();
 
-    Logger::debug("Ki output functions configuration");
+    Logger::debug(FUZZY_2X3_KI_OUT_FUNCT_MSG);
     for (auto &function: kiOutputFunctions)
         function.print();
 }

@@ -1,4 +1,5 @@
 #include <logger/logger.h>
+#include <messages.h>
 #include "auto_tunning_tab_view.h"
 #include "ui_auto_tunning_tab_view.h"
 #include "general_view.h"
@@ -65,11 +66,11 @@ void AutoTunningTabView::dataAvailable(TemperatureReading &temp) {
 void AutoTunningTabView::activate() {
     if(!mainWindow->isControlActivated() && zn == nullptr) {
         if (!validateInput()) {
-            emit printMessage("Error en los parámetros.", ERROR, true);
-            Logger::info("Bad arguments");
+            emit printMessage(AUTOTUNNING_VIEW_BAD_ARGUMENTS, ERROR, true);
+            Logger::info(AUTOTUNNING_VIEW_BAD_ARGUMENTS);
             return;
         }
-        emit printMessage("Calculando...", 2, false);
+        emit printMessage(AUTOTUNING_VIEW_PROCESSING_MSG, 2, false);
         Logger::info(ZN_ACTIVATED_MSG);
         int initial_power = this->ui->initial_power->text().toInt();
         int stationary_power = this->ui->stationary_power->text().toInt();
@@ -89,7 +90,7 @@ void AutoTunningTabView::deactivate(bool finished) {
 void AutoTunningTabView::stop(bool finished, bool printError) {
     if (zn == nullptr) {
         if (printError)
-            emit printMessage("No hay proceso para desactivar", ERROR, true);
+            emit printMessage(AUTOTUNNING_NO_PROCEES_TO_DEACTIVATE_MSG, ERROR, true);
         return;
     }
 

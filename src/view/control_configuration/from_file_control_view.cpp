@@ -3,6 +3,7 @@
 #include <QFileDialog>
 #include <string>
 #include <sstream>
+#include <messages.h>
 
 #include "../../control/file_control.h"
 #include "from_file_control_view.h"
@@ -76,20 +77,20 @@ void FromFileControlView::on_saveButton_clicked()
         file << "kd " << this->ui->kdLineEdit->text().toStdString() << std::endl;
         file << "ki " << this->ui->kiLineEdit->text().toStdString() << std::endl;
 
-        Logger::info("Data saved in file: %s", FILE_PATH);
-        emit message("Parámetros de control guardados.", OK, true);
+        Logger::info(CONTROL_CONFIGURATION_DATA_SAVED_MSG, FILE_PATH);
+        emit message(CLASSIC_CONTROL_VIEW_DATA_SAVED_MSG, OK, true);
     } else {
-        emit message("No se pudo guardar los parámetros de control. Revisar formato", ERROR, true);
+        emit message(CLASSIC_CONTROL_SAVE_DATA_FAILED_MSG, ERROR, true);
     }
 }
 
 void FromFileControlView::parseFile() {
     try {
         std::string filename = this->ui->filenameLabel->text().toStdString();
-        Logger::debug("Loading file: %s", filename.c_str());
+        Logger::debug(LOADING_FILE_MSG, filename.c_str());
         std::fstream file(filename);
         if (!file.is_open()) {
-            emit message("El archivo no existe", ERROR, true);
+            emit message(FILE_DOESNT_EXIST_MSG, ERROR, true);
             return;
         }
         std::string line;
@@ -124,7 +125,7 @@ void FromFileControlView::parseFile() {
             if (row.size() != 3) {
             	throw std::exception();
             } else if (row[2] > 100) {
-            	emit message("La potencia no puede superar 100%", ERROR, true);
+            	emit message(FROM_FILE_CONTROL_VIEW_POWER_BAD_FORMAT_MSG, ERROR, true);
             	return;
             }
             config.emplace_back(row);
@@ -137,9 +138,9 @@ void FromFileControlView::parseFile() {
             row[0] *= 1000;
         }
         this->controlDirectives = std::move(config);
-        emit message("El archivo se cargó correctamente", OK, true);
+        emit message(FILE_LOADED_CORRECTLY_MSG, OK, true);
     } catch (std::exception &e) {
-        emit message("El csv está mal formateado", ERROR, true);
+        emit message(CSV_BAD_FORMATTED_ERROR_MSG, ERROR, true);
     }
 }
 
@@ -160,7 +161,7 @@ void FromFileControlView::loadControlValues(std::string filepath) {
         } else if (key == "ki") {
             this->ui->kiLineEdit->setText(QString(value.c_str()));
         } else {
-            throw Exception("Invalid format of classic control parameters file");
+            throw Exception(FROM_FILE_CONTROL_VIEW_BAD_FORMAT_MSG);
         }
     }
 }

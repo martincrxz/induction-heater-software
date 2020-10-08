@@ -2,6 +2,7 @@
 // Created by Martín García on 15/02/2020.
 //
 
+#include <messages.h>
 #include "zieglers_nichols.h"
 #include "../connection/protocol/set_power.h"
 #include "../view/auto_tunning_tab_view.h"
@@ -27,7 +28,7 @@ unsigned char ZieglerNichols::process(std::shared_ptr<TemperatureReading> data) 
     buffCounter++;
     if (data->getData() > cutoff_temp) {
         this->keep_processing = false;
-        this->autoTunningView->autotunningFailed("Error en el proceso: se llegó a la temperatura de corte");
+        this->autoTunningView->autotunningFailed(ZN_ERROR_LIMIT_TEMP_REACHED_MSG);
         return powerToTaps(10);
     }
 

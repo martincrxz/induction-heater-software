@@ -7,6 +7,7 @@
 #include <iostream>
 #include <sstream>
 #include <logger/logger.h>
+#include <messages.h>
 #include "ui_general_view.h"
 
 #define SEPARATOR ':'
@@ -32,7 +33,7 @@ SerialPort::~SerialPort() {
 
 void SerialPort::send(std::shared_ptr<MicroMessage> msg) {
     QByteArray buff = protocol.translate(msg);
-    Logger::debug("Sending message: %s", buff.toHex(SEPARATOR).
+    Logger::debug(SERIALPORT_SENDING_MSG, buff.toHex(SEPARATOR).
             toStdString().c_str());
     this->write(buff);
     this->waitForBytesWritten(USB_WRITE_TIMEOUT);
@@ -46,21 +47,21 @@ void SerialPort::findDevice() {
             if(this->open(QIODevice::ReadWrite)){
                 reconectionTimer.stop();
                 emit serialPortConnected();
-                Logger::info("Serial port connected.");
+                Logger::info(SERIALPORT_CONNECTED_MSG);
                 connected = true;
                 this->clear();
                 return;
             } else {
-                Logger::warning("Cannot open serial port.");
+                Logger::warning(SERIALPORT_CONNECT_FAILED_MSG);
             }
         }
     }
-    Logger::warning("Device not found.");
+    Logger::warning(SERIAL_PORT_DEVICE_NOT_FOUND_MSG);
     reconectionTimer.start(RECONNECTION_TIMEOUT);
 }
 
 void SerialPort::handleError(QSerialPort::SerialPortError error){
-    Logger::warning("Serial port error - %s (%i)", 
+    Logger::warning(SERIAL_PORT_HANDLE_ERROR_MSG, 
         this->errorString().toStdString().c_str(),
         (int) error);
     // TODO: tal vez debería intentar reconectarse siempre.
@@ -99,13 +100,13 @@ void SerialPort::handleMessage(){
 void SerialPort::processMessage(QByteArray buff){
     int crc = crcChecksum(buff, PACKET_SIZE-1);
     if(crc==(uint8_t)buff[PACKET_SIZE-1]) {
-        Logger::debug("Message received: %s", buff.toHex(SEPARATOR).
+        Logger::debug(SERIALPORT_RECEIVED_MSG, buff.toHex(SEPARATOR).
                 toStdString().c_str());
         std::shared_ptr<MicroMessage> msg(this->protocol.translate(buff));
         switch(msg->getId()) {
             case SHUTDOWN_ACKNOWLEDGE:
                 emit shutdownAcknowledge(QString::number(SHUTDOWN_ACKNOWLEDGE),
-                        "Se activo la parada de emergencia.");
+                        SERIALPORT_EMERGENCY_STOP_ACTIVATED_MSG);
                 break;
             case TEMPERATURE_READING:
                 emit temperatureArrived(msg);
@@ -116,28 +117,28 @@ void SerialPort::processMessage(QByteArray buff){
             case THERMOCOUPLE_FAULT:
                 emit thermocoupleFault(QString::number(THERMOCOUPLE_FAULT),
                         ((ThermocoupleFault&)(*msg)).error());
-                Logger::info("Thermocouple fault message");
+                Logger::info(SERIALPORT_THERMOCOUPLE_ERROR_RECEIVED_MSG, ((ThermocoupleFault&)(*msg)).error().toStdString().c_str());
                 break;
             case THERMOCOUPLE_CONFIGURATION_ACKNOWLEDGE:
                 emit configurationAcknowledge(QString::number(THERMOCOUPLE_CONFIGURATION_ACKNOWLEDGE),
-                        "Config. ACK: " + buff.toHex(SEPARATOR));
-                Logger::info("Thermocouple configuration acknowledge message.");
+                        SERIALPORT_THERMOCOUPLE_CONFIG_ACK + buff.toHex(SEPARATOR));
+                Logger::info(SERIALPORT_THERMOCOUPLE_CONFIG_ACK);
                 break;
             case POWER_SET_ACKNOWLEDGE:
                 emit powerSetAcknowledge(msg);
-                Logger::info("Power set acknowledge message.");
+                Logger::info(SERIALPORT_POWER_SET_ACK_MSG);
                 break;
             case MANUAL_CONTROL_ACKNOWLEDGE:
                 emit manualControlAcknowledge();
                 emit manualControlAcknowledge(QString::number(MANUAL_CONTROL_ACKNOWLEDGE),
-                        "Manual control set");
-                Logger::info("Manual control activated message.");
+                                              SERIALPORT_MANUAL_CONTROL_SET_ACK_MSG);
+                Logger::info(SERIALPORT_MANUAL_CONTROL_SET_ACK_MSG);
                 break;
             case AUTOMATIC_CONTROL_ACKNOWLEDGE:
                 emit automaticControlAcknowledge();
                 emit automaticControlAcknowledge(QString::number(AUTOMATIC_CONTROL_ACKNOWLEDGE),
-                        "Automatic control set");
-                Logger::info("Automatic control activated message.");
+                                                 SERIALPORT_AUTOMATIC_CONTROL_SET_ACK_MSG);
+                Logger::info(SERIALPORT_AUTOMATIC_CONTROL_SET_ACK_MSG);
                 break;
             case CURRENT_FREQUENCY_READING:
                 emit currentFrequencyArrived(msg);
@@ -146,12 +147,12 @@ void SerialPort::processMessage(QByteArray buff){
                 emit currentRMSArrived(msg);
                 break;
             default:
-                Logger::warning("Unknown message");
+                Logger::warning(SERIALPORT_UNKOWN_MSG);
                 break;
         }
     }
     else {
-        Logger::warning("CRC failed: %s | %c : %i", 
+        Logger::warning(SERIALPORT_CRC_FAILED_MSG,
             buff.toHex(SEPARATOR).toStdString().c_str(), 
             buff[7],
             crc);

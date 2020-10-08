@@ -8,6 +8,8 @@
 #include "view/application.h"
 #include "view/general_view.h"
 
+#include <messages.h>
+
 int main(int argc, char *argv[])
 {	
 	int ret = 0;
@@ -22,7 +24,7 @@ int main(int argc, char *argv[])
 		Logger::critical(e.what());
 		return 1;
 	} catch (...) {
-		Logger::critical("Unknown error on main thread.");
+		Logger::critical(UNKNOWN_ERROR_MSG, "main");
 		return 1;
 	}
 	return ret;

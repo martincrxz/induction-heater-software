@@ -12,6 +12,7 @@
 #include <QJsonArray>
 #include <QJsonValue>
 #include <sstream>
+#include <messages.h>
 
 #include "fuzzy_logic.h"
 #include "MemberCandidate.h"
@@ -36,32 +37,41 @@ FuzzyLogic::~FuzzyLogic() {
 // queda hacer un wrapper como la gente de QT que te haga
 // los chequeos pertinentes)
 void FuzzyLogic::loadJson(const std::string &filepath) {
-    Logger::debug("loading json %s", filepath.c_str());
+    Logger::debug(LOADING_FILE_MSG, filepath.c_str());
     QFile loadFile(filepath.c_str());
 
     if (!loadFile.open(QIODevice::ReadOnly))
-        throw Exception("Couldn't load json file %s", filepath.c_str());
+        throw Exception(FUZZY_LOGIC_ERROR_LOAD_FAILED_MSG, filepath.c_str());
 
     QByteArray saveData = loadFile.readAll();
 
     QJsonObject document(QJsonDocument::fromJson(saveData).object());
 
     if (document[mode.c_str()].isUndefined() || !document[mode.c_str()].isObject())
-        throw Exception("Element '%s' is not an object", mode.c_str());
+        throw Exception(FUZZY_LOGIC_FILE_BAD_FORMAT_ELEMNT_IS_NOT_OBJECT_MSG, mode.c_str());
 
     if (document[mode.c_str()].toObject()["rules"].isUndefined() ||
-            !document[mode.c_str()].toObject()["rules"].isArray())
-        throw Exception("Element '%s/rules' is not an array", mode.c_str());
+            !document[mode.c_str()].toObject()["rules"].isArray()) {
+        std::string element = mode;
+        element += "/rules";
+        throw Exception(FUZZY_LOGIC_BAD_FORMAT_ELEMENT_IS_NOT_ARRAY_MSG, element.c_str());
+    }
     QJsonArray rules =  document[mode.c_str()].toObject()["rules"].toArray();
 
     for(int i = 0; i < rules.size(); i++){
         std::vector<std::string> row;
-        if (rules[i].isUndefined() || !rules[i].isArray())
-            throw Exception("Element '%s/rules/%i' is not an array", mode.c_str(), i);
+        if (rules[i].isUndefined() || !rules[i].isArray()) {
+            std::ostringstream element(mode);
+            element << "/rules/" << i;
+            throw Exception(FUZZY_LOGIC_BAD_FORMAT_ELEMENT_IS_NOT_ARRAY_MSG, element.str().c_str());
+        }
         QJsonArray values = rules[i].toArray();
         for(int j = 0; j < values.size(); j++) {
-            if (values[j].isUndefined() || !values[j].isString())
-                throw Exception("Element '%s/rules/%i/%i' is not a string", mode.c_str(), i, j);
+            if (values[j].isUndefined() || !values[j].isString()) {
+                std::ostringstream oss(mode);
+                oss << "/rules/" << i << "/" << j;
+                throw Exception(FUZZY_LOGIC_BAD_FORMAT_ELEMENT_IS_NOT_STRING, oss.str().c_str());
+            }
             row.push_back(values[j].toString().toStdString());
         }
         this->rules.emplace_back(row);
@@ -73,16 +83,20 @@ void FuzzyLogic::loadJson(const std::string &filepath) {
 void FuzzyLogic::loadFunctions(std::vector<MemberFunction>& holder, QJsonObject &document,
         const std::string functionType, const std::string id){
     if (document[mode.c_str()].toObject()[functionType.c_str()].toObject()[id.c_str()].isUndefined() ||
-            !document[mode.c_str()].toObject()[functionType.c_str()].toObject()[id.c_str()].isObject())
-        throw Exception("Element '%s/%s/%s' is not an object", mode.c_str(), functionType.c_str(),
-                        id.c_str());
+            !document[mode.c_str()].toObject()[functionType.c_str()].toObject()[id.c_str()].isObject()) {
+        std::ostringstream  oss(mode);
+        oss << "/" << functionType << "/" << id;
+        throw Exception(FUZZY_LOGIC_FILE_BAD_FORMAT_ELEMNT_IS_NOT_OBJECT_MSG, oss.str().c_str());
+    }
 
     QJsonObject rules = document[mode.c_str()].toObject()[functionType.c_str()].toObject()[id.c_str()].toObject();
 
     for(QString &obj : rules.keys()) {
-        if (!rules[obj].isArray())
-            throw Exception("Element '%s/%s/%s/%s' should have 4 numbers", mode.c_str(), functionType.c_str(),
-                        id.c_str(), obj.toStdString().c_str());
+        if (!rules[obj].isArray()) {
+            std::ostringstream oss(mode);
+            oss << "/" << functionType << "/" << id << "/" << obj.toStdString();
+            throw Exception(FUZZY_LOGIC_FILE_BAD_FORMAT_ELEMENT_SHOULD_HAVE_4_VALUES, oss.str().c_str());
+        }
         holder.emplace_back(
                 rules[obj].toArray()[0].toDouble(),
                 rules[obj].toArray()[1].toDouble(),

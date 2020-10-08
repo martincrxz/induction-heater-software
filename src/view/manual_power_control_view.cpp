@@ -8,6 +8,7 @@
 #include "ui_manual_power_control_view.h"
 #include "message_modes.h"
 
+#include <messages.h>
 #include <iostream>
 
 ManualPowerControlView::ManualPowerControlView(QWidget *parent, SerialPort *pPort):
@@ -27,7 +28,7 @@ void ManualPowerControlView::on_setPowerButton_clicked()
 {
     float powerValue = this->ui->powerValue->text().toFloat();
     if (powerValue < 0 || powerValue > 100) {
-        emit printMessage("Potencia inválida", ERROR, true);
+        emit printMessage(INVALID_POWER_MSG, ERROR, true);
         return;
     }
     /*
@@ -48,7 +49,7 @@ void ManualPowerControlView::on_setPowerButton_clicked()
     unsigned char taps = ControlAlgorithm::powerToTaps(powerValue);
     std::shared_ptr<OutgoingMessage> toSend(new SetPower(taps));
     this->serialPort->send(toSend);
-    emit printMessage("Mensaje enviado", OK, true);
+    emit printMessage(MSG_SENT_MSG, OK, true);
 }
 
 void ManualPowerControlView::enableButtons(bool enable) {

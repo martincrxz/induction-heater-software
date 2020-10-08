@@ -20,6 +20,8 @@
 #include "../connection/protocol/current_frequency_reading.h"
 #include "../connection/protocol/current_RMS_reading.h"
 
+#include <messages.h>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -42,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tabWidget->addTab(autotunningView, "Auto-sintonía");
     ui->tabWidget->addTab(chartView, "Gráfico");
 
-    ui->statusValue->setText("OK");
+    ui->statusValue->setText(OK_MSG);
     onManualPowerSet();
     usbOk = false;
     //onStatusChanged();
@@ -147,7 +149,7 @@ void MainWindow::onTemperatureDataArrived(std::shared_ptr<MicroMessage> msg) {
     ui->lastTimestampValue->setText(currentDatetime);
     ui->thermocoupleTempValue->setText(QString::number(temp.getData()));
     ui->dut_temp_value->setText(QString::number(temp.getData()));
-    Logger::debug("Temperatura recibida: %.2f °C", temp.getData());
+    Logger::debug(GENERAL_VIEW_TEMPERATURE_RECEIVED_MSG, temp.getData());
     // TODO: debo actualizar el gráfico, como el hilo de control
     // TODO 2: esto quedó horrible, debería haberse llamado a connect
     // en cada proceso que le interesa este mensaje, y que sea autocontenido.
@@ -160,18 +162,18 @@ void MainWindow::onTemperatureDataArrived(std::shared_ptr<MicroMessage> msg) {
 void MainWindow::onColdJunctionDataArrived(std::shared_ptr<MicroMessage> msg) {
     auto &temp = (ColdJunctionReading &) *msg;
     ui->coldJointTempValue->setText(QString::number(temp.getData()));
-    Logger::info("Temperatura de juntura fría: %.2f °C", temp.getData());
+    Logger::info(GENERAL_VIEW_COLD_JUNCTION_TEMP_MSG, temp.getData());
 }
 
 void MainWindow::onCurrentFrequencyArrived(std::shared_ptr<MicroMessage> msg) {
     auto &freq = (CurrentFrequencyReading &) *msg;
-    Logger::debug("Frecuencia recibida: %.2f Hz", freq.getData());
+    Logger::debug(GENERAL_VIEW_FRECUENCY_MSG, freq.getData());
     this->chartView->dataAvailable(freq);
 }
 
 void MainWindow::onCurrentRMSArrived(std::shared_ptr<MicroMessage> msg) {
     auto &rms = (CurrentRMSReading &) *msg;
-    Logger::debug("Corriente recibida: %.2f A", rms.getData());
+    Logger::debug(GENERAL_VIEW_CURRENT_MSG, rms.getData());
     this->chartView->dataAvailable(rms);
 }
 
@@ -201,9 +203,9 @@ void MainWindow::onSetManualControl(int index){
 
 void MainWindow::enableAutomaticControlButtons(bool enable) {
     if (enable)
-        Logger::info("Enabling automatic buttons");
+        Logger::info(GENERAL_VIEW_ENABLED_AUTOMATIC_CONTROL_MSG);
     else
-        Logger::info("Disabling automatic buttons");
+        Logger::info(GENERAL_VIEW_DISABLED_AUTOMATIC_CONTROL_MSG);
     this->automaticView->enableButtons(enable);
     this->autotunningView->enableButtons(enable);
     this->manualPowerView->enableButtons(enable);
@@ -224,8 +226,8 @@ void MainWindow::onSerialPortDisconnected() {
     usbOk = false;
     onStatusChanged();
     deactivateProcess();
-    on_messagePrint("Se perdió la conexión con el microcontrolador", ERROR, true);
-    this->equipmentView->insert(QString::number(0x01), "Microcontrolador desconectado");
+    on_messagePrint(GENERAL_VIEW_CONECTION_LOST_MSG, ERROR, true);
+    this->equipmentView->insert(QString::number(0x01), GENERAL_VIEW_CONECTION_LOST_MSG);
 }
 
 void MainWindow::deactivateProcess() {
@@ -236,11 +238,11 @@ void MainWindow::deactivateProcess() {
 void MainWindow::onStatusChanged(){
     std::string statusMessage;
     if(!usbOk)
-        statusMessage = "USB desconectado";
+        statusMessage = GENERAL_VIEW_USB_DISCONNECTED_MSG;
     else if(!thermocoupleOk)
-        statusMessage = "Falla en termocupla";
+        statusMessage = GENERAL_VIEW_THERMOCOUPLE_FAULT_MSG;
     else
-        statusMessage = "OK";
+        statusMessage = OK_MSG;
     ui->statusValue->setText(QString::fromStdString(statusMessage));
 }
 
@@ -258,17 +260,17 @@ void MainWindow::onAutomaticPowerSet() {
 
 void MainWindow::onControlTypeChanged(){
     if (controlType == MANUAL) {
-        ui->operationModeValue->setText("MANUAL");
-        ui->control_type_value->setText("MANUAL");
-        ui->automaticControlValue->setText("OFF");
+        ui->operationModeValue->setText(MANUAL_MODE_MSG);
+        ui->control_type_value->setText(MANUAL_MODE_MSG);
+        ui->automaticControlValue->setText(OFF_MSG);
         this->automaticView->on_deactivateButton_clicked();
     } else {
-        ui->operationModeValue->setText("AUTOMATICO");
-        ui->control_type_value->setText("AUTOMATICO");
+        ui->operationModeValue->setText(AUTOMATIC_MODE_MSG);
+        ui->control_type_value->setText(AUTOMATIC_MODE_MSG);
         if (this->automaticView->isControlActivated()) {
-            ui->automaticControlValue->setText("ON");
+            ui->automaticControlValue->setText(ON_MSG);
         } else {
-            ui->automaticControlValue->setText("OFF");
+            ui->automaticControlValue->setText(OFF_MSG);
         }
     }
     ui->current_process->setText(this->automaticView->getProcessName());

@@ -1,4 +1,5 @@
 #include <QFileDialog>
+#include <messages.h>
 
 #include "fuzzy_control_view.h"
 #include "ui_fuzzy_control_view.h"
@@ -14,15 +15,7 @@ FuzzyControlView::FuzzyControlView(QWidget *parent, SerialPort *s) :
     ui(new Ui::FuzzyControlView)
 {
     ui->setupUi(this);
-    ui->helpbutton->setToolTip("<b>Ayuda:</b><br>"
-                               "El modo de operación '2x3' toma el error de temperatura "
-                               "y la derivada del error para modificar los valores "
-                               "de las constantes kp, kd y ki del control PID clásico. "
-                               "Se debe brindar obligatoriamente valores iniciales de "
-                               "estas constantes.<br>"
-                               "El modo de operación '3x1' toma como entradas "
-                               "la temperatura, la derivada y la integral de estas, y "
-                               "se actua sobre la potencia de salida.");
+    ui->helpbutton->setToolTip(FUZZY_CONTROL_VIEW_TYPE_TOOLTIP_MSG);
     this->kValidator = new QDoubleValidator(-9999, 9999, 2);
     this->tempValidator = new QDoubleValidator(-99999, 99999, 2);
     ui->targetTempLineEdit->setValidator(this->tempValidator);
@@ -46,7 +39,7 @@ bool FuzzyControlView::validateInput()
 bool FuzzyControlView::validateInput(bool check_temp, bool pid_mode)
 {
     if (this->ui->filenameLabel->text().toStdString() == "") {
-        Logger::debug("Config file not selected");
+        Logger::debug(CONFIG_FILE_NOT_SELECTED);
         return false;
     }
 
@@ -62,24 +55,24 @@ bool FuzzyControlView::validateInput(bool check_temp, bool pid_mode)
         if ( kdState != QValidator::Acceptable ||
              kiState != QValidator::Acceptable ||
              kpState != QValidator::Acceptable ) {
-            Logger::debug("PID constants failed");
+            Logger::debug(FUZZY_CONTROL_VIEW_PID_BAD_FORMAT);
             return false;
         }
-        Logger::debug("PID constants check passed");
+        Logger::debug(FUZZY_CONTROL_VIEW_CONSTANTS_OK_MSG);
     }
 
     if (check_temp) {
         QString targetTemp = this->ui->targetTempLineEdit->text();
         if (targetTemp == "") {
-            Logger::debug("Target temperature empty.");
+            Logger::debug(FUZZY_CONTROL_TEMPERATURE_NOT_SET_ERROR_MSG);
             return false;
         }
         auto tempState = this->tempValidator->validate(targetTemp, d);
         if (tempState != QValidator::Acceptable) {
-            Logger::debug("Target temperature check failed.");
+            Logger::debug(FUZZY_CONTROL_TARGET_TEMP_CHECK_FAILED_MSG);
             return false;
         }
-        Logger::debug("Target temperature check succeed.");
+        Logger::debug(FUZZY_CONTROL_VIEW_TARGET_CHECK_SUCCED_MSG);
     }
 
     return true;

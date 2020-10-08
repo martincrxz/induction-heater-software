@@ -3,6 +3,7 @@
 //
 #include <cmath>
 #include <iostream>
+#include <messages.h>
 #include <sstream>
 
 #include "../connection/protocol/set_power.h"
@@ -30,12 +31,12 @@ void ControlAlgorithm::run() {
             // pop bloqueante
             queue.pop(msg, true);
             if (msg == nullptr) {
-                Logger::info("Exiting control algorithm");
+                Logger::info(CONTROL_ALGORITHM_EXIT_MSG);
                 keep_processing = false;
             } else {
-                Logger::info("Recibido %0.2f °C", msg->getData());
+                Logger::info(CONTROL_ALGORITHM_TEMP_RECEIVED_MSG, msg->getData());
             	std::uint8_t tapToSend = this->process(msg);
-                Logger::info("Vueltas a enviar: %i", (int) tapToSend);
+                Logger::info(CONTORL_ALGORITHM_OUTPUT_MSG, (int) tapToSend);
                 std::shared_ptr<MicroMessage> msgPower(new SetPower(tapToSend));
                 this->serialPort->send(msgPower);
             }
@@ -43,7 +44,7 @@ void ControlAlgorithm::run() {
     } catch(std::exception &e) {
         Logger::critical(e.what());
     } catch(...) {
-        Logger::critical("Unknown error in ControlAlgorithm::run");
+        Logger::critical(UNKNOWN_ERROR_MSG, "control_algorithm");
     }
 }
 
@@ -52,7 +53,7 @@ void ControlAlgorithm::stop() {
 }
 
 ControlAlgorithm::~ControlAlgorithm() {
-	Logger::debug("Destroying ControlAlgorithm");
+	Logger::debug(CONTROL_ALGORITHM_DESTROY_MSG);
     this->stop();
     this->wait();
 }
