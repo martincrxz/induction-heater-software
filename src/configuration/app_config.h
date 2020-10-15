@@ -9,6 +9,7 @@
 #include <map>
 
 #include "general_config.h"
+#define APP_CONFIG_FILEPATH "app_configuration.json"
 
 class ApplicationConfig: public QObject {
     Q_OBJECT
