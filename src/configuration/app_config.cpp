@@ -92,11 +92,11 @@ void ApplicationConfig::checkConsistency() {
         throw Exception(APP_CONFIG_GENERAL_CONF_MISSING_ERROR_MSG);
     QJsonObject generalConfig = json["general"].toObject();
     if (!generalConfig.contains("log_level") || !generalConfig["log_level"].isArray())
-        throw Exception(FUZZY_LOGIC_BAD_FORMAT_ELEMENT_IS_NOT_ARRAY_MSG, "general/log_level");
+        throw Exception(JSON_CONFIG_FILE_BAD_FORMAT_ELEMENT_SHOULD_BE_ARRAY_MSG, "general/log_level");
     if (!generalConfig.contains("window_size") || !generalConfig["window_size"].isDouble())
-        throw Exception(APP_CONFIG_BAD_FORMAT_WINDOW_SIZE_MUST_BE_NUMBER_MSG, "general/window_size");
+        throw Exception(JSON_CONFIG_FILE_BAD_FORMAT_ELEMENT_SHOULD_BE_NUMBER_MSG, "general/window_size");
     if (!generalConfig.contains("current_adjustment_coefficient") || !generalConfig["current_adjustment_coefficient"].isDouble())
-        throw Exception(APP_CONFIG_BAD_FORMAT_WINDOW_SIZE_MUST_BE_NUMBER_MSG, "general/current_adjustment_coefficient");
+        throw Exception(JSON_CONFIG_FILE_BAD_FORMAT_ELEMENT_SHOULD_BE_NUMBER_MSG, "general/current_adjustment_coefficient");
 }
 
 void ApplicationConfig::backupConfiguration() {

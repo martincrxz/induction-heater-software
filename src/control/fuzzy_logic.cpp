@@ -41,20 +41,20 @@ void FuzzyLogic::loadJson(const std::string &filepath) {
     QFile loadFile(filepath.c_str());
 
     if (!loadFile.open(QIODevice::ReadOnly))
-        throw Exception(FUZZY_LOGIC_ERROR_LOAD_FAILED_MSG, filepath.c_str());
+        throw Exception(JSON_CONFIG_FILE_COULDNT_BE_LOADED_MSG, filepath.c_str());
 
     QByteArray saveData = loadFile.readAll();
 
     QJsonObject document(QJsonDocument::fromJson(saveData).object());
 
     if (document[mode.c_str()].isUndefined() || !document[mode.c_str()].isObject())
-        throw Exception(FUZZY_LOGIC_FILE_BAD_FORMAT_ELEMNT_IS_NOT_OBJECT_MSG, mode.c_str());
+        throw Exception(JSON_CONFIG_FILE_BAD_FORMAT_ELEMENT_SHOULD_BE_OBJECT_MSG, mode.c_str());
 
     if (document[mode.c_str()].toObject()["rules"].isUndefined() ||
             !document[mode.c_str()].toObject()["rules"].isArray()) {
         std::string element = mode;
         element += "/rules";
-        throw Exception(FUZZY_LOGIC_BAD_FORMAT_ELEMENT_IS_NOT_ARRAY_MSG, element.c_str());
+        throw Exception(JSON_CONFIG_FILE_BAD_FORMAT_ELEMENT_SHOULD_BE_ARRAY_MSG, element.c_str());
     }
     QJsonArray rules =  document[mode.c_str()].toObject()["rules"].toArray();
 
@@ -63,14 +63,14 @@ void FuzzyLogic::loadJson(const std::string &filepath) {
         if (rules[i].isUndefined() || !rules[i].isArray()) {
             std::ostringstream element(mode);
             element << "/rules/" << i;
-            throw Exception(FUZZY_LOGIC_BAD_FORMAT_ELEMENT_IS_NOT_ARRAY_MSG, element.str().c_str());
+            throw Exception(JSON_CONFIG_FILE_BAD_FORMAT_ELEMENT_SHOULD_BE_ARRAY_MSG, element.str().c_str());
         }
         QJsonArray values = rules[i].toArray();
         for(int j = 0; j < values.size(); j++) {
             if (values[j].isUndefined() || !values[j].isString()) {
                 std::ostringstream oss(mode);
                 oss << "/rules/" << i << "/" << j;
-                throw Exception(FUZZY_LOGIC_BAD_FORMAT_ELEMENT_IS_NOT_STRING, oss.str().c_str());
+                throw Exception(JSON_CONFIG_FILE_BAD_FORMAT_ELEMENT_SHOULD_BE_STRING_MSG, oss.str().c_str());
             }
             row.push_back(values[j].toString().toStdString());
         }
@@ -86,7 +86,7 @@ void FuzzyLogic::loadFunctions(std::vector<MemberFunction>& holder, QJsonObject 
             !document[mode.c_str()].toObject()[functionType.c_str()].toObject()[id.c_str()].isObject()) {
         std::ostringstream  oss(mode);
         oss << "/" << functionType << "/" << id;
-        throw Exception(FUZZY_LOGIC_FILE_BAD_FORMAT_ELEMNT_IS_NOT_OBJECT_MSG, oss.str().c_str());
+        throw Exception(JSON_CONFIG_FILE_BAD_FORMAT_ELEMENT_SHOULD_BE_OBJECT_MSG, oss.str().c_str());
     }
 
     QJsonObject rules = document[mode.c_str()].toObject()[functionType.c_str()].toObject()[id.c_str()].toObject();
@@ -95,7 +95,7 @@ void FuzzyLogic::loadFunctions(std::vector<MemberFunction>& holder, QJsonObject 
         if (!rules[obj].isArray()) {
             std::ostringstream oss(mode);
             oss << "/" << functionType << "/" << id << "/" << obj.toStdString();
-            throw Exception(FUZZY_LOGIC_FILE_BAD_FORMAT_ELEMENT_SHOULD_HAVE_4_VALUES, oss.str().c_str());
+            throw Exception(JSON_CONFIG_FILE_BAD_FORMAT_ELEMENT_SHOULD_HAVE_4_NUMBERS_MSG, oss.str().c_str());
         }
         holder.emplace_back(
                 rules[obj].toArray()[0].toDouble(),

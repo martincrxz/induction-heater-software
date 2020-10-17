@@ -61,12 +61,12 @@
 #define FUZZY_2X3_KD_OUT_FUNCT_MSG "Configuración para las funciones de salida de Kd"
 #define FUZZY_2X3_KI_OUT_FUNCT_MSG "Configuración para las funciones de salida de Ki"
 
-#define FUZZY_LOGIC_ERROR_LOAD_FAILED_MSG "No se pudo cargar el archivo json %s"
-#define APP_CONFIG_BAD_FORMAT_WINDOW_SIZE_MUST_BE_NUMBER_MSG "Mal formato del archivo, el elemento '%s' debe ser un número"
-#define FUZZY_LOGIC_FILE_BAD_FORMAT_ELEMNT_IS_NOT_OBJECT_MSG "Mal formato del archivo, el elemento '%s' no es un objeto"
-#define FUZZY_LOGIC_BAD_FORMAT_ELEMENT_IS_NOT_ARRAY_MSG "Mal formato del archivo, el elemento '%s' no es un arreglo"
-#define FUZZY_LOGIC_BAD_FORMAT_ELEMENT_IS_NOT_STRING "Mal formato del archivo, el elemento '%s' no es un string"
-#define FUZZY_LOGIC_FILE_BAD_FORMAT_ELEMENT_SHOULD_HAVE_4_VALUES "Mal formato del archivo, el elemento '%s' debe tener 4 números"
+#define JSON_CONFIG_FILE_COULDNT_BE_LOADED_MSG "No se pudo cargar el archivo json %s"
+#define JSON_CONFIG_FILE_BAD_FORMAT_ELEMENT_SHOULD_BE_NUMBER_MSG "Mal formato del archivo, el elemento '%s' debe ser un número"
+#define JSON_CONFIG_FILE_BAD_FORMAT_ELEMENT_SHOULD_BE_OBJECT_MSG "Mal formato del archivo, el elemento '%s' no es un objeto"
+#define JSON_CONFIG_FILE_BAD_FORMAT_ELEMENT_SHOULD_BE_ARRAY_MSG "Mal formato del archivo, el elemento '%s' no es un arreglo"
+#define JSON_CONFIG_FILE_BAD_FORMAT_ELEMENT_SHOULD_BE_STRING_MSG "Mal formato del archivo, el elemento '%s' no es un string"
+#define JSON_CONFIG_FILE_BAD_FORMAT_ELEMENT_SHOULD_HAVE_4_NUMBERS_MSG "Mal formato del archivo, el elemento '%s' debe tener 4 números"
 #define MEMBER_FUNCTIONS_BAD_FORMAT_MSG "Se debe cumplir que a (%f) <= b (%f) <= c (%f) <= d (%f)"
 
 #define ZN_ERROR_LIMIT_TEMP_REACHED_MSG "Error en el proceso: se llegó a la temperatura de corte"
