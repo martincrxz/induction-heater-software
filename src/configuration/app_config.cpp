@@ -57,9 +57,14 @@ uint8_t ApplicationConfig::getLogLevel() const {
     return log_level_enabled;
 }
 
+double ApplicationConfig::getCurrentAdjustmentCoefficient() const {
+    return json["general"].toObject()["current_adjustment_coefficient"].toDouble();
+}
+
 void ApplicationConfig::loadDefaultValues() {
     QJsonObject general_config;
     general_config.insert("window_size", QJsonValue(1));
+    general_config.insert("current_adjustment_coefficient", QJsonValue(1));
     QJsonArray log_level;
     log_level.push_back(QJsonValue("debug"));
     log_level.push_back(QJsonValue("info"));
@@ -90,6 +95,8 @@ void ApplicationConfig::checkConsistency() {
         throw Exception(FUZZY_LOGIC_BAD_FORMAT_ELEMENT_IS_NOT_ARRAY_MSG, "general/log_level");
     if (!generalConfig.contains("window_size") || !generalConfig["window_size"].isDouble())
         throw Exception(APP_CONFIG_BAD_FORMAT_WINDOW_SIZE_MUST_BE_NUMBER_MSG, "general/window_size");
+    if (!generalConfig.contains("current_adjustment_coefficient") || !generalConfig["current_adjustment_coefficient"].isDouble())
+        throw Exception(APP_CONFIG_BAD_FORMAT_WINDOW_SIZE_MUST_BE_NUMBER_MSG, "general/current_adjustment_coefficient");
 }
 
 void ApplicationConfig::backupConfiguration() {

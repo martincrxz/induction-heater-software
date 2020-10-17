@@ -30,6 +30,7 @@ public:
     static ApplicationConfig  &instance();
     uint8_t getWindowSize() const;
     uint8_t getLogLevel() const;
+    double getCurrentAdjustmentCoefficient() const;
     void updateConfig(const GeneralConfig &conf);
 
 signals:
