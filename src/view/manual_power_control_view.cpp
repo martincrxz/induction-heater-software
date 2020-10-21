@@ -8,7 +8,7 @@
 #include "ui_manual_power_control_view.h"
 #include "message_modes.h"
 
-#include <messages.h>
+#include "src/messages.h"
 #include <iostream>
 
 ManualPowerControlView::ManualPowerControlView(QWidget *parent, SerialPort *pPort):

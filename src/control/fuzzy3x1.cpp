@@ -1,7 +1,7 @@
 #include <iostream>
 #include <QJsonObject>
 #include <sstream>
-#include <messages.h>
+#include "src/messages.h"
 
 #include "fuzzy3x1.h"
 #include "logger/logger.h"

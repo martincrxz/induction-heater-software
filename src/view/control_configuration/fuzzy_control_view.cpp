@@ -1,5 +1,5 @@
 #include <QFileDialog>
-#include <messages.h>
+#include "src/messages.h"
 
 #include "fuzzy_control_view.h"
 #include "ui_fuzzy_control_view.h"

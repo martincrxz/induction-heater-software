@@ -8,7 +8,7 @@
 #include "view/application.h"
 #include "view/general_view.h"
 
-#include <messages.h>
+#include "src/messages.h"
 
 int main(int argc, char *argv[])
 {	

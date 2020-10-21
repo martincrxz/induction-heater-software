@@ -5,7 +5,7 @@
  */
 
 #include <QString>
-#include <messages.h>
+#include "src/messages.h"
 #include "thermocouple_fault.h"
 
 static const char *faultMessages[] = {

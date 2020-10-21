@@ -1,3 +1,4 @@
+%% Ejemplo de como cacular la frecuencia de la corriente. Deprecado
 clear all;
 close all;
 clc;

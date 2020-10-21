@@ -142,7 +142,8 @@ HEADERS += \
     src/control/MemberCandidate.h \
     src/control/MemberFunction.h \
     src/control/OutputObject.h \
-    src/configuration/app_config.h
+    src/configuration/app_config.h \
+    src/messages.h
 
 FORMS += \
 		src/view/auto_tunning_tab_view.ui \
@@ -159,3 +160,4 @@ FORMS += \
     src/view/dialog/general_config_dialog.ui
 
 RESOURCES = assets/resources.qrc
+

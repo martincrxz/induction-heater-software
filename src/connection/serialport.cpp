@@ -7,7 +7,7 @@
 #include <iostream>
 #include <sstream>
 #include <logger/logger.h>
-#include <messages.h>
+#include "src/messages.h"
 #include "ui_general_view.h"
 
 #define SEPARATOR ':'

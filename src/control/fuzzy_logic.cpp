@@ -12,7 +12,7 @@
 #include <QJsonArray>
 #include <QJsonValue>
 #include <sstream>
-#include <messages.h>
+#include "src/messages.h"
 
 #include "fuzzy_logic.h"
 #include "MemberCandidate.h"

@@ -3,7 +3,7 @@
 //
 #include <cmath>
 #include <iostream>
-#include <messages.h>
+#include "src/messages.h"
 #include <sstream>
 
 #include "../connection/protocol/set_power.h"
