@@ -12,7 +12,7 @@
 #include <QJsonArray>
 #include <QJsonValue>
 #include <sstream>
-#include "src/messages.h"
+#include "messages.h"
 
 #include "fuzzy_logic.h"
 #include "MemberCandidate.h"
@@ -21,6 +21,7 @@
 
 FuzzyLogic::FuzzyLogic(float targetTemp, SerialPort *sp,
         uint8_t window_size, std::string name): 
+// TODO: SOY UN FORRO 
        ClassicPID(1, 0, 0, targetTemp, sp, window_size),
        mode(name) {}
 

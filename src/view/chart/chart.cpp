@@ -13,7 +13,7 @@
 #include <QtWidgets/QGesture>
 #include <QtWidgets/QGraphicsScene>
 #include <QtWidgets/QGraphicsView>
-#include "src/messages.h"
+#include "messages.h"
 
 #define TIME_REJECT_DATA 100
 

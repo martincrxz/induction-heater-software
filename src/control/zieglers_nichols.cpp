@@ -2,7 +2,7 @@
 // Created by Martín García on 15/02/2020.
 //
 
-#include "src/messages.h"
+#include "messages.h"
 #include "zieglers_nichols.h"
 #include "../connection/protocol/set_power.h"
 #include "../view/auto_tunning_tab_view.h"

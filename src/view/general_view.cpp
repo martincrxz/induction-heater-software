@@ -20,7 +20,7 @@
 #include "../connection/protocol/current_frequency_reading.h"
 #include "../connection/protocol/current_RMS_reading.h"
 
-#include "src/messages.h"
+#include "messages.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),

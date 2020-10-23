@@ -1,7 +1,7 @@
 #include <iostream>
 #include <QJsonObject>
 #include <sstream>
-#include "src/messages.h"
+#include "messages.h"
 
 #include "fuzzy2x3.h"
 #include "logger/logger.h"
@@ -49,7 +49,7 @@ void Fuzzy2x3::updateParameters(std::shared_ptr<TemperatureReading> data) {
             for (auto &dec: derivativeErrorCandidates) {
                 if (rule[0] == ec.tag && rule[1] == dec.tag) {
                     float degree = MIN(ec.degree, dec.degree);
-                    for (unsigned int i = 2, j = 0; i < rules.size(); i++)
+                    for (unsigned int i = 2, j = 0; i < rule.size(); i++)
                       outputs[j++].emplace(degree, rule[i]);
                 }
             }
@@ -103,4 +103,8 @@ void Fuzzy2x3::printConf() const {
     Logger::debug(FUZZY_2X3_KI_OUT_FUNCT_MSG);
     for (auto &function: kiOutputFunctions)
         function.print();
+}
+
+void Fuzzy2x3::print() {
+    std::cerr << "Kp: " << this->Kp << " Kd: " << this->Kd << " Ki:" << this->Ki << " Temp: ";
 }

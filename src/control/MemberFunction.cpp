@@ -6,7 +6,7 @@
 
 #include <exception.h>
 #include <sstream>
-#include "src/messages.h"
+#include "messages.h"
 
 #include "logger/logger.h"
 #include "MemberFunction.h"

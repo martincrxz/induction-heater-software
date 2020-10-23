@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include <logger/logger.h>
-#include "src/messages.h"
+#include "messages.h"
 
 #include "protocol.h"
 #include "shutdown_ack.h"

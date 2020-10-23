@@ -1,5 +1,5 @@
 #include <logger/logger.h>
-#include "src/messages.h"
+#include "messages.h"
 #include "auto_tunning_tab_view.h"
 #include "ui_auto_tunning_tab_view.h"
 #include "general_view.h"

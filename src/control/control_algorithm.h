@@ -50,6 +50,7 @@ public:
      */
     void stop();
     virtual unsigned char process(std::shared_ptr<TemperatureReading> data) = 0;
+    unsigned char _process(float temp);
     /**
      * @brief Convierte la potencia (numero real entre 0 y 100) a vueltas 
      * del potenciometro.
@@ -57,6 +58,7 @@ public:
      * @return cantidad de vueltas para el potenciómetro   
      */
     static unsigned char powerToTaps(float power);
+    static float tapsToPower(unsigned char taps);
     virtual void updateConfig();
 };
 

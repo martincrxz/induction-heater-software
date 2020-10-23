@@ -3,7 +3,7 @@
 #include <QFileDialog>
 #include <string>
 #include <sstream>
-#include "src/messages.h"
+#include "messages.h"
 
 #include "../../control/file_control.h"
 #include "from_file_control_view.h"

@@ -1,6 +1,6 @@
 #include <iostream>
 #include <logger/logger.h>
-#include "src/messages.h"
+#include "messages.h"
 
 #include "application.h"
 #include "exception.h"

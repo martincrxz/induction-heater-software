@@ -1,5 +1,5 @@
 #include <fstream>
-#include "src/messages.h"
+#include "messages.h"
 
 #include "control_configuration.h"
 #include "logger/logger.h"

@@ -3,7 +3,7 @@
 //
 
 #include <sstream>
-#include "src/messages.h"
+#include "messages.h"
 #include <numeric>
 
 #include "classic_pid.h"
@@ -15,7 +15,7 @@ ClassicPID::ClassicPID(float kp, float ki, float kd, float targetTemp, SerialPor
         ControlAlgorithm(targetTemp, sp, window_size), Kp(kp), Ki(ki), Kd(kd) {
 	Logger::debug(CLASSIC_PID_CONSTRUCTOR_MSG, kp, kd, ki, targetTemp);
 }
-
+#include <fstream>
 unsigned char ClassicPID::process(std::shared_ptr<TemperatureReading> temp) {
 	/**
 	 *	El control se va a aplicar usando una ventana de tiempo, donde se 

@@ -1,7 +1,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include "src/messages.h"
+#include "messages.h"
 
 #include "logger/logger.h"
 #include "exception.h"

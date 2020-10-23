@@ -49,7 +49,18 @@ include_directories(${CMAKE_SOURCE_DIR}/libs)
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
 message(STATUS "[INFO] Loading sources")
-file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/*.cpp" "src/*.h" "libs/*.h" "libs/*.cpp")
+file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR} 
+        "src/configuration/*.cpp" 
+        "src/configuration/*.h"
+        "src/connection/*.cpp" 
+        "src/connection/*.h"
+        "src/control/*.cpp" 
+        "src/control/*.h"
+        "src/view/*.cpp" 
+        "src/view/*.h"
+        "src/messages.h"
+        "libs/*.h"
+        "libs/*.cpp")
 
 message(STATUS "[INFO] Loading sources of QT")
 
@@ -85,7 +96,7 @@ file(GLOB RESOURCES ${CMAKE_SOURCE_DIR}
         "assets/resources.qrc")
 
 # Tell CMake to create the helloworld executable
-add_executable(application ${SOURCES} ${UIS_HEADERS} ${RESOURCES})
+add_executable(application src/main.cpp ${SOURCES} ${UIS_HEADERS} ${RESOURCES})
 
 message(STATUS "[INFO] Add Qt components to the target link libraries")
 if(IS_WINDOWS)
@@ -95,6 +106,22 @@ else()
 	target_link_libraries(application Qt5::Core Qt5::Widgets Qt5::Charts Qt5::SerialPort)
 
 endif()
+# Run tests of the control algorithms
+#if (RUN_TESTS)
+    message(STATUS "[INFO] ENABLING THE TEST SUITE")
+    enable_testing()
+    find_package(GTest REQUIRED)
+
+    file(GLOB_RECURSE TEST_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} 
+            "test/dut/*.cpp"
+            "test/dut/*.h"
+        )
+    add_executable(app_tests test/test_main.cpp ${SOURCES} ${TEST_SOURCES})
+    target_link_libraries(app_tests GTest::GTest GTest::Main Qt5::Core Qt5::Widgets Qt5::Charts Qt5::SerialPort)
+
+    add_test(NAME app_tests
+          COMMAND app_tests)
+#endif()
 # Install phase (commented until necessary)
 file(COPY fuzzy DESTINATION ./)
 #file(COPY serverConfig.yaml DESTINATION ./)

@@ -16,6 +16,9 @@ public:
     Fuzzy2x3(float targetTemp, SerialPort *sp, const std::string &filepath, uint8_t window_size);
     virtual ~Fuzzy2x3() override;
     virtual unsigned char process(std::shared_ptr<TemperatureReading> data) override;
+
+    void print();
+
 protected:
     virtual void loadMemberFunctions(QJsonObject& document) override;
     /**

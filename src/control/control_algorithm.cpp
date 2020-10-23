@@ -3,7 +3,7 @@
 //
 #include <cmath>
 #include <iostream>
-#include "src/messages.h"
+#include "messages.h"
 #include <sstream>
 
 #include "../connection/protocol/set_power.h"
@@ -70,9 +70,19 @@ unsigned char ControlAlgorithm::powerToTaps(float power) {
     return (unsigned char) std::floor(taps);
 }
 
+float ControlAlgorithm::tapsToPower(unsigned char taps) {
+    float power = 100 - (100.f * taps / MAXIMUM_TAP);
+    return power;
+}
+
 void ControlAlgorithm::updateConfig() {
     std::lock_guard<std::mutex> lock(this->m);
     this->window_size = ApplicationConfig::instance().getWindowSize();
     this->errorValues.clear();
     iteration = 0;
+}
+
+unsigned char ControlAlgorithm::_process(float temp) {
+    std::shared_ptr<TemperatureReading> temp_ptr(new TemperatureReading(temp));
+    return this->process(temp_ptr);
 }

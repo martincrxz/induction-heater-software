@@ -4,7 +4,7 @@
 #include <QJsonDocument>
 #include <cstdint>
 
-#include "src/messages.h"
+#include "messages.h"
 #include "logger/logger.h"
 #include "app_config.h"
 #include "general_config.h"
