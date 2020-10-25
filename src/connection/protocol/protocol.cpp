@@ -16,6 +16,8 @@
 #include "automatic_control_acknowledge.h"
 #include "thermocouple_fault.h"
 #include "thermocouple_configuration_acknowledge.h"
+#include "current_frequency_reading.h"
+#include "current_RMS_reading.h"
 
 Protocol::Protocol() {}
 
@@ -41,6 +43,10 @@ std::shared_ptr<MicroMessage> Protocol::translate(QByteArray &buff) {
             return std::shared_ptr<MicroMessage>(new ManualControlAcknowledge());
         case AUTOMATIC_CONTROL_ACKNOWLEDGE:
             return std::shared_ptr<MicroMessage>(new AutomaticControlAcknowledge());
+        case CURRENT_FREQUENCY_READING:
+            return std::shared_ptr<MicroMessage>(new CurrentFrequencyReading(buff));
+        case CURRENT_RMS_READING:
+            return std::shared_ptr<MicroMessage>(new CurrentRMSReading(buff));
         default:
             Logger::warning(SERIALPORT_INVALID_MSG_ERROR_MSG);
             break;

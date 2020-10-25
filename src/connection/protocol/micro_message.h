@@ -23,8 +23,8 @@ typedef enum {
     AUTOMATIC_CONTROL_ACKNOWLEDGE = 0x31, // to computer OK
     SET_MANUAL_CONTROL = 0x32, // to uC
     MANUAL_CONTROL_ACKNOWLEDGE = 0x33, // to computer OK
-    CURRENT_FREQUENCY_READING = 0x40, // OK
-    CURRENT_RMS_READING = 0x41, // OK
+    CURRENT_RMS_READING = 0x40, // OK
+    CURRENT_FREQUENCY_READING = 0x41, // OK
     SHUTDOWN_MESSAGE = 0x50, // to uC
     SHUTDOWN_ACKNOWLEDGE = 0x51 // to computer OK
 } message_id;
