@@ -6,6 +6,7 @@
 #include "messages.h"
 
 #include "../../control/file_control.h"
+#include "configuration/app_config.h"
 #include "from_file_control_view.h"
 #include "ui_from_file_control_view.h"
 // TODO: wrappear el formulario de ki,kd.kp en un componente propio y unico
@@ -20,7 +21,7 @@ FromFileControlView::FromFileControlView(QWidget *parent, SerialPort *s) :
     ui->kiLineEdit->setValidator(this->kValidator);
     ui->kpLineEdit->setValidator(this->kValidator);
 
-    loadControlValues();
+    updateConfiguration();
 }
 
 FromFileControlView::~FromFileControlView()
@@ -71,13 +72,11 @@ void FromFileControlView::on_openFile_clicked()
 void FromFileControlView::on_saveButton_clicked()
 {
     if (this->validateInput()) {
-        std::fstream file(FILE_PATH, std::fstream::out |
-                          std::fstream::trunc);
-        file << "kp " << this->ui->kpLineEdit->text().toStdString() << std::endl;
-        file << "kd " << this->ui->kdLineEdit->text().toStdString() << std::endl;
-        file << "ki " << this->ui->kiLineEdit->text().toStdString() << std::endl;
-
-        Logger::info(CONTROL_CONFIGURATION_DATA_SAVED_MSG, FILE_PATH);
+        float kp = this->ui->kpLineEdit->text().toFloat();
+        float ki = this->ui->kdLineEdit->text().toFloat();
+        float kd = this->ui->kiLineEdit->text().toFloat();
+        ApplicationConfig::instance().saveControlConstant(kp, ki, kd, "from_file");
+        Logger::info(CONTROL_CONFIGURATION_DATA_SAVED_MSG);
         emit message(CLASSIC_CONTROL_VIEW_DATA_SAVED_MSG, OK, true);
     } else {
         emit message(CLASSIC_CONTROL_SAVE_DATA_FAILED_MSG, ERROR, true);
@@ -144,24 +143,11 @@ void FromFileControlView::parseFile() {
     }
 }
 
-void FromFileControlView::loadControlValues(std::string filepath) {
-    std::fstream file(filepath, std::fstream::in);
-    // TODO: podría usar un formato estandar como Json o Yaml
-    std::string line;
-    std::string key;
-    std::string value;
-    while (std::getline(file, line)) {
-        std::istringstream iss(line);
-        iss >> key;
-        iss >> value;
-        if (key == "kp") {
-            this->ui->kpLineEdit->setText(QString(value.c_str()));
-        } else if (key == "kd") {
-            this->ui->kdLineEdit->setText(QString(value.c_str()));
-        } else if (key == "ki") {
-            this->ui->kiLineEdit->setText(QString(value.c_str()));
-        } else {
-            throw Exception(FROM_FILE_CONTROL_VIEW_BAD_FORMAT_MSG);
-        }
+void FromFileControlView::updateConfiguration() {
+    std::vector<float> constants = ApplicationConfig::instance().getControlConstants("from_file");
+    if (constants.size() == 3) {
+        this->ui->kpLineEdit->setText(QString::number(constants[0]));
+        this->ui->kdLineEdit->setText(QString::number(constants[1]));
+        this->ui->kiLineEdit->setText(QString::number(constants[2]));
     }
 }

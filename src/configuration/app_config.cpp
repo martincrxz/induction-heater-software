@@ -74,14 +74,6 @@ void ApplicationConfig::loadDefaultValues() {
     general_config.insert("log_level", log_level);
     json.insert("general", general_config);
 
-    QJsonObject control_config;
-    QJsonObject classic_pid_control;
-    classic_pid_control.insert("kp", QJsonValue(1));
-    classic_pid_control.insert("kd", QJsonValue(1));
-    classic_pid_control.insert("ki", QJsonValue(1));
-    control_config.insert("classic_pid", classic_pid_control);
-    json.insert("control_configuration", control_config);
-
     backupConfiguration();
 }
 
@@ -131,4 +123,31 @@ void ApplicationConfig::updateConfig(const GeneralConfig &conf) {
     this->json.insert("general", obj);
     this->backupConfiguration();
     emit configChanged();
+}
+
+void ApplicationConfig::saveControlConstant(float kp, float kd, float ki, const char* algorithm) {
+    QJsonObject algorithm_config;
+    algorithm_config.insert("kp", kp);
+    algorithm_config.insert("kd", kd);
+    algorithm_config.insert("ki", ki);
+
+    QJsonObject conf;
+    if (this->json.contains("control_configuration")) {
+        conf = this->json["control_configuration"].toObject();
+    }
+    conf.insert(algorithm, algorithm_config);
+    this->json.insert("control_configuration", conf);
+    this->backupConfiguration();
+    emit algorithmConstantChanged();
+}
+
+std::vector<float> ApplicationConfig::getControlConstants(const char *algorithm) {
+    std::vector<float> ret;
+    if (this->json.contains("control_configuration") && this->json["control_configuration"].toObject().contains(algorithm)) {
+        QJsonObject conf = this->json["control_configuration"].toObject()[algorithm].toObject();
+        ret.push_back(conf["kp"].toDouble());
+        ret.push_back(conf["kd"].toDouble());
+        ret.push_back(conf["ki"].toDouble());
+    }
+    return std::move(ret);
 }

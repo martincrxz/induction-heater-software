@@ -2,6 +2,7 @@
 #include "messages.h"
 
 #include "fuzzy_control_view.h"
+#include "configuration/app_config.h"
 #include "ui_fuzzy_control_view.h"
 #include "logger/logger.h"
 #include "../../control/fuzzy2x3.h"
@@ -22,6 +23,7 @@ FuzzyControlView::FuzzyControlView(QWidget *parent, SerialPort *s) :
     ui->kdLineEdit->setValidator(this->kValidator);
     ui->kILineEdit->setValidator(this->kValidator);
     ui->kpLineEdit->setValidator(this->kValidator);
+    updateConfiguration();
 }
 
 FuzzyControlView::~FuzzyControlView()
@@ -33,12 +35,12 @@ FuzzyControlView::~FuzzyControlView()
 
 bool FuzzyControlView::validateInput()
 {
-    return validateInput(true, this->current_index == MODE_2x3);
+    return validateInput(true, this->current_index == MODE_2x3, true);
 }
 
-bool FuzzyControlView::validateInput(bool check_temp, bool pid_mode)
+bool FuzzyControlView::validateInput(bool check_temp, bool pid_mode, bool check_file)
 {
-    if (this->ui->filenameLabel->text().toStdString() == "") {
+    if (check_file && this->ui->filenameLabel->text().toStdString() == "") {
         Logger::debug(CONFIG_FILE_NOT_SELECTED);
         return false;
     }
@@ -92,8 +94,13 @@ const char *FuzzyControlView::getName()
     return "Fuzzy logic";
 }
 
-void FuzzyControlView::loadControlValues(std::string filepath) {
-    // TODO, refactor
+void FuzzyControlView::updateConfiguration() {
+    std::vector<float> constants = ApplicationConfig::instance().getControlConstants("fuzzy2x3");
+    if (constants.size() == 3) {
+        this->ui->kpLineEdit->setText(QString::number(constants[0]));
+        this->ui->kdLineEdit->setText(QString::number(constants[1]));
+        this->ui->kILineEdit->setText(QString::number(constants[2]));
+    }
 }
 
 void FuzzyControlView::on_operationModeCombo_currentIndexChanged(int index)
@@ -123,4 +130,19 @@ void FuzzyControlView::on_openFile_clicked()
 {
     QString filename = QFileDialog::getOpenFileName(this, "Seleccione archivo de control", "", "*.json");
     this->ui->filenameLabel->setText(filename);
+}
+
+void FuzzyControlView::on_save_button_clicked()
+{
+    if (this->current_index == MODE_2x3) {
+        if (this->validateInput(false, true, false)) {
+            float kp = this->ui->kpLineEdit->text().toFloat();
+            float ki = this->ui->kILineEdit->text().toFloat();
+            float kd = this->ui->kdLineEdit->text().toFloat();
+            ApplicationConfig::instance().saveControlConstant(kp, kd, ki, "fuzzy2x3");
+            emit message(CLASSIC_CONTROL_VIEW_DATA_SAVED_MSG, OK, true);
+        } else {
+            emit message(CLASSIC_CONTROL_SAVE_DATA_FAILED_MSG, ERROR, true);
+        }
+    }
 }

@@ -82,7 +82,7 @@
 #define CONTORL_CONFIGURATION_DESTRUCTOR_MSG "Destruyendo el objeto ControlConfiguration"
 #define CONTORL_CONFIGURATION_INIT_MSG "Inicializando el algorítmo de control"
 #define CONTROL_CONFIGURATION_STOP_MSG "Parando el algoritmo de control"
-#define CONTROL_CONFIGURATION_DATA_SAVED_MSG "Datos guardados en el archivo: %s"
+#define CONTROL_CONFIGURATION_DATA_SAVED_MSG "Datos guardados en el archivo de configuración"
 #define CONTORL_CONFIGURATION_VARIABLE_UPDATED_MSG "Control %s actualizado (window_size: %i)"
 
 #define FILE_DOESNT_EXIST_MSG "El archivo no existe"

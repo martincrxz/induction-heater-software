@@ -2,15 +2,15 @@
 #include "messages.h"
 
 #include "control_configuration.h"
+#include "configuration/app_config.h"
 #include "logger/logger.h"
-#include "../../configuration/app_config.h"
 
 
 ControlConfiguration::ControlConfiguration(QWidget *parent, SerialPort *sp) :
         QWidget(parent),
         sp(sp)
 {
-
+    connect(&ApplicationConfig::instance(), &ApplicationConfig::algorithmConstantChanged, this, &ControlConfiguration::updateConfiguration);
 }
 
 ControlConfiguration::~ControlConfiguration() {
@@ -33,18 +33,6 @@ void ControlConfiguration::dataAvailable(TemperatureReading &temp) {
     if (this->controlAlgorithm != nullptr) {
         this->controlAlgorithm->receiveData(temp);
     }
-}
-
-void ControlConfiguration::saveConstantsInFile(float kp, float ki, float kd, std::string filename) {
-
-    std::fstream file(filename, std::fstream::out |
-                                std::fstream::trunc);
-    file << "kp " << kp << std::endl;
-    file << "ki " << ki << std::endl;
-    file << "kd " << kd << std::endl;
-
-    Logger::info(CONTROL_CONFIGURATION_DATA_SAVED_MSG, filename.c_str());
-
 }
 
 void ControlConfiguration::updateConfig() {

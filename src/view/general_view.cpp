@@ -281,10 +281,7 @@ bool MainWindow::isControlActivated(){
 }
 
 void MainWindow::onZNCalculated(float kp, float ki, float kd) {
-    std::ostringstream oss;
-    oss << "zn-" << QDateTime::currentDateTime().toString("dd-MM-yyyy").toStdString();
-    ClassicControlView::saveConstantsInFile(kp, ki, kd, oss.str());
-    this->automaticView->loadFile(oss.str());
+    ApplicationConfig::instance().saveControlConstant(kp, ki, kd, "ziegler-nichols");
     this->autotunningView->deactivate(true);
 }
 

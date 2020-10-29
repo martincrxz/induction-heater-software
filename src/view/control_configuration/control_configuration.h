@@ -47,13 +47,6 @@ public:
      */
     virtual const char * getName() = 0;
     void dataAvailable(TemperatureReading &temp);
-    /**
-     * una gronchada para salir rapido del apuro para refrescar las constantes
-     * de control (para aquellas vistas que tengan configuración de kp, kd y ki)
-     * en algun futuro usar algo mejor.
-     */
-    static void saveConstantsInFile(float, float, float, std::string);
-    virtual void loadControlValues(std::string filepath = FILE_PATH) = 0;   
     virtual void updateConfig();
 protected:
     SerialPort *sp;
@@ -64,6 +57,7 @@ signals:
     void message(const char *str, unsigned char mode, bool reset);
 
 public slots:
+    virtual void updateConfiguration() = 0;
 };
 
 #endif // __CONTROL_CONFIGURATION_H__

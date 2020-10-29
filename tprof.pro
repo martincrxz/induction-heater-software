@@ -22,7 +22,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-INCLUDEPATH += libs
+INCLUDEPATH += libs src
 
 SOURCES += \
         libs/logger/message/logger_debug.cpp \
@@ -51,6 +51,8 @@ SOURCES += \
         src/connection/protocol/thermocouple_configuration.cpp \
         src/connection/protocol/thermocouple_configuration_acknowledge.cpp \
         src/connection/protocol/thermocouple_fault.cpp \
+        src/connection/protocol/current_frequency_reading.cpp \
+        src/connection/protocol/current_RMS_reading.cpp \
         src/connection/serialport.cpp \
         src/view/application.cpp \
         src/view/auto_tunning_tab_view.cpp \
@@ -96,6 +98,8 @@ HEADERS += \
         libs/stream.h \
         src/connection/protocol/automatic_control_acknowledge.h \
         src/connection/protocol/cold_junction_reading.h \
+        src/connection/protocol/current_frequency_reading.h \
+        src/connection/protocol/current_RMS_reading.h \
         src/connection/protocol/incoming_message.h \
         src/connection/protocol/manual_control_acknowledge.h \
         src/connection/protocol/micro_message.h \

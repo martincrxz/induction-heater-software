@@ -7,6 +7,7 @@
 #include <QTimer>
 #include <string>
 #include <map>
+#include <vector>
 
 #include "general_config.h"
 #define APP_CONFIG_FILEPATH "app_configuration.json"
@@ -32,9 +33,12 @@ public:
     uint8_t getLogLevel() const;
     double getCurrentAdjustmentCoefficient() const;
     void updateConfig(const GeneralConfig &conf);
+    void saveControlConstant(float kp, float kd, float ki, const char* algorithm);
+    std::vector<float> getControlConstants(const char *algorithm);
 
 signals:
     void configChanged();
+    void algorithmConstantChanged();
 };
 
 #endif

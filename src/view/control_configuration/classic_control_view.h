@@ -26,8 +26,9 @@ public:
      */
     void instantiate() override;
     const char * getName() override;
-    void loadControlValues(std::string filepath = FILE_PATH) override;
 
+public slots:
+    void updateConfiguration() override;
 private slots:
 
     void on_saveButton_clicked();
