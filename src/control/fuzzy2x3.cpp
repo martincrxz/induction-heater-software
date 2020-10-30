@@ -11,9 +11,9 @@
 
 #define MIN(x, y) (x) < (y) ? (x) : (y)
 
-Fuzzy2x3::Fuzzy2x3(float targetTemp, SerialPort *sp,
+Fuzzy2x3::Fuzzy2x3(float targetTemp, float kp, float kd, float ki, SerialPort *sp,
                 const std::string &filepath, uint8_t window_size): 
-            FuzzyLogic(targetTemp, sp, window_size, "fuzzy2x3") {
+            FuzzyLogic(targetTemp, kp, kd, ki, sp, window_size, "fuzzy2x3") {
     loadJson(filepath);
     printConf();
 }

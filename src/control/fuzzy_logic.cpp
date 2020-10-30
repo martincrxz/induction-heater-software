@@ -19,10 +19,9 @@
 #include "OutputObject.h"
 #include "../configuration/app_config.h"
 
-FuzzyLogic::FuzzyLogic(float targetTemp, SerialPort *sp,
-        uint8_t window_size, std::string name): 
-// TODO: SOY UN FORRO 
-       ClassicPID(1, 0, 0, targetTemp, sp, window_size),
+FuzzyLogic::FuzzyLogic(float targetTemp, float kp, float kd, float ki,  SerialPort *sp,
+        uint8_t window_size, std::string name):
+       ClassicPID(kp, ki, kd, targetTemp, sp, window_size),
        mode(name) {}
 
 FuzzyLogic::~FuzzyLogic() {

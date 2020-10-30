@@ -36,7 +36,7 @@
  */
 class FuzzyLogic: public ClassicPID {
 public:
-    FuzzyLogic(float targetTemp, SerialPort *sp, uint8_t window_size, std::string name);
+    FuzzyLogic(float targetTemp, float kp, float kd, float ki, SerialPort *sp, uint8_t window_size, std::string name);
     virtual ~FuzzyLogic() override;
 
 protected:

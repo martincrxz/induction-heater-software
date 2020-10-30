@@ -1,5 +1,6 @@
 #include <QFileDialog>
 #include <QtWidgets/QInputDialog>
+#include <memory>
 #include "messages.h"
 
 #include "fuzzy_control_view.h"
@@ -86,10 +87,13 @@ bool FuzzyControlView::validateInput(bool check_temp, bool pid_mode, bool check_
 void FuzzyControlView::instantiate() {
     float targetTemp = this->ui->targetTempLineEdit->text().toFloat();
     std::string filepath = this->ui->filenameLabel->text().toStdString();
-    if (current_index == MODE_2x3)
-        this->controlAlgorithm.reset(new Fuzzy2x3(targetTemp, this->sp, filepath, this->window_size));
-    else 
-        this->controlAlgorithm.reset(new Fuzzy3x1(targetTemp, this->sp, filepath, this->window_size));
+    if (current_index == MODE_2x3) {
+        float kp = this->ui->kpLineEdit->text().toFloat();
+        float ki = this->ui->kILineEdit->text().toFloat();
+        float kd = this->ui->kdLineEdit->text().toFloat();
+        this->controlAlgorithm = std::make_unique<Fuzzy2x3>(targetTemp, kp, kd, ki, this->sp, filepath, this->window_size);
+    } else
+        this->controlAlgorithm = std::make_unique<Fuzzy3x1>(targetTemp, this->sp, filepath, this->window_size);
 }
 
 const char *FuzzyControlView::getName()

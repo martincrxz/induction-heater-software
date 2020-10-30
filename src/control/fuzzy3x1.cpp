@@ -13,7 +13,7 @@
 
 Fuzzy3x1::Fuzzy3x1(float targetTemp, SerialPort *sp, const std::string &filepath,
                     uint8_t window_size):
-            FuzzyLogic(targetTemp, sp, window_size, "fuzzy3x1") {
+            FuzzyLogic(targetTemp, 0, 0, 0, sp, window_size, "fuzzy3x1") {
     loadJson(filepath);
     printConf();
 }
