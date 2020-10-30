@@ -1,4 +1,5 @@
 #include <QFileDialog>
+#include <QtWidgets/QInputDialog>
 #include "messages.h"
 
 #include "fuzzy_control_view.h"
@@ -23,7 +24,9 @@ FuzzyControlView::FuzzyControlView(QWidget *parent, SerialPort *s) :
     ui->kdLineEdit->setValidator(this->kValidator);
     ui->kILineEdit->setValidator(this->kValidator);
     ui->kpLineEdit->setValidator(this->kValidator);
+    this->selectedPresetName = getName();
     updateConfiguration();
+    connect(&ApplicationConfig::instance(), &ApplicationConfig::algorithmConstantChanged, this, &FuzzyControlView::updateConfiguration);
 }
 
 FuzzyControlView::~FuzzyControlView()
@@ -91,16 +94,7 @@ void FuzzyControlView::instantiate() {
 
 const char *FuzzyControlView::getName()
 {
-    return "Fuzzy logic";
-}
-
-void FuzzyControlView::updateConfiguration() {
-    std::vector<float> constants = ApplicationConfig::instance().getControlConstants("fuzzy2x3");
-    if (constants.size() == 3) {
-        this->ui->kpLineEdit->setText(QString::number(constants[0]));
-        this->ui->kdLineEdit->setText(QString::number(constants[1]));
-        this->ui->kILineEdit->setText(QString::number(constants[2]));
-    }
+    return FUZZY_2x3_NAME;
 }
 
 void FuzzyControlView::on_operationModeCombo_currentIndexChanged(int index)
@@ -139,10 +133,59 @@ void FuzzyControlView::on_save_button_clicked()
             float kp = this->ui->kpLineEdit->text().toFloat();
             float ki = this->ui->kILineEdit->text().toFloat();
             float kd = this->ui->kdLineEdit->text().toFloat();
-            ApplicationConfig::instance().saveControlConstant(kp, kd, ki, "fuzzy2x3");
-            emit message(CLASSIC_CONTROL_VIEW_DATA_SAVED_MSG, OK, true);
+            bool ok;
+            QString presetName = QInputDialog::getText(this, tr("Seleccione nombre de configuración"),
+                                                 tr("Nombre del preset:"), QLineEdit::Normal,
+                                                 "", &ok);
+            if (ok && !presetName.isEmpty()) {
+                this->selectedPresetName = presetName.toStdString();
+                ApplicationConfig::instance().saveControlConstant(kp, kd, ki, presetName.toStdString().c_str());
+                emit message(CLASSIC_CONTROL_VIEW_DATA_SAVED_MSG, OK, true);
+            }
+
         } else {
             emit message(CLASSIC_CONTROL_SAVE_DATA_FAILED_MSG, ERROR, true);
         }
     }
+}
+
+void FuzzyControlView::on_constantsPresetCombo_currentIndexChanged(const QString &presetSelected) {
+    setPresetConfiguration(presetSelected.toStdString().c_str());
+}
+
+void FuzzyControlView::loadPresetList(const char *currentPreset) {
+    std::list<QString> presets = ApplicationConfig::instance().getPresetList();
+    this->ui->constantsPresetCombo->clear();
+    this->ui->constantsPresetCombo->addItem(EMPTY_PRESET_LABEL);
+    int i = 1;
+    for (auto &presetName: presets) {
+        this->ui->constantsPresetCombo->addItem(presetName);
+        if (presetName == currentPreset) {
+            this->ui->constantsPresetCombo->setCurrentIndex(i);
+        }
+        i++;
+    }
+}
+
+void FuzzyControlView::setPresetConfiguration(const char *currentPreset) {
+    std::vector<float> constants = ApplicationConfig::instance().getControlConstants(currentPreset);
+    if (constants.size() == 3) {
+        this->selectedPresetName = currentPreset;
+        this->ui->kpLineEdit->setText(QString::number(constants[0]));
+        this->ui->kdLineEdit->setText(QString::number(constants[1]));
+        this->ui->kILineEdit->setText(QString::number(constants[2]));
+    } else {
+        this->ui->kpLineEdit->setText("");
+        this->ui->kdLineEdit->setText("");
+        this->ui->kILineEdit->setText("");
+    }
+}
+
+void FuzzyControlView::updateConfiguration() {
+    this->_updateConfiguration(this->selectedPresetName.c_str());
+}
+
+void FuzzyControlView::_updateConfiguration(const char *currentPreset) {
+    this->loadPresetList(currentPreset);
+    this->setPresetConfiguration(currentPreset);
 }

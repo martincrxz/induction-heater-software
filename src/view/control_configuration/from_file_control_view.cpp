@@ -3,6 +3,7 @@
 #include <QFileDialog>
 #include <string>
 #include <sstream>
+#include <QtWidgets/QInputDialog>
 #include "messages.h"
 
 #include "../../control/file_control.h"
@@ -20,8 +21,9 @@ FromFileControlView::FromFileControlView(QWidget *parent, SerialPort *s) :
     ui->kdLineEdit->setValidator(this->kValidator);
     ui->kiLineEdit->setValidator(this->kValidator);
     ui->kpLineEdit->setValidator(this->kValidator);
-
+    this->selectedPresetName = getName();
     updateConfiguration();
+    connect(&ApplicationConfig::instance(), &ApplicationConfig::algorithmConstantChanged, this, &FromFileControlView::updateConfiguration);
 }
 
 FromFileControlView::~FromFileControlView()
@@ -57,7 +59,7 @@ void FromFileControlView::instantiate() {
 
 const char *FromFileControlView::getName()
 {
-    return "Desde archivo";
+    return FROM_FILE_CONTROL_NAME;
 }
 
 void FromFileControlView::on_openFile_clicked()
@@ -75,9 +77,15 @@ void FromFileControlView::on_saveButton_clicked()
         float kp = this->ui->kpLineEdit->text().toFloat();
         float ki = this->ui->kdLineEdit->text().toFloat();
         float kd = this->ui->kiLineEdit->text().toFloat();
-        ApplicationConfig::instance().saveControlConstant(kp, ki, kd, "from_file");
-        Logger::info(CONTROL_CONFIGURATION_DATA_SAVED_MSG);
-        emit message(CLASSIC_CONTROL_VIEW_DATA_SAVED_MSG, OK, true);
+        bool ok;
+        QString presetName = QInputDialog::getText(this, tr("Seleccione nombre de configuración"),
+                                                   tr("Nombre del preset:"), QLineEdit::Normal,
+                                                   "", &ok);
+        if (ok && !presetName.isEmpty()) {
+            this->selectedPresetName = presetName.toStdString();
+            ApplicationConfig::instance().saveControlConstant(kp, kd, ki, presetName.toStdString().c_str());
+            emit message(CLASSIC_CONTROL_VIEW_DATA_SAVED_MSG, OK, true);
+        }
     } else {
         emit message(CLASSIC_CONTROL_SAVE_DATA_FAILED_MSG, ERROR, true);
     }
@@ -143,11 +151,43 @@ void FromFileControlView::parseFile() {
     }
 }
 
-void FromFileControlView::updateConfiguration() {
-    std::vector<float> constants = ApplicationConfig::instance().getControlConstants("from_file");
+void FromFileControlView::on_constantsPresetCombo_currentIndexChanged(const QString &presetSelected) {
+    setPresetConfiguration(presetSelected.toStdString().c_str());
+}
+
+void FromFileControlView::loadPresetList(const char *currentPreset) {
+    std::list<QString> presets = ApplicationConfig::instance().getPresetList();
+    this->ui->constantsPresetCombo->clear();
+    this->ui->constantsPresetCombo->addItem(EMPTY_PRESET_LABEL);
+    int i = 1;
+    for (auto &presetName: presets) {
+        this->ui->constantsPresetCombo->addItem(presetName);
+        if (presetName == currentPreset) {
+            this->ui->constantsPresetCombo->setCurrentIndex(i);
+        }
+        i++;
+    }
+}
+
+void FromFileControlView::setPresetConfiguration(const char *currentPreset) {
+    std::vector<float> constants = ApplicationConfig::instance().getControlConstants(currentPreset);
     if (constants.size() == 3) {
+        this->selectedPresetName = currentPreset;
         this->ui->kpLineEdit->setText(QString::number(constants[0]));
         this->ui->kdLineEdit->setText(QString::number(constants[1]));
         this->ui->kiLineEdit->setText(QString::number(constants[2]));
+    } else {
+        this->ui->kpLineEdit->setText("");
+        this->ui->kdLineEdit->setText("");
+        this->ui->kiLineEdit->setText("");
     }
+}
+
+void FromFileControlView::updateConfiguration() {
+    this->_updateConfiguration(this->selectedPresetName.c_str());
+}
+
+void FromFileControlView::_updateConfiguration(const char *currentPreset) {
+    this->loadPresetList(currentPreset);
+    this->setPresetConfiguration(currentPreset);
 }

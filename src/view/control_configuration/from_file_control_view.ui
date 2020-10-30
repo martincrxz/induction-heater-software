@@ -16,51 +16,10 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="8" column="0">
-      <widget class="QLabel" name="kdLabel">
-       <property name="text">
-        <string>Kd:</string>
-       </property>
-      </widget>
+     <item row="10" column="2">
+      <widget class="QLineEdit" name="kiLineEdit"/>
      </item>
-     <item row="5" column="0">
-      <widget class="QLabel" name="kpLabel">
-       <property name="text">
-        <string>Kp:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="2">
-      <widget class="QPushButton" name="openFile">
-       <property name="text">
-        <string>Abrir</string>
-       </property>
-      </widget>
-     </item>
-     <item row="8" column="2">
-      <widget class="QLineEdit" name="kdLineEdit"/>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="fileLabel">
-       <property name="text">
-        <string>Archivo:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="2">
-      <widget class="QLineEdit" name="kpLineEdit"/>
-     </item>
-     <item row="2" column="1">
-      <widget class="QLabel" name="filenameLabel">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="1">
+     <item row="6" column="1">
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -73,13 +32,77 @@
        </property>
       </spacer>
      </item>
-     <item row="9" column="2">
-      <widget class="QLineEdit" name="kiLineEdit"/>
+     <item row="6" column="2">
+      <widget class="QLineEdit" name="kpLineEdit"/>
      </item>
-     <item row="9" column="0">
+     <item row="6" column="0">
+      <widget class="QLabel" name="kpLabel">
+       <property name="text">
+        <string>Kp:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="0">
       <widget class="QLabel" name="kiLabel">
        <property name="text">
         <string>Ki:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QPushButton" name="openFile">
+       <property name="text">
+        <string>Abrir</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="2">
+      <widget class="QLineEdit" name="kdLineEdit"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="fileLabel">
+       <property name="text">
+        <string>Archivo:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="0">
+      <widget class="QLabel" name="kdLabel">
+       <property name="text">
+        <string>Kd:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="filenameLabel">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="3" column="2">
+      <widget class="QComboBox" name="constantsPresetCombo"/>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Preset:</string>
        </property>
       </widget>
      </item>

@@ -1,6 +1,8 @@
 #ifndef FROM_FILE_CONTROL_VIEW_H
 #define FROM_FILE_CONTROL_VIEW_H
 
+#define FROM_FILE_CONTROL_NAME "Desde archivo"
+
 #include <cstdint>
 #include <QWidget>
 #include <QDoubleValidator>
@@ -24,16 +26,22 @@ public:
     const char * getName() override;
 
 public slots:
-    void updateConfiguration() override;
+    void updateConfiguration();
 private slots:
     void on_openFile_clicked();
     void on_saveButton_clicked();
+
+    void on_constantsPresetCombo_currentIndexChanged(const QString &arg1);
 
 private:
     Ui::FromFileControlView *ui;
     std::vector<std::vector<std::uint32_t>> controlDirectives;
     QDoubleValidator *kValidator;
+    std::string selectedPresetName;
     void parseFile();
+    void _updateConfiguration(const char* currentPreset);
+    void loadPresetList(const char* currentPreset);
+    void setPresetConfiguration(const char*currentPreset);
 };
 
 #endif // FROM_FILE_CONTROL_VIEW_H

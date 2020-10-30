@@ -141,7 +141,7 @@ void ApplicationConfig::saveControlConstant(float kp, float kd, float ki, const 
     emit algorithmConstantChanged();
 }
 
-std::vector<float> ApplicationConfig::getControlConstants(const char *algorithm) {
+std::vector<float> ApplicationConfig::getControlConstants(const char *algorithm) const {
     std::vector<float> ret;
     if (this->json.contains("control_configuration") && this->json["control_configuration"].toObject().contains(algorithm)) {
         QJsonObject conf = this->json["control_configuration"].toObject()[algorithm].toObject();
@@ -150,4 +150,8 @@ std::vector<float> ApplicationConfig::getControlConstants(const char *algorithm)
         ret.push_back(conf["ki"].toDouble());
     }
     return std::move(ret);
+}
+
+std::list<QString> ApplicationConfig::getPresetList() const {
+    return this->json["control_configuration"].toObject().keys().toStdList();
 }

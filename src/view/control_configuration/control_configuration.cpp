@@ -8,10 +8,7 @@
 
 ControlConfiguration::ControlConfiguration(QWidget *parent, SerialPort *sp) :
         QWidget(parent),
-        sp(sp)
-{
-    connect(&ApplicationConfig::instance(), &ApplicationConfig::algorithmConstantChanged, this, &ControlConfiguration::updateConfiguration);
-}
+        sp(sp) {}
 
 ControlConfiguration::~ControlConfiguration() {
     Logger::debug(CONTORL_CONFIGURATION_DESTRUCTOR_MSG);

@@ -10,7 +10,7 @@
 #include "../../connection/protocol/temperature_reading.h"
 #include "../message_modes.h"
 
-#define FILE_PATH "./classic_control_parameters.txt"
+#define EMPTY_PRESET_LABEL "-"
 
 
 class ControlConfiguration : public QWidget
@@ -55,9 +55,6 @@ protected:
 
 signals:
     void message(const char *str, unsigned char mode, bool reset);
-
-public slots:
-    virtual void updateConfiguration() = 0;
 };
 
 #endif // __CONTROL_CONFIGURATION_H__

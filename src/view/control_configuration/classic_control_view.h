@@ -1,6 +1,8 @@
 #ifndef CLASSIC_CONTROL_VIEW_H
 #define CLASSIC_CONTROL_VIEW_H
 
+#define PID_CONTROL_NAME "Clásico"
+
 #include <QWidget>
 #include <QString>
 #include <QDoubleValidator>
@@ -28,10 +30,12 @@ public:
     const char * getName() override;
 
 public slots:
-    void updateConfiguration() override;
+    void updateConfiguration();
 private slots:
 
     void on_saveButton_clicked();
+    void on_constantsPresetCombo_currentIndexChanged(const QString &arg1);
+
 private:
     /**
      * Un workaround para seguir manteniendo la misma interfaz polimorfica 
@@ -44,10 +48,13 @@ private:
      * @return            
      */
     bool validateInput(bool check_temp);
-
+    void _updateConfiguration(const char* currentPreset);
+    void loadPresetList(const char* currentPreset);
+    void setPresetConfiguration(const char*currentPreset);
     Ui::ClassicControlView *ui;
     QDoubleValidator *kValidator;
     QDoubleValidator *tempValidator;
+    std::string selectedPresetName;
 };
 
 #endif // CLASSIC_CONTROL_VIEW_H

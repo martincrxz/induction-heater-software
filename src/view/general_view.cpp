@@ -3,6 +3,7 @@
 #include <logger/logger.h>
 #include <QtCore/QDateTime>
 #include <cmath>
+#include <QtWidgets/QInputDialog>
 
 #include "general_view.h"
 #include "ui_general_view.h"
@@ -281,7 +282,13 @@ bool MainWindow::isControlActivated(){
 }
 
 void MainWindow::onZNCalculated(float kp, float ki, float kd) {
-    ApplicationConfig::instance().saveControlConstant(kp, ki, kd, "ziegler-nichols");
+    bool ok;
+    QString presetName = QInputDialog::getText(this, tr("Seleccione nombre de configuración"),
+                                               tr("Nombre del preset:"), QLineEdit::Normal,
+                                               "", &ok);
+    if (ok && !presetName.isEmpty()) {
+        ApplicationConfig::instance().saveControlConstant(kp, kd, ki, presetName.toStdString().c_str());
+    }
     this->autotunningView->deactivate(true);
 }
 

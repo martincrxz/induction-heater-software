@@ -8,6 +8,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <list>
 
 #include "general_config.h"
 #define APP_CONFIG_FILEPATH "app_configuration.json"
@@ -34,7 +35,8 @@ public:
     double getCurrentAdjustmentCoefficient() const;
     void updateConfig(const GeneralConfig &conf);
     void saveControlConstant(float kp, float kd, float ki, const char* algorithm);
-    std::vector<float> getControlConstants(const char *algorithm);
+    std::vector<float> getControlConstants(const char *algorithm) const;
+    std::list<QString> getPresetList() const;
 
 signals:
     void configChanged();
