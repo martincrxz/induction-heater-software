@@ -13,7 +13,6 @@
 #include "../connection/protocol/temperature_reading.h"
 #include "../connection/serialport.h"
 
-//  TODO: se podría hacer configurable en runtime
 #define WINDOW_SIZE 1
 
 class ControlAlgorithm : public QThread{

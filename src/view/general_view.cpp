@@ -151,7 +151,6 @@ void MainWindow::onTemperatureDataArrived(std::shared_ptr<MicroMessage> msg) {
     ui->thermocoupleTempValue->setText(QString::number(temp.getData()));
     ui->dut_temp_value->setText(QString::number(temp.getData()));
     Logger::debug(GENERAL_VIEW_TEMPERATURE_RECEIVED_MSG, temp.getData());
-    // TODO: debo actualizar el gráfico, como el hilo de control
     // TODO 2: esto quedó horrible, debería haberse llamado a connect
     // en cada proceso que le interesa este mensaje, y que sea autocontenido.
     // acá tengo logica mezclada

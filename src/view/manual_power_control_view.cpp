@@ -35,17 +35,6 @@ void ManualPowerControlView::on_setPowerButton_clicked()
      *  Si la potencia a setearle al horno es menor a 10, el horno se apaga por
      *  una protección contra cortocircuito.
      */
-
-    /*
-    //TODO: refactor this, cambiar el valor en función de lo que recibe de powerTOTaps
-    if (powerValue < 10) {
-        this->ui->powerValue->setValue(10);
-    }
-
-    if (powerValue > 100) {
-        this->ui->powerValue->setValue(100);   
-    }
-    */
     unsigned char taps = ControlAlgorithm::powerToTaps(powerValue);
     std::shared_ptr<OutgoingMessage> toSend(new SetPower(taps));
     this->serialPort->send(toSend);
