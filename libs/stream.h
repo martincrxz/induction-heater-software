@@ -40,7 +40,7 @@ class Stream {
             this->notEmpty.wait(lock);
         }
 
-        if (this->closed) {
+        if (this->closed && this->q.empty()) {
             throw Exception{"Stream closed"};
         }
 
