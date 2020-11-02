@@ -117,15 +117,17 @@ void Chart::append(double x, double y, unsigned int id) {
         return;
     }
 
-    if (this->chrono.tack() < MIMINUM_INTERVAL_TO_ACCEPT_DATA) {
+    if ((this->interval_series1.tack() < MIMINUM_INTERVAL_TO_ACCEPT_DATA && id == 1) ||
+        (this->interval_series2.tack() < MIMINUM_INTERVAL_TO_ACCEPT_DATA && id == 2)) {
         return;
     }
-    this->chrono.tick();
+
     if (x > this->xAxis.max().toMSecsSinceEpoch()) {
         this->scroll(x - this->xAxis.max().toMSecsSinceEpoch() + 1000, 0);
     }
 
     if (id == 1) {
+        this->interval_series1.tick();
         this->series1.append(x, y);
         if (y > this->yAxis1.max()) {
             y1min = this->yAxis1.min();
@@ -139,6 +141,7 @@ void Chart::append(double x, double y, unsigned int id) {
                 this->yAxis1.setRange(y1min, y1max);
         }
     } else {
+        this->interval_series2.tick();
         if (this->secondCurveEnabled) {
             this->series2.append(x, y);
             if (y > this->yAxis2.max()) {

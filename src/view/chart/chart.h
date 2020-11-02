@@ -85,7 +85,8 @@ private:
     const char * y2AxisName;
     QMutex mutex;
     bool acceptData;
-    Chrono chrono;
+    Chrono interval_series1;
+    Chrono interval_series2;
     bool auto_scroll_enabled{true};
 };
 
