@@ -21,6 +21,10 @@
 #include "../../connection/protocol/temperature_reading.h"
 #include "chart_conf.h"
 #include "chart_limits.h"
+/**
+ * Intervalo en milisegundos que debe transcurrir para acetar un punto del gráfico.
+ */
+#define MIMINUM_INTERVAL_TO_ACCEPT_DATA 10
 
 QT_BEGIN_NAMESPACE
 class QGestureEvent;
@@ -37,10 +41,8 @@ public:
     virtual ~Chart();
     void init();
     void stop();
-    void dataAvailable(double y, unsigned int id = 1);
     void stopFollow();
     void startFollow();
-    void save(QString &directory);
     /**
      * @brief       Debido a que en el eje X (eje temporal) no está bien
      *              definido en QT la magnitud en la que se desplaza (no te
@@ -53,6 +55,7 @@ public:
      * @param dy    Desplazamiento absoluto en y
      */
     void scroll(qreal dx, qreal dy);
+    void append(double x, double y, unsigned int id = 1);
     void adjustView();
     ChartLimits getLimits() const;
     void setLimits(const ChartLimits &limits);
@@ -63,8 +66,6 @@ protected:
 
 private:
     bool gestureEvent(QGestureEvent *event);
-    void append(double x, double y, unsigned int id = 1);
-    void writeSeriesToFile(QLineSeries &series, std::string seriesName, std::string dir);
     static QColor getNextColor();
     bool secondCurveEnabled{false};
     double y1min{0};

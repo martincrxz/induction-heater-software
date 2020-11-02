@@ -1,7 +1,10 @@
 #include <QDialog>
 #include <QFileDialog>
 #include <QString>
+#include <QPixmap>
 #include <logger/logger.h>
+#include <QtGui/QBitmap>
+#include <memory>
 
 #include "chart_conf.h"
 #include "chart_config_dialog.h"
@@ -15,6 +18,14 @@ QWidget(parent),
 ui(new Ui::ChartWidget)
 {
     ui->setupUi(this);
+    QPixmap pixmap(":/record.png");
+    QBitmap mask = pixmap.createMaskFromColor(Qt::white, Qt::MaskOutColor);
+    pixmap.fill((Qt::red));
+    pixmap.setMask(mask);
+    this->save_button_icon.addPixmap(pixmap, QIcon::Normal,QIcon::Off);
+    this->save_button_icon.addPixmap(QPixmap(":/stop.png"), QIcon::Normal,QIcon::On);
+    this->ui->saveButton->setIcon(this->save_button_icon);
+    this->ui->saveButton->setCheckable(true);
     std::uint64_t now = QDateTime::currentDateTime().toMSecsSinceEpoch();
     AxisConfiguration tempAxis("Temperatura", "(°C)", "%i", 0, 5);
     AxisConfiguration powerAxis("Potencia", "(W)", "%i", 0, 100);
@@ -65,26 +76,33 @@ void ChartWidget::init() {
 }
 
 void ChartWidget::closeEvent(QCloseEvent *event) {
+    if (this->ui->saveButton->isChecked())
+        this->ui->saveButton->click();
     this->temp_power_chart->stop();
     this->current_chart->stop();
     QWidget::closeEvent(event);
 }
 
+void ChartWidget::appendData(Chart *chart, double now, double data, PointType type) {
+    chart->append(now, data,  type == PointType::TEMPERATURE || type == PointType::CURRENT ? 1 : 2);
+    if (writer != nullptr)
+        this->writer->pushPoint(ChartPoint(now, data, type));
+}
 
 void ChartWidget::dataAvailable(TemperatureReading &temp) {
-    this->temp_power_chart->dataAvailable(temp.getData(), 1);
+    appendData(this->temp_power_chart, chrono.now(), temp.getData(), PointType::TEMPERATURE);
 }
 
 void ChartWidget::dataAvailable(PowerSetAcknowledge &power) {
-    this->temp_power_chart->dataAvailable(power.getPower(), 2);
+    appendData(this->temp_power_chart, chrono.now(), power.getPower(), PointType::POWER);
 }
 
 void ChartWidget::dataAvailable(CurrentFrequencyReading &freq) {
-    this->current_chart->dataAvailable(freq.getData(), 2);
+    appendData(this->current_chart, chrono.now(), freq.getData(), PointType::FRECUENCY);
 }
 
 void ChartWidget::dataAvailable(CurrentRMSReading &current) {
-    this->current_chart->dataAvailable(current.getData(), 1);
+    appendData(this->current_chart, chrono.now(), current.getData(), PointType::CURRENT);
 }
 
 void ChartWidget::on_stopFollowButton_clicked()
@@ -107,12 +125,18 @@ void ChartWidget::on_fitViewButton_clicked()
 
 void ChartWidget::on_saveButton_clicked()
 {
-    QString dir = QFileDialog::getExistingDirectory(this, tr("Seleccione carpeta donde guardar los archivos"),
-                                                ".",
-                                                QFileDialog::ShowDirsOnly
-                                                | QFileDialog::DontResolveSymlinks);
-    this->temp_power_chart->save(dir);
-    this->current_chart->save(dir);
+    if (this->ui->saveButton->isChecked()) {
+        QString dir = QFileDialog::getExistingDirectory(this, tr("Seleccione carpeta donde guardar los archivos"),
+                                                        ".",
+                                                        QFileDialog::ShowDirsOnly
+                                                        | QFileDialog::DontResolveSymlinks);
+        Logger::critical("Arrancando el escritor de gráficos.");
+        this->writer = std::make_unique<ChartFileWriter>(dir.toStdString());
+    } else {
+        Logger::critical("Parando el escritor de los gráficos.");
+        this->writer->stop();
+
+    }
 }
 
 void ChartWidget::on_settingsButton_clicked()

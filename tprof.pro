@@ -75,6 +75,7 @@ SOURCES += \
     src/view/chart/chart.cpp \
     src/view/chart/chart_conf.cpp \
     src/view/chart/chart_view.cpp \
+    src/view/chart/chart_file_writer.cpp \
     src/view/chart/chart_config_dialog.cpp \
     src/view/dialog/general_config_dialog.cpp \
     src/control/fuzzy_logic.cpp \
@@ -137,6 +138,7 @@ HEADERS += \
     src/view/chart/chart.h \
     src/view/chart/chart_conf.h \
     src/view/chart/chart_view.h \
+    src/view/chart/chart_file_writer.h \
     src/view/chart/chart_config_dialog.h \
     src/view/dialog/general_config_dialog.h \
     src/configuration/general_config.h \

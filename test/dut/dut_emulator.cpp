@@ -101,7 +101,7 @@ TEST(ControlAlgorithms, DutWithHighTemperature) {
 TEST(ControlAlgorithms, Fuzzy2x3Control) {
     DutEmulator dut;
     std::string filepath("./fuzzy/fuzzy2x3.json");
-    Fuzzy2x3 fuzzy(900, NULL, filepath, 1);
+    Fuzzy2x3 fuzzy(900, 1, 1, 1, NULL, filepath, 1);
     float temp = dut.process(0.1);
     for (int i = 0; i < AMOUNT_OF_ITERATIONS; i++) {
         fuzzy.print();

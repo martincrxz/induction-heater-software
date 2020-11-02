@@ -112,6 +112,15 @@ Chart::~Chart() {
 }
 
 void Chart::append(double x, double y, unsigned int id) {
+    QMutexLocker lock(&this->mutex);
+    if (!acceptData) {
+        return;
+    }
+
+    if (this->chrono.tack() < MIMINUM_INTERVAL_TO_ACCEPT_DATA) {
+        return;
+    }
+    this->chrono.tick();
     if (x > this->xAxis.max().toMSecsSinceEpoch()) {
         this->scroll(x - this->xAxis.max().toMSecsSinceEpoch() + 1000, 0);
     }
@@ -152,13 +161,6 @@ void Chart::init() {
     this->acceptData = true;
 }
 
-void Chart::dataAvailable(double y, unsigned int id) {
-    QMutexLocker lock(&this->mutex);
-    if (acceptData) {
-        this->append(chrono.now(), y, id);
-    }
-}
-
 void Chart::stop() {
     QMutexLocker lock(&this->mutex);
     this->acceptData = false;
@@ -170,28 +172,6 @@ void Chart::stop() {
 void Chart::stopFollow() {
     QMutexLocker lock(&this->mutex);
     this->auto_scroll_enabled = false;
-}
-
-void Chart::writeSeriesToFile(QLineSeries &series, std::string seriesName, std::string dir) {
-    std::string filename(dir);
-    filename += "/" + seriesName;
-    QDateTime firstTs = QDateTime::fromMSecsSinceEpoch(series.at(0).x());
-    filename += "-" + firstTs.toString("yyyy-MM-dd-hh:mm:ss").toStdString() + ".csv";
-    Logger::info(FILE_SAVED_MSG, filename.c_str());
-    std::fstream file(filename, std::ios_base::out);
-    file << this->xAxisName << "," << seriesName << std::endl;
-    for (int i = 0, j = 0; i < series.count(); ++i) {
-        QDateTime x = QDateTime::fromMSecsSinceEpoch(series.at(i).x());
-        qreal y1 = series.at(i).y();
-        file << x.toString("hh:mm:ss").toStdString() << "," << y1 << std::endl;
-    }
-}
-
-void Chart::save(QString &dir)
-{
-    QMutexLocker lock(&this->mutex);
-    writeSeriesToFile(this->series1, this->y1AxisName, dir.toStdString());
-    writeSeriesToFile(this->series2, this->y2AxisName, dir.toStdString());
 }
 
 void Chart::startFollow() {

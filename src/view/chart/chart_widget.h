@@ -3,12 +3,14 @@
 
 #include <QWidget>
 #include <QtCharts/QChartView>
+#include <QtGui/QIcon>
 
 #include "chart.h"
 #include "chart_view.h"
 #include "../../connection/protocol/power_set_acknowledge.h"
 #include "../../connection/protocol/current_frequency_reading.h"
 #include "../../connection/protocol/current_RMS_reading.h"
+#include "chart_file_writer.h"
 
 namespace Ui {
 class ChartWidget;
@@ -49,6 +51,11 @@ private:
     Chart *current_chart;
     ChartView *temp_chart_view;
     ChartView *current_chart_view;
+    QIcon save_button_icon;
+    Chrono chrono;
+    std::unique_ptr<ChartFileWriter> writer = nullptr;
+
+    void appendData(Chart *chart, double now, double data, PointType type);
 };
 
 #endif // CHART_WIDGET_H

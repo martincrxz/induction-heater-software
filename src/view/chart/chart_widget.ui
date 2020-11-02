@@ -69,10 +69,6 @@
        <property name="text">
         <string/>
        </property>
-       <property name="icon">
-        <iconset resource="../../../assets/resources.qrc">
-         <normaloff>:/save.png</normaloff>:/save.png</iconset>
-       </property>
        <property name="iconSize">
         <size>
          <width>32</width>
@@ -136,7 +132,7 @@
        </property>
        <property name="icon">
         <iconset resource="../../../assets/resources.qrc">
-         <normaloff>:/stop.png</normaloff>:/stop.png</iconset>
+         <normaloff>:/pause.png</normaloff>:/pause.png</iconset>
        </property>
        <property name="iconSize">
         <size>

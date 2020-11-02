@@ -13,5 +13,7 @@
         <file>potenciaEstacionariaChica.png</file>
         <file>potenciaEstacionaria.png</file>
         <file>potenciaMinimaChica.png</file>
+        <file>record.png</file>
+        <file>pause.png</file>
     </qresource>
 </RCC>
