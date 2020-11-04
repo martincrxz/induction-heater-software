@@ -131,7 +131,7 @@ void ChartWidget::on_saveButton_clicked()
                                                         QFileDialog::ShowDirsOnly
                                                         | QFileDialog::DontResolveSymlinks);
         Logger::critical("Arrancando el escritor de gráficos.");
-        this->writer = std::make_unique<ChartFileWriter>(dir.toStdString());
+        this->writer.reset(new ChartFileWriter(dir.toStdString()));
     } else {
         Logger::critical("Parando el escritor de los gráficos.");
         this->writer->stop();

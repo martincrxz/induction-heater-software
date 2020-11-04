@@ -107,7 +107,7 @@ else()
 
 endif()
 # Run tests of the control algorithms
-#if (RUN_TESTS)
+if (RUN_TESTS)
     message(STATUS "[INFO] ENABLING THE TEST SUITE")
     enable_testing()
     find_package(GTest REQUIRED)
@@ -121,7 +121,8 @@ endif()
 
     add_test(NAME app_tests
           COMMAND app_tests)
-#endif()
+endif()
+
 # Install phase (commented until necessary)
 file(COPY fuzzy DESTINATION ./)
 #file(COPY serverConfig.yaml DESTINATION ./)

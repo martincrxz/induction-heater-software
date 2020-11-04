@@ -91,9 +91,9 @@ void FuzzyControlView::instantiate() {
         float kp = this->ui->kpLineEdit->text().toFloat();
         float ki = this->ui->kILineEdit->text().toFloat();
         float kd = this->ui->kdLineEdit->text().toFloat();
-        this->controlAlgorithm = std::make_unique<Fuzzy2x3>(targetTemp, kp, kd, ki, this->sp, filepath, this->window_size);
+        this->controlAlgorithm.reset(new Fuzzy2x3(targetTemp, kp, kd, ki, this->sp, filepath, this->window_size));
     } else
-        this->controlAlgorithm = std::make_unique<Fuzzy3x1>(targetTemp, this->sp, filepath, this->window_size);
+        this->controlAlgorithm.reset(new Fuzzy3x1(targetTemp, this->sp, filepath, this->window_size));
 }
 
 const char *FuzzyControlView::getName()
