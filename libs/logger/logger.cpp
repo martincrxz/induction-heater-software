@@ -71,6 +71,8 @@ void Logger::parseString(const char *fmt, va_list &args, std::string &msg) {
 }
 
 void Logger::info(const char * fmt, ...) {
+    if (!(current_level & INFO))
+        return;
     va_list args;
     va_start(args, fmt);
     std::string msg;
@@ -83,6 +85,8 @@ void Logger::info(const char * fmt, ...) {
 
 
 void Logger::debug(const char * fmt, ...) {
+    if (!(current_level & DEBUG))
+        return;
     va_list args;
     va_start(args, fmt);
     std::string msg;
@@ -94,6 +98,8 @@ void Logger::debug(const char * fmt, ...) {
 }
 
 void Logger::warning(const char * fmt, ...) {
+    if (!(current_level & WARNING))
+        return;
     va_list args;
     va_start(args, fmt);
     std::string msg;
@@ -105,6 +111,8 @@ void Logger::warning(const char * fmt, ...) {
 }
 
 void Logger::critical(const char * fmt, ...) {
+    if (!(current_level & CRITICAL))
+        return;
     va_list args;
     va_start(args, fmt);
     std::string msg;
