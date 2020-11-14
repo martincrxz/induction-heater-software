@@ -104,7 +104,3 @@ void Fuzzy2x3::printConf() const {
     for (auto &function: kiOutputFunctions)
         function.print();
 }
-
-void Fuzzy2x3::print() {
-    std::cerr << "Kp: " << this->Kp << " Kd: " << this->Kd << " Ki:" << this->Ki << " Temp: ";
-}
