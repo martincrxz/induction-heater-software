@@ -18,7 +18,7 @@ MemberFunction::MemberFunction(float a, float b, float c, float d, std::string t
     }
     // TODO: esta formual vale porque definimos las member functions simétricas.
     // reveer esto.
-    this->center = (d - a) / 2;
+    this->center = (d + a) / 2;
 
 }
 

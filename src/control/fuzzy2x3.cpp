@@ -9,6 +9,9 @@
 #include "OutputObject.h"
 #include "../configuration/app_config.h"
 
+#define MAX_K_VALUE 10
+#define MIN_K_VALUE -10
+
 #define MIN(x, y) (x) < (y) ? (x) : (y)
 
 Fuzzy2x3::Fuzzy2x3(float targetTemp, float kp, float kd, float ki, SerialPort *sp,
@@ -59,8 +62,19 @@ void Fuzzy2x3::updateParameters(std::shared_ptr<TemperatureReading> data) {
     this->Kp += outputs[0].calculate_delta(kpOutputFunctions);
     this->Kd += outputs[1].calculate_delta(kdOutputFunctions);
     this->Ki += outputs[2].calculate_delta(kiOutputFunctions);
+    truncateControlConstants();
 }
 
+void Fuzzy2x3::truncateControlConstants() {
+    if (this->Kp > MAX_K_VALUE) this->Kp = MAX_K_VALUE;
+    else if (this->Kp < MIN_K_VALUE) this->Kp = MIN_K_VALUE;
+
+    if (this->Kd > MAX_K_VALUE) this->Kd = MAX_K_VALUE;
+    else if (this->Kd < MIN_K_VALUE) this->Kd = MIN_K_VALUE;
+
+    if (this->Ki > MAX_K_VALUE) this->Ki = MAX_K_VALUE;
+    else if (this->Ki < MIN_K_VALUE) this->Ki = MIN_K_VALUE;
+}
 
 void Fuzzy2x3::loadMemberFunctions(QJsonObject& document) {
     loadFunctions(errorMemberFunctions, document, "inputFunctions", "e");

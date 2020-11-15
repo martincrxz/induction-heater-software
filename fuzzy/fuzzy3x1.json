@@ -4,8 +4,8 @@
     "outputs" : ["p"],
     "rules" : [
       ["ZERO","ZERO","ZERO","ZERO"],
-      ["ZERO","ZERO","POSITIVE","POSITIVE"],
-      ["ZERO","ZERO","NEGATIVE","NEGATIVE"],
+      ["ZERO","ZERO","POSITIVE","NEGATIVE"],
+      ["ZERO","ZERO","NEGATIVE","POSITIVE"],
       ["ZERO","POSITIVE","ZERO","ZERO"],
       ["ZERO","POSITIVE","POSITIVE","POSITIVE"],
       ["ZERO","POSITIVE","NEGATIVE","POSITIVE"],
@@ -50,9 +50,9 @@
     },
     "outputFunctions" : {
       "p" : {
-        "NEGATIVE" : [-22, -15, -10, -3],
-        "ZERO" : [-7, -3, 3, 7],
-        "POSITIVE" : [3, 10, 15, 22]
+        "NEGATIVE" : [-1, -0.5, -0.25, -0.1],
+        "ZERO" : [-0.25, -0.1, 0.1, 0.25],
+        "POSITIVE" : [0.1, 0.25, 0.5, 1]
       }
     }
   }

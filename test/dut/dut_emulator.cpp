@@ -9,12 +9,14 @@
 #include "control/control_algorithm.h"
 #include "control/classic_pid.h"
 #include "control/fuzzy2x3.h"
+#include "control/fuzzy3x1.h"
+#include "control/zieglers_nichols.h"
 
 
 // Temperatura a partir de la cual la pendiente de temperatura cambia por efecto curie
 #define CURIE_TEMPERATURE 700
-#define SLOPE_UNDER_CURIE 0.01
-#define SLOPE_OVER_CURIE 0.002
+#define SLOPE_UNDER_CURIE 0.001
+#define SLOPE_OVER_CURIE 0.0002
 #define INERTIA 0.5
 #define AMOUNT_OF_ITERATIONS 10000
 
@@ -53,20 +55,7 @@ TEST(ControlAlgorithms, DutReturns25DegreesIfThePowerIs10Percent) {
 TEST(ControlAlgorithms, DutWillStabilizeAt900DegreesWithProportionalControl) {
     DutEmulator dut;
     CsvWritter csv("DutWillStabilizeAt900DegreesWithProportionalControl.csv");
-    ClassicPID pid(60, 0, 0, 900, NULL, 1);
-    float temp = dut.process(0.1);
-    for (int i = 0; i < AMOUNT_OF_ITERATIONS; i++) {
-        float power = ControlAlgorithm::tapsToPower(pid._process(temp))/100;
-        csv.writeData(power, temp);
-         temp = dut.process(power);
-    }
-    ASSERT_TRUE(temp >= 890 && temp <= 910);
-}
-
-TEST(ControlAlgorithms, DutWillStabilizeAt900DegreesWithIntegralControl) {
-    DutEmulator dut;
-    ClassicPID pid(0, 60, 0, 900, NULL, 1);
-    CsvWritter csv("DutWillStabilizeAt900DegreesWithIntegralControl.csv");
+    ClassicPID pid(10, 0, 0, 900, NULL, 1);
     float temp = dut.process(0.1);
     for (int i = 0; i < AMOUNT_OF_ITERATIONS; i++) {
         float power = ControlAlgorithm::tapsToPower(pid._process(temp))/100;
@@ -78,7 +67,7 @@ TEST(ControlAlgorithms, DutWillStabilizeAt900DegreesWithIntegralControl) {
 
 TEST(ControlAlgorithms, DutWillStabilizeAt900DegreesWithPIDControl) {
     DutEmulator dut;
-    ClassicPID pid(10, 10, 3, 900, NULL, 1);
+    ClassicPID pid(3, 0.0005, 1, 900, NULL, 1);
     CsvWritter csv("DutWillStabilizeAt900DegreesWithPIDControl.csv");
     float temp = dut.process(0.1);
     for (int i = 0; i < AMOUNT_OF_ITERATIONS; i++) {
@@ -91,7 +80,7 @@ TEST(ControlAlgorithms, DutWillStabilizeAt900DegreesWithPIDControl) {
 
 TEST(ControlAlgorithms, DutWithHighTemperature) {
     DutEmulator dut(2000, 1);
-    ClassicPID pid(10, 0.01, 0.1, 900, NULL, 1);
+    ClassicPID pid(1, 0.01, 0.1, 900, NULL, 1);
     CsvWritter csv("DutWithHighTemperature.csv");
     float temp = dut.process(1);
     for (int i = 0; i < AMOUNT_OF_ITERATIONS; i++) {
@@ -105,8 +94,22 @@ TEST(ControlAlgorithms, DutWithHighTemperature) {
 TEST(ControlAlgorithms, Fuzzy2x3Control) {
     DutEmulator dut;
     std::string filepath("./fuzzy/fuzzy2x3.json");
-    Fuzzy2x3 fuzzy(900, 1, 1, 1, NULL, filepath, 1);
+    Fuzzy2x3 fuzzy(900, 0.1, 0.1, 0.1, NULL, filepath, 1);
     CsvWritter csv("Fuzzy2x3Control.csv");
+    float temp = dut.process(0.1);
+    for (int i = 0; i < AMOUNT_OF_ITERATIONS; i++) {
+        float power = ControlAlgorithm::tapsToPower(fuzzy._process(temp))/100;
+        csv.writeData(power, temp);
+         temp = dut.process(power);
+    }
+    ASSERT_TRUE(temp >= 890 && temp <= 910);
+}
+
+TEST(ControlAlgorithms, Fuzzy3x1Control) {
+    DutEmulator dut;
+    std::string filepath("./fuzzy/fuzzy3x1.json");
+    Fuzzy3x1 fuzzy(900, NULL, filepath, 1);
+    CsvWritter csv("Fuzzy3x1Control.csv");
     float temp = dut.process(0.1);
     for (int i = 0; i < AMOUNT_OF_ITERATIONS; i++) {
         float power = ControlAlgorithm::tapsToPower(fuzzy._process(temp))/100;
