@@ -17,8 +17,6 @@ public:
     virtual ~Fuzzy2x3() override;
     virtual unsigned char process(std::shared_ptr<TemperatureReading> data) override;
 
-    void print();
-
 protected:
     virtual void loadMemberFunctions(QJsonObject& document) override;
     /**
