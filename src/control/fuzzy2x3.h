@@ -19,6 +19,7 @@ public:
 
 protected:
     virtual void loadMemberFunctions(QJsonObject& document) override;
+    void truncateControlConstants();
     /**
      * @brief  Imprime la configuración del control (loggeando en debug)
      */

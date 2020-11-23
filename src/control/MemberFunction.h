@@ -29,6 +29,16 @@ public:
     //  * x entre a y b vale una recta de pendiente positiva,
     //  * x entre b y c => 1
     //  * x > c => 0
+    /**
+     *   
+     *       b__________c
+     *      /           \
+     *     /             \
+     *    /               \
+     *   a-----------------d
+     * 
+     * (los valores de a,b,c y d son las proyecciones sobre le eje x de estos puntos)
+     */
     float calculate(float x);
     const std::string & getTag() const;
     float getCenter() const;

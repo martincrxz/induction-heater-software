@@ -9,7 +9,10 @@
 void OutputObject::emplace(float degree, const std::string &tag) {
     this->candidates.emplace_back(degree, tag);
 }
-// TODO refactorear esta abominacion
+/**
+ * Calcula el delta a aumentar como un promedio ponderado por el degree
+ * entre los distintos candidatos
+ */
 float OutputObject::calculate_delta(
         const std::vector<MemberFunction> &functions) const{
     const MemberFunction *function;
