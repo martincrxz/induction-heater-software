@@ -104,12 +104,12 @@ TEST(ControlAlgorithms, Fuzzy2x3Control) {
     }
     ASSERT_TRUE(temp >= 890 && temp <= 910);
 }
-/*
+
 TEST(ControlAlgorithms, Fuzzy2x1Control) {
     DutEmulator dut;
-    std::string filepath("./fuzzy/fuzzy3x1.json");
-    Fuzzy2x1 fuzzy(900, NULL, filepath, 1);
-    CsvWritter csv("Fuzzy3x1Control.csv");
+    std::string filepath("./fuzzy/fuzzy2x1.json");
+    Fuzzy2x1 fuzzy(900, NULL, filepath, 1, 900, 50, 0.01);
+    CsvWritter csv("Fuzzy2x1Control.csv");
     float temp = dut.process(0.1);
     for (int i = 0; i < AMOUNT_OF_ITERATIONS; i++) {
         float power = ControlAlgorithm::tapsToPower(fuzzy._process(temp))/100;
@@ -117,4 +117,4 @@ TEST(ControlAlgorithms, Fuzzy2x1Control) {
          temp = dut.process(power);
     }
     ASSERT_TRUE(temp >= 890 && temp <= 910);
-}*/
+}

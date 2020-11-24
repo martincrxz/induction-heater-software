@@ -18,7 +18,7 @@ Fuzzy2x1::Fuzzy2x1(float targetTemp,
         float errorS,
         float errorDerivativeS,
         float outputS):
-            FuzzyLogic(targetTemp, 0, 0, 0, sp, window_size, "fuzzy3x1"),
+            FuzzyLogic(targetTemp, 0, 0, 0, sp, window_size, "fuzzy2x1"),
             errorSensitivity(errorS),
             errorDerivativeSensitivity(errorDerivativeS),
             outputSensitivity(outputS){
