@@ -9,9 +9,6 @@
 #include "OutputObject.h"
 #include "../configuration/app_config.h"
 
-#define MAX_K_VALUE 10
-#define MIN_K_VALUE -10
-
 #define MIN(x, y) (x) < (y) ? (x) : (y)
 
 Fuzzy2x3::Fuzzy2x3(float targetTemp,
@@ -45,13 +42,13 @@ void Fuzzy2x3::updateParameters(std::shared_ptr<TemperatureReading> data) {
     std::vector<MemberCandidate> derivativeErrorCandidates;
 
     for (auto &member: this->errorMemberFunctions) {
-        float errorDegree = member.calculate(errorMean);
+        float errorDegree = member.calculate(errorMean / errorSensitivity);
         if (errorDegree != 0)
             errorCandidates.emplace_back(errorDegree, member.getTag());
     }
 
     for (auto &member: this->errorDerivativeMemberFunctions) {
-        float derivativeErrorDegree = member.calculate(derivativeError);
+        float derivativeErrorDegree = member.calculate(derivativeError / errorDerivativeSensitivity);
         if (derivativeErrorDegree != 0)
             derivativeErrorCandidates.emplace_back(derivativeErrorDegree, member.getTag());
     }
@@ -71,9 +68,9 @@ void Fuzzy2x3::updateParameters(std::shared_ptr<TemperatureReading> data) {
         }
     }
 
-    this->Kp = this->initKp + outputs[0].calculate_delta(kpOutputFunctions);
-    this->Kd = this->initKd + outputs[1].calculate_delta(kdOutputFunctions);
-    this->Ki = this->initKi + outputs[2].calculate_delta(kiOutputFunctions);
+    this->Kp = this->initKp + outputs[0].calculate_delta(kpOutputFunctions) * this->kpSensitivity;
+    this->Kd = this->initKd + outputs[1].calculate_delta(kdOutputFunctions) * this->kdSensitivity;
+    this->Ki = this->initKi + outputs[2].calculate_delta(kiOutputFunctions) * this->kiSensitivity;
 }
 
 void Fuzzy2x3::loadMemberFunctions(QJsonObject& document) {

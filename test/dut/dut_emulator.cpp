@@ -15,8 +15,8 @@
 
 // Temperatura a partir de la cual la pendiente de temperatura cambia por efecto curie
 #define CURIE_TEMPERATURE 700
-#define SLOPE_UNDER_CURIE 0.001
-#define SLOPE_OVER_CURIE 0.0002
+#define SLOPE_UNDER_CURIE 0.0025
+#define SLOPE_OVER_CURIE 0.0005
 #define INERTIA 0.5
 #define AMOUNT_OF_ITERATIONS 10000
 
@@ -94,7 +94,7 @@ TEST(ControlAlgorithms, DutWithHighTemperature) {
 TEST(ControlAlgorithms, Fuzzy2x3Control) {
     DutEmulator dut;
     std::string filepath("./fuzzy/fuzzy2x3.json");
-    Fuzzy2x3 fuzzy(900, 0.1, 0.1, 0.1, NULL, filepath, 1);
+    Fuzzy2x3 fuzzy(900, 1, 0, 0, NULL, filepath, 1, 900, 50, 5, 0.0005, 0);
     CsvWritter csv("Fuzzy2x3Control.csv");
     float temp = dut.process(0.1);
     for (int i = 0; i < AMOUNT_OF_ITERATIONS; i++) {
@@ -104,11 +104,11 @@ TEST(ControlAlgorithms, Fuzzy2x3Control) {
     }
     ASSERT_TRUE(temp >= 890 && temp <= 910);
 }
-
-TEST(ControlAlgorithms, Fuzzy3x1Control) {
+/*
+TEST(ControlAlgorithms, Fuzzy2x1Control) {
     DutEmulator dut;
     std::string filepath("./fuzzy/fuzzy3x1.json");
-    Fuzzy3x1 fuzzy(900, NULL, filepath, 1);
+    Fuzzy2x1 fuzzy(900, NULL, filepath, 1);
     CsvWritter csv("Fuzzy3x1Control.csv");
     float temp = dut.process(0.1);
     for (int i = 0; i < AMOUNT_OF_ITERATIONS; i++) {
@@ -117,4 +117,4 @@ TEST(ControlAlgorithms, Fuzzy3x1Control) {
          temp = dut.process(power);
     }
     ASSERT_TRUE(temp >= 890 && temp <= 910);
-}
+}*/

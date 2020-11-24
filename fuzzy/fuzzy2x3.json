@@ -3,63 +3,69 @@
     "inputs" : ["e", "de"],
     "outputs" : ["dkp", "dki", "dkd"],
     "rules" : [
-      ["ZERO","ZERO","ZERO","ZERO","ZERO"],
-      ["ZERO","PS","NEGATIVE","POSITIVE","NEGATIVE"],
-      ["ZERO","PB","NEGATIVE","POSITIVE","NEGATIVE"],
-      ["ZERO","NS","NEGATIVE","POSITIVE","NEGATIVE"],
-      ["ZERO","NB","NEGATIVE","NEGATIVE","NEGATIVE"],
-      ["PS","ZERO","POSITIVE","NEGATIVE","POSITIVE"],
-      ["PS","PS","ZERO","ZERO","ZERO"],
-      ["PS","PB","ZERO","POSITIVE","ZERO"],
-      ["PS","NS","ZERO","POSITIVE","ZERO"],
-      ["PS","NB","NEGATIVE","POSITIVE","NEGATIVE"],
-      ["PB","ZERO","POSITIVE","NEGATIVE","POSITIVE"],
-      ["PB","PS","POSITIVE","NEGATIVE","POSITIVE"],
-      ["PB","PB","POSITIVE","NEGATIVE","POSITIVE"],
-      ["PB","NS","POSITIVE","NEGATIVE","POSITIVE"],
-      ["PB","NB","POSITIVE","NEGATIVE","POSITIVE"],
-      ["NS","ZERO","POSITIVE","NEGATIVE","POSITIVE"],
-      ["NS","PS","ZERO","ZERO","ZERO"],
-      ["NS","PB","NEGATIVE","POSITIVE","NEGATIVE"],
-      ["NS","NS","ZERO","POSITIVE","NEGATIVE"],
-      ["NS","NB","NEGATIVE","POSITIVE","NEGATIVE"],
-      ["NB","ZERO","POSITIVE","NEGATIVE","POSITIVE"],
-      ["NB","PS","POSITIVE","NEGATIVE","POSITIVE"],
-      ["NB","PB","POSITIVE","NEGATIVE","POSITIVE"],
-      ["NB","NS","POSITIVE","NEGATIVE","POSITIVE"],
-      ["NB","NB","POSITIVE","NEGATIVE","POSITIVE"]
+      ["NB","NB","S","S","S"],
+      ["NB", "NS", "S", "S", "S"],
+      ["NB", "ZERO", "MS", "MS", "MS"],
+      ["NB", "PS", "MS", "MS", "MS"],
+      ["NB", "PB", "M", "M", "M"],
+      ["NS", "NB", "S", "S", "S"],
+      ["NS", "NS", "MS", "MS", "MS"],
+      ["NS", "ZERO", "MS", "MS", "MS"],
+      ["NS", "PS", "M", "M", "N"],
+      ["NS", "PB", "MB", "MB", "MB"],
+      ["ZERO", "NB", "MS", "MS", "MS"],
+      ["ZERO", "NS", "MS", "MS", "MS"],
+      ["ZERO", "ZERO", "M", "M", "M"],
+      ["ZERO", "PS", "MB", "MB", "MB"],
+      ["ZERO", "PB", "MB", "MB", "MB"],
+      ["PS", "NB", "MS", "MS", "MS"],
+      ["PS", "NS", "M", "M", "M"],
+      ["PS", "ZERO", "MB", "MB", "MB"],
+      ["PS", "PS", "MB", "MB", "MB"],
+      ["PS", "PB", "B", "B", "B"],
+      ["PB", "NB", "M", "M", "M"],
+      ["PB", "NS", "MB", "MB", "MB"],
+      ["PB", "ZERO", "MB", "MB", "MB"],
+      ["PB", "PS", "B", "B", "B"],
+      ["PB", "PB", "B", "B", "B"]
     ],
     "inputFunctions" : {
       "e" : {
-        "NB" : [-2000, -2000, -200, -100],
-        "NS" : [-200, -100 , -10, 0],
-        "ZERO" : [-10, 0, 0, 10],
-        "PS" : [0, 10, 100, 200],
-        "PB" : [100, 200, 2000, 2000]
+        "NB" : [-1.5, -1, -1, -0.5],
+        "NS" : [-1, -0.5, -0.5, 0],
+        "ZERO" : [-0.5, 0, 0, 0.5],
+        "PS" : [0, 0.5, 0.5, 1],
+        "PB" : [0.5, 1, 1, 1.5]
       },
       "de" : {
-        "NB" : [-2000, -2000, -200, -100],
-        "NS" : [-200, -100 , -10, 0],
-        "ZERO" : [-10, 0, 0, 10],
-        "PS" : [0, 10, 100, 200],
-        "PB" : [100, 200, 2000, 2000]
+        "NB" : [-1.5, -1, -1, -0.5],
+        "NS" : [-1, -0.5, -0.5, 0],
+        "ZERO" : [-0.5, 0, 0, 0.5],
+        "PS" : [0, 0.5, 0.5, 1],
+        "PB" : [0.5, 1, 1, 1.5]
       }
     },
     "outputFunctions" : {
       "dkp" : {
-        "NEGATIVE" : [-22, -15, -10, -3],
-        "ZERO" : [-7, -3, 3, 7],
-        "POSITIVE" : [3, 10, 15, 22]
+        "S" : [-0.25, 0, 0, 0.25],
+        "MS" : [0, 0.25, 0.25, 0.5],
+        "M" : [0.25, 0.5, 0.5, 0.75],
+        "MB" : [0.5, 0.75, 0.75, 1],
+        "B" : [0.75, 1, 1, 1.25]
       },
       "dki" : {
-        "NEGATIVE" : [-22, -15, -10, -3],
-        "ZERO" : [-7, -3, 3, 7],
-        "POSITIVE" : [3, 10, 15, 22]
+        "S" : [-0.25, 0, 0, 0.25],
+        "MS" : [0, 0.25, 0.25, 0.5],
+        "M" : [0.25, 0.5, 0.5, 0.75],
+        "MB" : [0.5, 0.75, 0.75, 1],
+        "B" : [0.75, 1, 1, 1.25]
       },
       "dkd" : {
-        "NEGATIVE" : [-22, -15, -10, -3],
-        "ZERO" : [-7, -3, 3, 7],
-        "POSITIVE" : [3, 10, 15, 22]
+        "S" : [-0.25, 0, 0, 0.25],
+        "MS" : [0, 0.25, 0.25, 0.5],
+        "M" : [0.25, 0.5, 0.5, 0.75],
+        "MB" : [0.5, 0.75, 0.75, 1],
+        "B" : [0.75, 1, 1, 1.25]
       }
     }
   }
