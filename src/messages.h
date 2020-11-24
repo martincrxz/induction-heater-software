@@ -52,7 +52,7 @@
 
 #define FUZZY_CONFIG_HEADER_MSG "Configuración de FuzzyLogic"
 #define FUZZY_2X3_CONFIG_RULES_HEADERS_MSG "Reglas ([e,   de,   dkp,   dki,   dkd]):"
-#define FUZZY_3X1_RULES_CONF_HEADER_MSG "Reglas ([e,   de,   ie,   dp]):"
+#define FUZZY_2X1_RULES_CONF_HEADER_MSG "Reglas ([e,   de,   ie,   dp]):"
 #define FUZZY_ERROR_MEMBER_FUNCT_HEADER_MSG "Error en la configuración de las funciones de membresía"
 #define FUZZY_DERIVATIVE_ERROR_HEADER_MSG "Configurción de las funciones de membresía para la derivada del error:"
 #define FUZZY_INTEGRA_ERROR_MEMBER_FUNCT_HEADER_MSG "Configurción de las funciones de membresía para la integral del error:"

@@ -8,7 +8,7 @@
 #include "ui_fuzzy_control_view.h"
 #include "logger/logger.h"
 #include "../../control/fuzzy2x3.h"
-#include "../../control/fuzzy3x1.h"
+#include "control/fuzzy2x1.h"
 
 #define MODE_2x3 0
 #define MODE_3x1 1
@@ -93,7 +93,7 @@ void FuzzyControlView::instantiate() {
         float kd = this->ui->kdLineEdit->text().toFloat();
         this->controlAlgorithm.reset(new Fuzzy2x3(targetTemp, kp, kd, ki, this->sp, filepath, this->window_size));
     } else
-        this->controlAlgorithm.reset(new Fuzzy3x1(targetTemp, this->sp, filepath, this->window_size));
+        this->controlAlgorithm.reset(new Fuzzy2x1(targetTemp, this->sp, filepath, this->window_size));
 }
 
 const char *FuzzyControlView::getName()

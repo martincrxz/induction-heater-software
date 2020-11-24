@@ -9,7 +9,7 @@
 #include "control/control_algorithm.h"
 #include "control/classic_pid.h"
 #include "control/fuzzy2x3.h"
-#include "control/fuzzy3x1.h"
+#include "control/fuzzy2x1.h"
 #include "control/zieglers_nichols.h"
 
 
