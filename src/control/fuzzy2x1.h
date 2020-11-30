@@ -11,16 +11,10 @@
 #include "fuzzy_logic.h"
 #include "MemberFunction.h"
 
-#define ERROR_SENSITIVITY_DEFAULT_VALUE_2x1 900
-#define ERROR_DERIVATIVE_SENSITIVITY_DEFAULT_VALUE_2x1 50
-#define OUTPUT_SENSITIVITY_DEFAULT_VALUE_2x1 0.15
-
 class Fuzzy2x1: public FuzzyLogic {
 public:
     Fuzzy2x1(float targetTemp, SerialPort *sp, const std::string &filepath, uint8_t window_size,
-            float errorS = ERROR_SENSITIVITY_DEFAULT_VALUE_2x1,
-            float errorDerivativeS = ERROR_DERIVATIVE_SENSITIVITY_DEFAULT_VALUE_2x1,
-            float outputS = OUTPUT_SENSITIVITY_DEFAULT_VALUE_2x1);
+            float errorS, float errorDerivativeS, float outputS);
     virtual ~Fuzzy2x1() override;
     virtual unsigned char process(std::shared_ptr<TemperatureReading> data) override;
 protected:

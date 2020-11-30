@@ -13,6 +13,13 @@
 #include "classic_pid.h"
 #include "MemberFunction.h"
 
+#define ERROR_SENSITIVITY_DEFAULT_VALUE_2x3 900
+#define ERROR_DERIVATIVE_SENSITIVITY_DEFAULT_VALUE_2x3 50
+#define KP_SENSITIVITY_DEFAULT_VALUE_2x3 0.15
+#define KI_SENSITIVITY_DEFAULT_VALUE_2x3 0.15
+#define KD_SENSITIVITY_DEFAULT_VALUE_2x3 0.15
+#define OUTPUT_SENSITIVITY_DEFAULT_VALUE_2x1 0.15
+
 /**
  * DISCLAIMER:  Control que aplica la logica difusa. Es una clase abstracta
  *              que solamente sabe como leer el JSON de configuración para

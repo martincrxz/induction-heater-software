@@ -7,8 +7,9 @@
 #include "configuration/app_config.h"
 #include "ui_fuzzy_control_view.h"
 #include "logger/logger.h"
-#include "../../control/fuzzy2x3.h"
+#include "control/fuzzy2x3.h"
 #include "control/fuzzy2x1.h"
+#include "control/fuzzy_logic.h"
 
 #define MODE_2x3 0
 #define MODE_3x1 1
@@ -30,6 +31,13 @@ FuzzyControlView::FuzzyControlView(QWidget *parent, SerialPort *s) :
     connect(&ApplicationConfig::instance(), &ApplicationConfig::algorithmConstantChanged, this, &FuzzyControlView::updateConfiguration);
     this->ui->output_s_label->hide();
     this->ui->output_sensitivity->hide();
+    
+    this->ui->error_sensitivity->setText(QString::number(ERROR_SENSITIVITY_DEFAULT_VALUE_2x3));
+    this->ui->derivative_error_sensitivity->setText(QString::number(ERROR_DERIVATIVE_SENSITIVITY_DEFAULT_VALUE_2x3));
+    this->ui->output_sensitivity->setText(QString::number(OUTPUT_SENSITIVITY_DEFAULT_VALUE_2x1));
+    this->ui->kp_sensitivity->setText(QString::number(KP_SENSITIVITY_DEFAULT_VALUE_2x3));
+    this->ui->kd_sensitivity->setText(QString::number(KD_SENSITIVITY_DEFAULT_VALUE_2x3));
+    this->ui->ki_sensitivity->setText(QString::number(KI_SENSITIVITY_DEFAULT_VALUE_2x3));
 }
 
 FuzzyControlView::~FuzzyControlView()

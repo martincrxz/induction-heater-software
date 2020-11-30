@@ -11,20 +11,10 @@
 #include "fuzzy_logic.h"
 #include "MemberFunction.h"
 
-#define ERROR_SENSITIVITY_DEFAULT_VALUE_2x3 900
-#define ERROR_DERIVATIVE_SENSITIVITY_DEFAULT_VALUE_2x3 50
-#define KP_SENSITIVITY_DEFAULT_VALUE_2x3 0.15
-#define KI_SENSITIVITY_DEFAULT_VALUE_2x3 0.15
-#define KD_SENSITIVITY_DEFAULT_VALUE_2x3 0.15
-
 class Fuzzy2x3: public FuzzyLogic {
 public:
     Fuzzy2x3(float targetTemp, float kp, float kd, float ki,  SerialPort *sp, const std::string &filepath,
-            uint8_t window_size, float errorS = ERROR_SENSITIVITY_DEFAULT_VALUE_2x3,
-            float errorDerivativeS = ERROR_DERIVATIVE_SENSITIVITY_DEFAULT_VALUE_2x3,
-            float kpS = KP_SENSITIVITY_DEFAULT_VALUE_2x3,
-            float kiS = KI_SENSITIVITY_DEFAULT_VALUE_2x3,
-            float kdS = KD_SENSITIVITY_DEFAULT_VALUE_2x3);
+            uint8_t window_size, float errorS, float errorDerivativeS, float kpS, float kiS, float kdS);
     virtual ~Fuzzy2x3() override;
     virtual unsigned char process(std::shared_ptr<TemperatureReading> data) override;
 
