@@ -15,5 +15,7 @@
         <file>potenciaMinimaChica.png</file>
         <file>record.png</file>
         <file>pause.png</file>
+        <file>sensibilidadChica.png</file>
+        <file>sensibilidad.png</file>
     </qresource>
 </RCC>
