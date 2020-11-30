@@ -9,7 +9,7 @@ CurrentFrequencyReading::CurrentFrequencyReading(QByteArray &buff) :
     IncomingMessage(CURRENT_FREQUENCY_READING) {
     // TODO: definir como se envian los datos y cambiar esto
     uint32_t dataBits = qFromBigEndian(*(uint32_t *) &buff.data()[2]);
-    frequency = (float) SAMPLE_RATE / dataBits;
+    frequency = (float) CLOCK_FREQUENCY / dataBits;
 }
 
 CurrentFrequencyReading::CurrentFrequencyReading(float freq):

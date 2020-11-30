@@ -10,7 +10,7 @@
 
 // TODO: tal vez habría que hacer variable esto en función
 // de la configuración del micro.
-#define SAMPLE_RATE 1e6
+#define CLOCK_FREQUENCY 50e6
 
 class CurrentFrequencyReading : public IncomingMessage{
 private:
