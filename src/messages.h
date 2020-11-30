@@ -60,6 +60,12 @@
 #define FUZZY_2X3_KP_FUNCTION_MSG "Configuración para las funciones de salida de Kp"
 #define FUZZY_2X3_KD_OUT_FUNCT_MSG "Configuración para las funciones de salida de Kd"
 #define FUZZY_2X3_KI_OUT_FUNCT_MSG "Configuración para las funciones de salida de Ki"
+#define FUZZY_ERROR_SENSITIVITY "Sensibilidad del error: %f"
+#define FUZZY_DERIVATIVE_ERROR_SENSITIVITY "Sensibilidad de la derivada del error: %f"
+#define FUZZY_OUTPUT_SENSITIVITY "Sensibilidad de la salida: %f"
+#define FUZZY_KP_SENSITIVITY "Sensibilidad de Kp: %f"
+#define FUZZY_KD_SENSITIVITY "Sensibilidad de Kd: %f"
+#define FUZZY_KI_SENSITIVITY "Sensibilidad de Ki: %f"
 
 #define JSON_CONFIG_FILE_COULDNT_BE_LOADED_MSG "No se pudo cargar el archivo json %s"
 #define JSON_CONFIG_FILE_BAD_FORMAT_ELEMENT_SHOULD_BE_NUMBER_MSG "Mal formato del archivo, el elemento '%s' debe ser un número"

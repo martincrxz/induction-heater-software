@@ -114,4 +114,10 @@ void Fuzzy2x3::printConf() const {
     Logger::debug(FUZZY_2X3_KI_OUT_FUNCT_MSG);
     for (auto &function: kiOutputFunctions)
         function.print();
+
+    Logger::debug(FUZZY_ERROR_SENSITIVITY, errorSensitivity);
+    Logger::debug(FUZZY_DERIVATIVE_ERROR_SENSITIVITY, errorDerivativeSensitivity);
+    Logger::debug(FUZZY_KP_SENSITIVITY, kpSensitivity);
+    Logger::debug(FUZZY_KD_SENSITIVITY, kiSensitivity);
+    Logger::debug(FUZZY_KI_SENSITIVITY, kdSensitivity);
 }

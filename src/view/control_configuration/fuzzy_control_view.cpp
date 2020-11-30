@@ -28,6 +28,8 @@ FuzzyControlView::FuzzyControlView(QWidget *parent, SerialPort *s) :
     this->selectedPresetName = getName();
     updateConfiguration();
     connect(&ApplicationConfig::instance(), &ApplicationConfig::algorithmConstantChanged, this, &FuzzyControlView::updateConfiguration);
+    this->ui->output_s_label->hide();
+    this->ui->output_sensitivity->hide();
 }
 
 FuzzyControlView::~FuzzyControlView()
@@ -87,13 +89,22 @@ bool FuzzyControlView::validateInput(bool check_temp, bool pid_mode, bool check_
 void FuzzyControlView::instantiate() {
     float targetTemp = this->ui->targetTempLineEdit->text().toFloat();
     std::string filepath = this->ui->filenameLabel->text().toStdString();
+    float error_s = this->ui->error_sensitivity->text().toFloat();
+    float d_error_s = this->ui->derivative_error_sensitivity->text().toFloat();
     if (current_index == MODE_2x3) {
         float kp = this->ui->kpLineEdit->text().toFloat();
         float ki = this->ui->kILineEdit->text().toFloat();
         float kd = this->ui->kdLineEdit->text().toFloat();
-        this->controlAlgorithm.reset(new Fuzzy2x3(targetTemp, kp, kd, ki, this->sp, filepath, this->window_size));
-    } else
-        this->controlAlgorithm.reset(new Fuzzy2x1(targetTemp, this->sp, filepath, this->window_size));
+        float kp_s = this->ui->kp_sensitivity->text().toFloat();
+        float kd_s = this->ui->kd_sensitivity->text().toFloat();
+        float ki_s = this->ui->ki_sensitivity->text().toFloat();
+        this->controlAlgorithm.reset(new Fuzzy2x3(targetTemp, kp, kd, ki, this->sp, filepath, this->window_size,
+                                                  error_s, d_error_s, kp_s, ki_s, kd_s));
+    } else {
+        float out_s = this->ui->output_sensitivity->text().toFloat();
+        this->controlAlgorithm.reset(new Fuzzy2x1(targetTemp, this->sp, filepath, this->window_size,
+                                                  error_s, d_error_s, out_s));
+    }
 }
 
 const char *FuzzyControlView::getName()
@@ -120,6 +131,8 @@ void FuzzyControlView::on_operationModeCombo_currentIndexChanged(int index)
         this->ui->ki_sensitivity->hide();
         this->ui->kp_sensitivity->hide();
         this->ui->kd_sensitivity->hide();
+        this->ui->output_s_label->show();
+        this->ui->output_sensitivity->show();
     } else {
         this->ui->kdLabel->show();
         this->ui->kpLabel->show();
@@ -133,6 +146,8 @@ void FuzzyControlView::on_operationModeCombo_currentIndexChanged(int index)
         this->ui->ki_sensitivity->show();
         this->ui->kp_sensitivity->show();
         this->ui->kd_sensitivity->show();
+        this->ui->output_s_label->hide();
+        this->ui->output_sensitivity->hide();
     }
 }
 

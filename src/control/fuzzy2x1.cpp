@@ -103,4 +103,7 @@ void Fuzzy2x1::printConf() const {
     for (auto &function: powerOutputFunctions)
         function.print();
 
+    Logger::debug(FUZZY_ERROR_SENSITIVITY, errorSensitivity);
+    Logger::debug(FUZZY_DERIVATIVE_ERROR_SENSITIVITY, errorDerivativeSensitivity);
+    Logger::debug(FUZZY_OUTPUT_SENSITIVITY, outputSensitivity);
 }
