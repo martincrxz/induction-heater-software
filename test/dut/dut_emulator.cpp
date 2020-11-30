@@ -11,6 +11,7 @@
 #include "control/fuzzy2x3.h"
 #include "control/fuzzy2x1.h"
 #include "control/zieglers_nichols.h"
+#include "test_ziegler_nichols.h"
 
 
 // Temperatura a partir de la cual la pendiente de temperatura cambia por efecto curie
@@ -108,7 +109,7 @@ TEST(ControlAlgorithms, Fuzzy2x3Control) {
 TEST(ControlAlgorithms, Fuzzy2x1Control) {
     DutEmulator dut;
     std::string filepath("./fuzzy/fuzzy2x1.json");
-    Fuzzy2x1 fuzzy(900, NULL, filepath, 1, 900, 50, 0.01);
+    Fuzzy2x1 fuzzy(900, NULL, filepath, 1, 900, 25, 0.01);
     CsvWritter csv("Fuzzy2x1Control.csv");
     float temp = dut.process(0.1);
     for (int i = 0; i < AMOUNT_OF_ITERATIONS; i++) {
@@ -117,4 +118,18 @@ TEST(ControlAlgorithms, Fuzzy2x1Control) {
          temp = dut.process(power);
     }
     ASSERT_TRUE(temp >= 890 && temp <= 910);
+}
+
+TEST(ControlAlgorithms, ZieglerNichols) {
+    DutEmulator dut;
+    TestZieglerNichols zn(30, 70, 2500);
+    CsvWritter csv("ZieglerNichols.csv");
+    float temp = dut.process(0.1);
+    while (zn.isRunning()) {
+        float power = ControlAlgorithm::tapsToPower(zn._process(temp))/100;
+        csv.writeData(power, temp);
+        temp = dut.process(power);
+    }
+
+    ASSERT_TRUE(temp == 0);
 }

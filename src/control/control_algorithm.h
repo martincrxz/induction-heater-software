@@ -31,7 +31,7 @@ public slots:
     void receiveData(TemperatureReading &data);
 
 protected:
-    bool keep_processing{true};
+    std::atomic<bool> keep_processing{true};
     float targetTemp = 0;
     uint8_t window_size{WINDOW_SIZE};
     //  ventana de tiempo para procesar las muestras

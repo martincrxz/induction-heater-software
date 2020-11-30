@@ -28,8 +28,7 @@ public:
      * @param enable
      */
     void enableButtons(bool enable);
-    void calculateParameters(
-            std::vector<std::shared_ptr<TemperatureReading>> &stepResponse);
+    void znCalculated(float &kp, float &kd, float &ki);
     void stop(bool finished, bool printError);
     void autotunningFailed(const char *reason);
     void dataAvailable(TemperatureReading &temp);
