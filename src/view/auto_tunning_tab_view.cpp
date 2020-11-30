@@ -15,6 +15,8 @@ AutoTunningTabView::AutoTunningTabView(QWidget *parent, SerialPort* port) :
     ui->setupUi(this);
     this->powerValidator = new QIntValidator(0, 100);
     this->tempValidator = new QDoubleValidator(-99999, 99999, 2);
+    this->tempSensitivityValidator = new QDoubleValidator(0, 10, 3);
+    this->ui->temp_sensitivity->setValidator(this->tempSensitivityValidator);
     this->ui->cutoff_temperature->setValidator(this->tempValidator);
     this->ui->initial_power->setValidator(this->powerValidator);
     this->ui->stationary_power->setValidator(this->powerValidator);
@@ -26,6 +28,7 @@ AutoTunningTabView::~AutoTunningTabView()
 {
     delete this->powerValidator;
     delete this->tempValidator;
+    delete this->tempSensitivityValidator;
     delete ui;
 }
 
@@ -33,17 +36,21 @@ bool AutoTunningTabView::validateInput() {
     QString initial_power = this->ui->initial_power->text();
     QString stationary_power = this->ui->stationary_power->text();
     QString cutoff_temp = this->ui->cutoff_temperature->text();
-    if (initial_power == "" || stationary_power == "" || cutoff_temp == "")
+    QString temp_sensitivity = this->ui->temp_sensitivity->text();
+
+    if (initial_power == "" || stationary_power == "" || cutoff_temp == "" || temp_sensitivity == "")
         return false;
 
     int d = 0;
     auto ipower_state = this->powerValidator->validate(initial_power, d);
     auto spower_state = this->powerValidator->validate(stationary_power, d);
     auto ctemp_state = this->tempValidator->validate(cutoff_temp, d);
+    auto temps_state = this->tempSensitivityValidator->validate(temp_sensitivity, d);
 
     if ( ipower_state != QValidator::Acceptable ||
          spower_state != QValidator::Acceptable ||
-         ctemp_state != QValidator::Acceptable )
+         ctemp_state != QValidator::Acceptable  ||
+         temps_state != QValidator::Acceptable)
         return false;
 
     if (initial_power.toInt() >= stationary_power.toInt())
@@ -75,7 +82,8 @@ void AutoTunningTabView::activate() {
         int initial_power = this->ui->initial_power->text().toInt();
         int stationary_power = this->ui->stationary_power->text().toInt();
         float cutoff_temp = this->ui->cutoff_temperature->text().toFloat();
-        zn.reset(new ZieglerNichols(this, initial_power, stationary_power, cutoff_temp, port));
+        float temp_sensitivity = this->ui->temp_sensitivity->text().toFloat();
+        zn.reset(new ZieglerNichols(this, initial_power, stationary_power, cutoff_temp, temp_sensitivity, port));
         zn->start();
     } else{
         emit printMessage(ZN_CANT_BE_ACTIVATED_MSG, ERROR, true);

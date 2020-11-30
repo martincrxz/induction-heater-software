@@ -8,11 +8,13 @@
 #include "../view/auto_tunning_tab_view.h"
 
 ZieglerNichols::ZieglerNichols(AutoTunningTabView *view, int initial_power,
-                            int stationary_power, double cutoff_temp,
-                            SerialPort *port) : ControlAlgorithm(0, port, 0),
+                            int stationary_power, float cutoff_temp,
+                            float temp_sensitivity, SerialPort *port) : 
+                            ControlAlgorithm(0, port, 0),
                             min_power(initial_power),
                             max_power(stationary_power),
-                            cutoff_temp(cutoff_temp) {
+                            cutoff_temp(cutoff_temp),
+                            temp_sensitivity(temp_sensitivity) {
     autoTunningView = view;
     if (port) {
         std::shared_ptr<MicroMessage> msg(new SetPower(powerToTaps(10)));
@@ -52,7 +54,7 @@ bool ZieglerNichols::isTemperatureStable(){
     float avg = std::accumulate(tempBuffer.begin(), tempBuffer.end(), 0);
     avg /= ZN_WINDOW_SIZE;
     for(auto temp : tempBuffer){
-        if(temp - avg > DELTA_THRESHOLD)
+        if(temp - avg > temp_sensitivity)
             return false;
     }
     return true;

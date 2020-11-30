@@ -9,7 +9,7 @@
 
 class TestZieglerNichols: public ZieglerNichols {
 public:
-    TestZieglerNichols(int initial_power, int stationary_power, double cutoff_temp);
+    TestZieglerNichols(int initial_power, int stationary_power, float cutoff_temp, float temp_sensitivity);
     power_level_t getState() const;
     bool isRunning();
 };

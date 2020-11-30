@@ -49,6 +49,7 @@ private:
     std::unique_ptr<ZieglerNichols> zn;
     QIntValidator *powerValidator;
     QDoubleValidator *tempValidator;
+    QDoubleValidator *tempSensitivityValidator;
 };
 
 #endif // AUTO_TUNNING_TAB_VIEW_H

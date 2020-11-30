@@ -122,7 +122,7 @@ TEST(ControlAlgorithms, Fuzzy2x1Control) {
 
 TEST(ControlAlgorithms, ZieglerNichols) {
     DutEmulator dut;
-    TestZieglerNichols zn(30, 70, 2500);
+    TestZieglerNichols zn(30, 70, 2500, 0.1);
     CsvWritter csv("ZieglerNichols.csv");
     float temp = dut.process(0.1);
     while (zn.isRunning()) {
