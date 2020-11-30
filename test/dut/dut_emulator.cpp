@@ -127,7 +127,9 @@ TEST(ControlAlgorithms, ZieglerNichols) {
     float temp = dut.process(0.1);
     while (zn.isRunning()) {
         float power = ControlAlgorithm::tapsToPower(zn._process(temp))/100;
-        csv.writeData(power, temp);
+        if (zn.getState() == POWER_AT_20) {
+            csv.writeData(power, temp);
+        }
         temp = dut.process(power);
     }
 
