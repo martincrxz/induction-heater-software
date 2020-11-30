@@ -39,6 +39,7 @@ private:
     Ui::FuzzyControlView *ui;
     QDoubleValidator *kValidator;
     QDoubleValidator *tempValidator;
+    QDoubleValidator *sensitivityValidator;
     uint8_t current_index = 0;
     std::string selectedPresetName;
     bool validateInput(bool check_temp, bool pid_mode, bool check_file = true);

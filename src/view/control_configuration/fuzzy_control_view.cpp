@@ -22,10 +22,19 @@ FuzzyControlView::FuzzyControlView(QWidget *parent, SerialPort *s) :
     ui->helpbutton->setToolTip(FUZZY_CONTROL_VIEW_TYPE_TOOLTIP_MSG);
     this->kValidator = new QDoubleValidator(-9999, 9999, 2);
     this->tempValidator = new QDoubleValidator(-99999, 99999, 2);
+    this->sensitivityValidator = new QDoubleValidator(0, 10000, 2);
+
     ui->targetTempLineEdit->setValidator(this->tempValidator);
     ui->kdLineEdit->setValidator(this->kValidator);
     ui->kILineEdit->setValidator(this->kValidator);
     ui->kpLineEdit->setValidator(this->kValidator);
+    ui->ki_sensitivity->setValidator(this->sensitivityValidator);
+    ui->kp_sensitivity->setValidator(this->sensitivityValidator);
+    ui->kd_sensitivity->setValidator(this->sensitivityValidator);
+    ui->error_sensitivity->setValidator(this->sensitivityValidator);
+    ui->derivative_error_sensitivity->setValidator(this->sensitivityValidator);
+    ui->output_sensitivity->setValidator(this->sensitivityValidator);
+
     this->selectedPresetName = getName();
     updateConfiguration();
     connect(&ApplicationConfig::instance(), &ApplicationConfig::algorithmConstantChanged, this, &FuzzyControlView::updateConfiguration);
@@ -62,15 +71,43 @@ bool FuzzyControlView::validateInput(bool check_temp, bool pid_mode, bool check_
     QString kd = ui->kdLineEdit->text();
     QString ki = ui->kILineEdit->text();
     QString kp = ui->kpLineEdit->text();
+    QString kis = ui->ki_sensitivity->text();
+    QString kps = ui->kp_sensitivity->text();
+    QString kds = ui->kd_sensitivity->text();
+    QString es  = ui->error_sensitivity->text();
+    QString des = ui->derivative_error_sensitivity->text();
+    QString os  = ui->output_sensitivity->text();
     int d = 0;
     if (pid_mode) {
         auto kdState = this->kValidator->validate(kd, d);
         auto kiState = this->kValidator->validate(ki, d);
         auto kpState = this->kValidator->validate(kp, d);
 
+        auto kisState = this->sensitivityValidator->validate(kis, d);
+        auto kdsState = this->sensitivityValidator->validate(kds, d);
+        auto esState  = this->sensitivityValidator->validate(es, d);
+        auto desState = this->sensitivityValidator->validate(des, d);
+        auto kpsState = this->sensitivityValidator->validate(kps, d);
+
         if ( kdState != QValidator::Acceptable ||
              kiState != QValidator::Acceptable ||
-             kpState != QValidator::Acceptable ) {
+             kpState != QValidator::Acceptable ||
+             kisState != QValidator::Acceptable ||
+             kdsState != QValidator::Acceptable ||
+             kpsState != QValidator::Acceptable ||
+             esState  != QValidator::Acceptable ||
+             desState != QValidator::Acceptable ) {
+            Logger::debug(FUZZY_CONTROL_VIEW_PID_BAD_FORMAT);
+            return false;
+        }
+        Logger::debug(FUZZY_CONTROL_VIEW_CONSTANTS_OK_MSG);
+    } else {
+        auto osState  = this->sensitivityValidator->validate(os, d);
+        auto esState  = this->sensitivityValidator->validate(es, d);
+        auto desState = this->sensitivityValidator->validate(des, d);
+        if (osState  != QValidator::Acceptable ||
+            esState  != QValidator::Acceptable ||
+            desState != QValidator::Acceptable) {
             Logger::debug(FUZZY_CONTROL_VIEW_PID_BAD_FORMAT);
             return false;
         }
