@@ -114,6 +114,12 @@ void FuzzyControlView::on_operationModeCombo_currentIndexChanged(int index)
         this->ui->kdLineEdit->hide();
         this->ui->kpLineEdit->hide();
         this->ui->kILineEdit->hide();
+        this->ui->ki_sensitivity_label->hide();
+        this->ui->kp_sensitivity_label->hide();
+        this->ui->kd_sensitivity_label->hide();
+        this->ui->ki_sensitivity->hide();
+        this->ui->kp_sensitivity->hide();
+        this->ui->kd_sensitivity->hide();
     } else {
         this->ui->kdLabel->show();
         this->ui->kpLabel->show();
@@ -121,6 +127,12 @@ void FuzzyControlView::on_operationModeCombo_currentIndexChanged(int index)
         this->ui->kdLineEdit->show();
         this->ui->kpLineEdit->show();
         this->ui->kILineEdit->show();
+        this->ui->ki_sensitivity_label->show();
+        this->ui->kp_sensitivity_label->show();
+        this->ui->kd_sensitivity_label->show();
+        this->ui->ki_sensitivity->show();
+        this->ui->kp_sensitivity->show();
+        this->ui->kd_sensitivity->show();
     }
 }
 
