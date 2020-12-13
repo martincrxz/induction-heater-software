@@ -4,11 +4,13 @@
 
 #include "serialport.h"
 #include "protocol/thermocouple_fault.h"
+#include "messages.h"
+#include "ui_general_view.h"
+
 #include <iostream>
 #include <sstream>
 #include <logger/logger.h>
-#include "messages.h"
-#include "ui_general_view.h"
+#include <vector>
 
 #define SEPARATOR ':'
 
@@ -114,12 +116,14 @@ void SerialPort::processMessage(QByteArray buff){
             case COLD_JUNCTION_READING:
                 emit coldJunctionArrived(msg);
                 break;
-            case THERMOCOUPLE_FAULT:
-                emit thermocoupleFault(QString::number(THERMOCOUPLE_FAULT),
-                        ((ThermocoupleFault&)(*msg)).error());
-                Logger::info(SERIALPORT_THERMOCOUPLE_ERROR_RECEIVED_MSG, ((ThermocoupleFault&)(*msg)).error().toStdString().c_str());
+            case THERMOCOUPLE_FAULT: {
+                std::vector<QString> errors = ((ThermocoupleFault&)(*msg)).error();
+                for (QString &msg: errors) {
+                    emit thermocoupleFault(QString::number(THERMOCOUPLE_FAULT), msg);
+                    Logger::info(SERIALPORT_THERMOCOUPLE_ERROR_RECEIVED_MSG, msg.toStdString().c_str());                    
+                }
                 break;
-            case THERMOCOUPLE_CONFIGURATION_ACKNOWLEDGE:
+            } case THERMOCOUPLE_CONFIGURATION_ACKNOWLEDGE:
                 emit configurationAcknowledge(QString::number(THERMOCOUPLE_CONFIGURATION_ACKNOWLEDGE),
                         SERIALPORT_THERMOCOUPLE_CONFIG_ACK + buff.toHex(SEPARATOR));
                 Logger::info(SERIALPORT_THERMOCOUPLE_CONFIG_ACK);

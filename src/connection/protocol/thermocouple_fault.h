@@ -7,6 +7,7 @@
 #ifndef __thermocouple_fault_H__
 #define __thermocouple_fault_H__
 
+#include <vector>
 
 #include "incoming_message.h"
 
@@ -26,7 +27,7 @@ private:
 public:
     explicit ThermocoupleFault(QByteArray buff);
     virtual ~ThermocoupleFault() = default;
-    QString error();
+    std::vector<QString> error();
 };
 
 
