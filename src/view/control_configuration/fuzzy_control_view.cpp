@@ -136,6 +136,7 @@ void FuzzyControlView::instantiate() {
     std::string filepath = this->ui->filenameLabel->text().toStdString();
     float error_s = this->ui->error_sensitivity->text().toFloat();
     float d_error_s = this->ui->derivative_error_sensitivity->text().toFloat();
+    float deadzone = this->ui->deadzoneLineEdit->text().toFloat();
     if (current_index == MODE_2x3) {
         float kp = this->ui->kpLineEdit->text().toFloat();
         float ki = this->ui->kILineEdit->text().toFloat();
@@ -143,11 +144,11 @@ void FuzzyControlView::instantiate() {
         float kp_s = this->ui->kp_sensitivity->text().toFloat();
         float kd_s = this->ui->kd_sensitivity->text().toFloat();
         float ki_s = this->ui->ki_sensitivity->text().toFloat();
-        this->controlAlgorithm.reset(new Fuzzy2x3(targetTemp, kp, kd, ki, this->sp, filepath, this->window_size,
+        this->controlAlgorithm.reset(new Fuzzy2x3(targetTemp, deadzone, kp, kd, ki, this->sp, filepath, this->window_size,
                                                   error_s, d_error_s, kp_s, ki_s, kd_s));
     } else {
         float out_s = this->ui->output_sensitivity->text().toFloat();
-        this->controlAlgorithm.reset(new Fuzzy2x1(targetTemp, this->sp, filepath, this->window_size,
+        this->controlAlgorithm.reset(new Fuzzy2x1(targetTemp, deadzone, this->sp, filepath, this->window_size,
                                                   error_s, d_error_s, out_s));
     }
 }

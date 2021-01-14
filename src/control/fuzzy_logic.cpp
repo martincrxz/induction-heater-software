@@ -19,9 +19,9 @@
 #include "OutputObject.h"
 #include "../configuration/app_config.h"
 
-FuzzyLogic::FuzzyLogic(float targetTemp, float kp, float kd, float ki,  SerialPort *sp,
+FuzzyLogic::FuzzyLogic(float targetTemp, float deadzone, float kp, float kd, float ki,  SerialPort *sp,
         uint8_t window_size, std::string name):
-       ClassicPID(kp, ki, kd, targetTemp, sp, window_size),
+       ClassicPID(kp, ki, kd, targetTemp, deadzone, sp, window_size),
        mode(name) {}
 
 FuzzyLogic::~FuzzyLogic() {

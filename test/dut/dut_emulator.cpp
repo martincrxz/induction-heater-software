@@ -56,7 +56,7 @@ TEST(ControlAlgorithms, DutReturns25DegreesIfThePowerIs10Percent) {
 TEST(ControlAlgorithms, DutWillStabilizeAt900DegreesWithProportionalControl) {
     DutEmulator dut;
     CsvWritter csv("DutWillStabilizeAt900DegreesWithProportionalControl.csv");
-    ClassicPID pid(10, 0, 0, 900, NULL, 1);
+    ClassicPID pid(10, 0, 0, 900, 5.0f, NULL, 1);
     float temp = dut.process(0.1);
     for (int i = 0; i < AMOUNT_OF_ITERATIONS; i++) {
         float power = ControlAlgorithm::tapsToPower(pid._process(temp))/100;
@@ -68,7 +68,7 @@ TEST(ControlAlgorithms, DutWillStabilizeAt900DegreesWithProportionalControl) {
 
 TEST(ControlAlgorithms, DutWillStabilizeAt900DegreesWithPIDControl) {
     DutEmulator dut;
-    ClassicPID pid(3, 0.0005, 1, 900, NULL, 1);
+    ClassicPID pid(3, 0.0005, 1, 900, 5.0f, NULL, 1);
     CsvWritter csv("DutWillStabilizeAt900DegreesWithPIDControl.csv");
     float temp = dut.process(0.1);
     for (int i = 0; i < AMOUNT_OF_ITERATIONS; i++) {
@@ -81,7 +81,7 @@ TEST(ControlAlgorithms, DutWillStabilizeAt900DegreesWithPIDControl) {
 
 TEST(ControlAlgorithms, DutWithHighTemperature) {
     DutEmulator dut(2000, 1);
-    ClassicPID pid(1, 0.01, 0.1, 900, NULL, 1);
+    ClassicPID pid(1, 0.01, 0.1, 900, 5.0f, NULL, 1);
     CsvWritter csv("DutWithHighTemperature.csv");
     float temp = dut.process(1);
     for (int i = 0; i < AMOUNT_OF_ITERATIONS; i++) {
@@ -95,7 +95,7 @@ TEST(ControlAlgorithms, DutWithHighTemperature) {
 TEST(ControlAlgorithms, Fuzzy2x3Control) {
     DutEmulator dut;
     std::string filepath("./fuzzy/fuzzy2x3.json");
-    Fuzzy2x3 fuzzy(900, 1, 0, 0, NULL, filepath, 1, 900, 50, 5, 0.0005, 0);
+    Fuzzy2x3 fuzzy(900, 5.0f, 1, 0, 0, NULL, filepath, 1, 900, 50, 5, 0.0005, 0);
     CsvWritter csv("Fuzzy2x3Control.csv");
     float temp = dut.process(0.1);
     for (int i = 0; i < AMOUNT_OF_ITERATIONS; i++) {
@@ -109,7 +109,7 @@ TEST(ControlAlgorithms, Fuzzy2x3Control) {
 TEST(ControlAlgorithms, Fuzzy2x1Control) {
     DutEmulator dut;
     std::string filepath("./fuzzy/fuzzy2x1.json");
-    Fuzzy2x1 fuzzy(900, NULL, filepath, 1, 900, 25, 0.01);
+    Fuzzy2x1 fuzzy(900, 5.0f, NULL, filepath, 1, 900, 25, 0.01);
     CsvWritter csv("Fuzzy2x1Control.csv");
     float temp = dut.process(0.1);
     for (int i = 0; i < AMOUNT_OF_ITERATIONS; i++) {

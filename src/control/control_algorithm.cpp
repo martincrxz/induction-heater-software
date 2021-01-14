@@ -14,9 +14,10 @@
 #define MINIMUM_TAP 0   // potencia maxima (100%)
 #define MAXIMUM_TAP 127 // potencia minima (0%) 
 
-ControlAlgorithm::ControlAlgorithm(float targetTemp, SerialPort *sp, uint8_t window_size):
+ControlAlgorithm::ControlAlgorithm(float targetTemp, float deadzone, SerialPort *sp, uint8_t window_size):
                         serialPort(sp),
                         targetTemp(targetTemp),
+                        deadzone(deadzone),
                         window_size(window_size) {}
 
 void ControlAlgorithm::receiveData(TemperatureReading &data) {
@@ -35,7 +36,13 @@ void ControlAlgorithm::run() {
                 keep_processing = false;
             } else {
                 Logger::info(CONTROL_ALGORITHM_TEMP_RECEIVED_MSG, msg->getData());
-            	std::uint8_t tapToSend = this->process(msg);
+            	std::uint8_t tapToSend = 0;
+            	if (this->isInTheDeadzoneArea(msg->getData())) {
+            	    tapToSend = this->last_tap_sent;
+            	} else {
+                    tapToSend = this->process(msg);
+                    this->last_tap_sent = tapToSend;
+            	}
                 Logger::info(CONTORL_ALGORITHM_OUTPUT_MSG, (int) tapToSend);
                 std::shared_ptr<MicroMessage> msgPower(new SetPower(tapToSend));
                 this->serialPort->send(msgPower);
@@ -85,4 +92,9 @@ void ControlAlgorithm::updateConfig() {
 unsigned char ControlAlgorithm::_process(float temp) {
     std::shared_ptr<TemperatureReading> temp_ptr(new TemperatureReading(temp));
     return this->process(temp_ptr);
+}
+
+bool ControlAlgorithm::isInTheDeadzoneArea(float currentTemp) {
+    float delta = this->targetTemp > currentTemp? (this->targetTemp - currentTemp) : (currentTemp - this->targetTemp);
+    return delta < this->deadzone;
 }

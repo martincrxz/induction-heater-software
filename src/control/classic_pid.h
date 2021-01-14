@@ -19,7 +19,7 @@ protected:
     float integralError = 0;
 
 public:
-	ClassicPID(float kp, float ki, float kd, float targetTemp, SerialPort *sp, uint8_t window_size);
+	ClassicPID(float kp, float ki, float kd, float targetTemp, float deadzone, SerialPort *sp, uint8_t window_size);
 	virtual ~ClassicPID() = default;
 	/**
 	 *	Dado una temperatura nueva, calcula por medio del control clásico

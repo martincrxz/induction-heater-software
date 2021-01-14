@@ -10,7 +10,7 @@
 ZieglerNichols::ZieglerNichols(AutoTunningTabView *view, int initial_power,
                             int stationary_power, float cutoff_temp,
                             float temp_sensitivity, SerialPort *port) : 
-                            ControlAlgorithm(0, port, 0),
+                            ControlAlgorithm(0, 0.0f, port, 0),
                             min_power(initial_power),
                             max_power(stationary_power),
                             cutoff_temp(cutoff_temp),

@@ -12,6 +12,7 @@
 #define MIN(x, y) (x) < (y) ? (x) : (y)
 
 Fuzzy2x3::Fuzzy2x3(float targetTemp,
+        float deadzone,
         float kp,
         float kd,
         float ki,
@@ -23,7 +24,7 @@ Fuzzy2x3::Fuzzy2x3(float targetTemp,
         float kpS,
         float kiS,
         float kdS):
-            FuzzyLogic(targetTemp, kp, kd, ki, sp, window_size, "fuzzy2x3"), errorSensitivity(errorS),
+            FuzzyLogic(targetTemp, deadzone, kp, kd, ki, sp, window_size, "fuzzy2x3"), errorSensitivity(errorS),
             errorDerivativeSensitivity(errorDerivativeS), kpSensitivity(kpS), kiSensitivity(kiS), kdSensitivity(kdS),
             initKp(kp), initKi(ki), initKd(kd){
     loadJson(filepath);

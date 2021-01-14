@@ -11,8 +11,8 @@
 #include "../configuration/app_config.h"
 
 
-ClassicPID::ClassicPID(float kp, float ki, float kd, float targetTemp, SerialPort *sp, uint8_t window_size):
-        ControlAlgorithm(targetTemp, sp, window_size), Kp(kp), Ki(ki), Kd(kd) {
+ClassicPID::ClassicPID(float kp, float ki, float kd, float targetTemp, float deadzone, SerialPort *sp, uint8_t window_size):
+        ControlAlgorithm(targetTemp, deadzone, sp, window_size), Kp(kp), Ki(ki), Kd(kd) {
 	Logger::debug(CLASSIC_PID_CONSTRUCTOR_MSG, kp, kd, ki, targetTemp);
 }
 #include <fstream>

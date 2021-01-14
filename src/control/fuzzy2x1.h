@@ -13,7 +13,7 @@
 
 class Fuzzy2x1: public FuzzyLogic {
 public:
-    Fuzzy2x1(float targetTemp, SerialPort *sp, const std::string &filepath, uint8_t window_size,
+    Fuzzy2x1(float targetTemp, float deadzone, SerialPort *sp, const std::string &filepath, uint8_t window_size,
             float errorS, float errorDerivativeS, float outputS);
     virtual ~Fuzzy2x1() override;
     virtual unsigned char process(std::shared_ptr<TemperatureReading> data) override;

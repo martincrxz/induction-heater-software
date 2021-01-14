@@ -23,7 +23,7 @@
 
 FileControl::FileControl(float kp, float ki, float kd,
                          ControlSteps &controlDirectives, SerialPort *sp, uint8_t window_size):
-		ClassicPID(kp, ki, kd, 0.0f, sp, window_size),
+		ClassicPID(kp, ki, kd, 0.0f, 0.0f, sp, window_size),
 		steps(controlDirectives) {
 }
 

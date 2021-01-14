@@ -29,10 +29,13 @@ private:
 public slots:
 
     void receiveData(TemperatureReading &data);
+    bool isInTheDeadzoneArea(float currentTemp);
 
 protected:
     std::atomic<bool> keep_processing{true};
     float targetTemp = 0;
+    float deadzone = 0;
+    uint8_t last_tap_sent = 0;
     uint8_t window_size{WINDOW_SIZE};
     //  ventana de tiempo para procesar las muestras
     std::vector<float> errorValues;
@@ -41,7 +44,7 @@ protected:
     std::mutex m;
 
 public:
-	ControlAlgorithm(float targetTemp, SerialPort *sp, uint8_t window_size);
+	ControlAlgorithm(float targetTemp, float deadzone, SerialPort *sp, uint8_t window_size);
 	virtual ~ControlAlgorithm();
 	/**
      * @brief Se encarga de terminar la ejecución ordenada

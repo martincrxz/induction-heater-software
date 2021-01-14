@@ -12,13 +12,14 @@
 #define MIN(x, y) (x) < (y) ? (x) : (y)
 
 Fuzzy2x1::Fuzzy2x1(float targetTemp,
+        float deadzone,
         SerialPort *sp,
         const std::string &filepath,
         uint8_t window_size,
         float errorS,
         float errorDerivativeS,
         float outputS):
-            FuzzyLogic(targetTemp, 0, 0, 0, sp, window_size, "fuzzy2x1"),
+            FuzzyLogic(targetTemp, deadzone, 0, 0, 0, sp, window_size, "fuzzy2x1"),
             errorSensitivity(errorS),
             errorDerivativeSensitivity(errorDerivativeS),
             outputSensitivity(outputS){

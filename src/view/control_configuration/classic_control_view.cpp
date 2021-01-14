@@ -92,7 +92,8 @@ void ClassicControlView::instantiate() {
     float kp = this->ui->kp_value->text().toFloat();
     float kd = this->ui->kd_value->text().toFloat();
     float ki = this->ui->ki_value->text().toFloat();
-    this->controlAlgorithm.reset(new ClassicPID(kp, ki, kd, targetTemp, this->sp, this->window_size));
+    float deadzone = this->ui->deadzoneLineEdit->text().toFloat();
+    this->controlAlgorithm.reset(new ClassicPID(kp, ki, kd, targetTemp, deadzone, this->sp, this->window_size));
     this->controlAlgorithm->start();
 }
 
